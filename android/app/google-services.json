@@ -1,0 +1,127 @@
+{
+  "project_info": {
+    "project_number": "951427181813",
+    "firebase_url": "https://mfin-7eeda.firebaseio.com",
+    "project_id": "mfin-7eeda",
+    "storage_bucket": "mfin-7eeda.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:951427181813:android:f88ed12584ab23587369bc",
+        "android_client_info": {
+          "package_name": "com.aplikasi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "951427181813-kslrtahvplu39i41fbblm8rukh900slk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBF0u2awUxfTUHgiRDKh6-Lsd4mbGTarrk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "951427181813-kslrtahvplu39i41fbblm8rukh900slk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:951427181813:android:1989344f71c9e8dc7369bc",
+        "android_client_info": {
+          "package_name": "finance.mnc.internal_app1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "951427181813-kslrtahvplu39i41fbblm8rukh900slk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBF0u2awUxfTUHgiRDKh6-Lsd4mbGTarrk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "951427181813-kslrtahvplu39i41fbblm8rukh900slk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:951427181813:android:ca890b06bfee99c97369bc",
+        "android_client_info": {
+          "package_name": "finance.mnc.itrack"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "951427181813-kslrtahvplu39i41fbblm8rukh900slk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBF0u2awUxfTUHgiRDKh6-Lsd4mbGTarrk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "951427181813-kslrtahvplu39i41fbblm8rukh900slk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:951427181813:android:042541b40fcbe75c7369bc",
+        "android_client_info": {
+          "package_name": "finance.mnc.mobilesurvey"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "951427181813-kslrtahvplu39i41fbblm8rukh900slk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBF0u2awUxfTUHgiRDKh6-Lsd4mbGTarrk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "951427181813-kslrtahvplu39i41fbblm8rukh900slk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
