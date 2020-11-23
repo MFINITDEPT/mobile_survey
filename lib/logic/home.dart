@@ -25,7 +25,7 @@ abstract class _HomeLogic with Store {
 
   @action
   Future<void> takePicture() async {
-      List<File> file = await AdvImagePicker.pickImagesToFile(_context,
+    List<File> file = await AdvImagePicker.pickImagesToFile(_context,
         usingCamera: true,
         usingGallery: false,
         useFlash: false,
@@ -47,9 +47,8 @@ abstract class _HomeLogic with Store {
     textRecognizer.close();
   }
 
-  void navigateToSurvey(){
-    Navigator.of(_context).push(
-        MaterialPageRoute(builder: (_) => SurveyUI()));
+  void navigateToSurvey() {
+    Navigator.of(_context).push(MaterialPageRoute(builder: (_) => SurveyUI()));
   }
 
   void _processNIK(String nik) {

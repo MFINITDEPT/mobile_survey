@@ -94,5 +94,18 @@
   "foto_debitur": "Foto Debitur",
   "foto_unit": "Foto Unit",
   "foto_domisili": "Foto Domisili",
-  "foto_document": "Foto Dokumen"
+  "foto_document": "Foto Dokumen",
+  "identity_no": "NIK",
+  "effective_of": "Berlaku",
+  "to": "Hingga",
+  "mother_name": "Nama Ibu",
+  "rt": "RT",
+  "rw": "RW",
+  "zip_code": "Kode Pos",
+  "village": "Desa",
+  "district": "Kecamatan",
+  "handphone_no": "No Handphone",
+  "phone_no": "No Telp",
+  "fax": "Faks",
+  "identity_city": "Kota Asal"
 }

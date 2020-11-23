@@ -15,18 +15,9 @@ class SurveyBase = _SurveyLogic with _$SurveyBase;
 
 abstract class _SurveyLogic with Store {
   final NewState _state;
-  final NikDataModel _model;
-  final String _nik;
-
-  _SurveyLogic(this._state, this._model, this._nik);
+  _SurveyLogic(this._state);
 
   BuildContext get _context => _state.context;
-
-  @computed
-  NikDataModel get model => _model;
-
-  @computed
-  String get nik => _nik;
 
   @observable
   String pages = "1/4";
@@ -36,32 +27,12 @@ abstract class _SurveyLogic with Store {
   List<File> _domisiliPhotos = List<File>();
   List<File> _documentPhotos = List<File>();
 
-  TextEditingController _nameCtrl = TextEditingController();
-  TextEditingController _birthLocationCtrl = TextEditingController();
-  TextEditingController _birthDateCtrl = TextEditingController();
-  TextEditingController _addressCtrl = TextEditingController();
+
+
   PageController _pageController = PageController();
 
-  TextEditingController get name => _nameCtrl;
-
-  TextEditingController get birthLocation => _birthLocationCtrl;
-
-  TextEditingController get birthDate => _birthDateCtrl;
-
-  TextEditingController get address => _addressCtrl;
 
   PageController get page => _pageController;
-
-  void checkData() {
-    if (_nik != null && _model != null) {
-      _nameCtrl.text = _model.namaLengkap;
-      _birthLocationCtrl.text = _model.tempatLahir;
-      _birthDateCtrl.text = _model.tanggalLahir;
-      _addressCtrl.text = _model.alamat;
-
-      Toast.showToast(_context, translation.getText('verified_by_dukcapil'));
-    }
-  }
 
   @action
   void onPageChange(int page) {

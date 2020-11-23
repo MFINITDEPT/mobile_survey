@@ -94,5 +94,18 @@
   "foto_debitur": "Debitur Photo",
   "foto_unit": "Unit Photo",
   "foto_domisili": "Domisili Photo",
-  "foto_document": "Document Photo"
+  "foto_document": "Document Photo",
+  "identity_no": "Identity No",
+  "effective_of": "Valid of",
+  "to": "To",
+  "mother_name": "Mother Name",
+  "rt": "RT",
+  "rw": "RW",
+  "zip_code": "Zip Code",
+  "village": "Village",
+  "district": "District",
+  "handphone_no": "Handphone No",
+  "phone_no": "Phone No",
+  "fax": "Fax",
+  "identity_city": "Identity City"
 }
