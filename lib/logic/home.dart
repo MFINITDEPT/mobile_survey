@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:mobilesurvey/boilerplate/new_state.dart';
 import 'package:mobilesurvey/model/nik_data.dart';
 import 'package:mobilesurvey/ui/survey.dart';
+import 'package:mobilesurvey/ui/survey_container.dart';
 import 'package:mobilesurvey/utilities/api_request.dart';
 import 'package:mobilesurvey/utilities/translation.dart';
 import 'package:mobx/mobx.dart';
@@ -48,7 +49,7 @@ abstract class _HomeLogic with Store {
   }
 
   void navigateToSurvey() {
-    Navigator.of(_context).push(MaterialPageRoute(builder: (_) => SurveyUI()));
+    Navigator.of(_context).push(MaterialPageRoute(builder: (_) => SurveyContainerUI()));
   }
 
   void _processNIK(String nik) {

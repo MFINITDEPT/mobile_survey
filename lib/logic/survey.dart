@@ -1,12 +1,10 @@
 import 'dart:io';
 
 import 'package:adv_image_picker/adv_image_picker.dart';
-import 'package:adv_image_picker/components/toast.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:mobilesurvey/boilerplate/new_state.dart';
-import 'package:mobilesurvey/model/nik_data.dart';
-import 'package:mobilesurvey/utilities/translation.dart';
+import 'package:mobilesurvey/ui/quisioner.dart';
 import 'package:mobx/mobx.dart';
 
 part 'survey.g.dart';
@@ -67,10 +65,10 @@ abstract class _SurveyLogic with Store {
         allowMultiple: false);
 
     _files.insert(index, files[0]);
+  }
 
-    print("ini debitur ${_debiturPhotos.length}");
-    print("ini unit ${_debiturPhotos.length}");
-    print("ini domisili ${_debiturPhotos.length}");
-    print("ini dokumen ${_debiturPhotos.length}");
+  @action
+  void navigateToQuisioner(){
+    Navigator.of(_context).push(MaterialPageRoute(builder: (_) => QuisionerUI()));
   }
 }

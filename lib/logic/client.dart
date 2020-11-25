@@ -1,5 +1,11 @@
 import 'package:adv_image_picker/components/toast.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_holo_date_picker/date_picker.dart';
+import 'package:flutter_holo_date_picker/i18n/date_picker_i18n.dart';
+import 'package:mobilesurvey/model/zipcode.dart';
+import 'package:mobilesurvey/utilities/constant.dart';
+import 'package:mobilesurvey/utilities/string_utils.dart';
 import 'package:mobx/mobx.dart';
 
 import '../boilerplate/new_state.dart';
@@ -36,6 +42,9 @@ abstract class _ClientLogic with Store {
   TextEditingController _motherNameCtrl = TextEditingController();
   TextEditingController _rtCtrl = TextEditingController();
   TextEditingController _rwCtrl = TextEditingController();
+  TextEditingController _zipCodeCtrl = TextEditingController();
+  TextEditingController _villageCtrl = TextEditingController();
+  TextEditingController _districtCtrl = TextEditingController();
   TextEditingController _handphoneNoCtrl = TextEditingController();
   TextEditingController _phoneNoCtrl = TextEditingController();
   TextEditingController _faxCtrl = TextEditingController();
@@ -62,6 +71,12 @@ abstract class _ClientLogic with Store {
 
   TextEditingController get rw => _rwCtrl;
 
+  TextEditingController get zipcode => _zipCodeCtrl;
+
+  TextEditingController get village => _villageCtrl;
+
+  TextEditingController get district => _districtCtrl;
+
   TextEditingController get handphoneNo => _handphoneNoCtrl;
 
   TextEditingController get phoneNo => _phoneNoCtrl;
@@ -78,5 +93,29 @@ abstract class _ClientLogic with Store {
 
       Toast.showToast(_context, translation.getText('verified_by_dukcapil'));
     }
+  }
+
+  @action
+  void datePicker() async {
+    var finalResult = await DatePicker.showSimpleDatePicker(
+      _context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1990),
+      lastDate: DateTime.now(),
+      dateFormat: "dd-MMMM-yyyy",
+      locale: DateTimePickerLocale.en_us,
+      looping: true,
+    );
+
+    _birthDateCtrl.text = finalResult != null
+        ? StringUtils.formatDate(finalResult)
+        : _birthDateCtrl.text;
+  }
+
+  @action
+  void autoFill(ZipCodeModel item) {
+    _zipCodeCtrl.text = item.kodePos;
+    _districtCtrl.text = item.kelurahan;
+    _villageCtrl.text = item.kecamatan;
   }
 }

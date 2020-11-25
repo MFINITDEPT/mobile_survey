@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:mobilesurvey/repositories/master.dart';
 import 'package:mobilesurvey/ui/login.dart';
 import 'package:mobilesurvey/ui/splashscreen.dart';
+import 'package:mobilesurvey/utilities/api_request.dart';
 import 'package:mobilesurvey/utilities/constant.dart';
 import 'package:mobilesurvey/utilities/translation.dart';
 import 'package:ridjnaelcrypt/ridjnaelcrypt.dart';
@@ -105,8 +107,18 @@ class _ITrackAppState extends State<ITrackApp>
         ? HomeContainerUI()
         : LoginUI();
 
+/*
     Future.delayed(Duration(seconds: 3))
-        .then((value) => _controller.updateProgress("success", true));
+        .then((value) => _controller.updateProgress("success", true));*/
+
+    APIRequest.masterZipCode().then((value) {
+      if (value == null) {
+        _controller.updateProgress("get_zipcode_error", false);
+      } else {
+        _controller.updateProgress("get_zipcode_success", true);
+        MasterRepositories.saveZipCodes(value);
+      }
+    });
 
 /*    APIRequest.getCity().then((value) {
       if (value == null) {

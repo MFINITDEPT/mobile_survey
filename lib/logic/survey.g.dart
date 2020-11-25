@@ -49,6 +49,17 @@ mixin _$SurveyBase on _SurveyLogic, Store {
   }
 
   @override
+  void navigateToQuisioner() {
+    final _$actionInfo = _$_SurveyLogicActionController.startAction(
+        name: '_SurveyLogic.navigateToQuisioner');
+    try {
+      return super.navigateToQuisioner();
+    } finally {
+      _$_SurveyLogicActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 pages: ${pages}

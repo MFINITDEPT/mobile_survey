@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mobilesurvey/boilerplate/new_state.dart';
+import 'package:mobilesurvey/component/adv_column.dart';
+import 'package:mobilesurvey/component/custom_button.dart';
 import 'package:mobilesurvey/logic/survey.dart';
 import 'package:mobilesurvey/model/nik_data.dart';
 import 'package:mobilesurvey/ui/client.dart';
 import 'package:mobilesurvey/utilities/constant.dart';
 import 'package:mobilesurvey/utilities/palette.dart';
 import 'package:mobilesurvey/utilities/translation.dart';
-import 'package:mobilesurvey/component/adv_row.dart';
-import 'package:mobilesurvey/component/adv_column.dart';
-
-import '../component/adv_row.dart';
 
 class SurveyUI extends StatefulWidget {
   final NikDataModel model;
@@ -36,31 +33,26 @@ class _SurveyUIState extends NewState<SurveyUI> {
   @override
   Widget buildView(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-            title: Text(translation.getText('survey')),
-            centerTitle: true,
-            actions: [
-              Observer(
-                  builder: (_) => Padding(
-                        padding: EdgeInsets.all(8.0),
-                        child: Center(
-                          child: Text(
-                            _logic.pages,
-                            style: TextStyle(fontSize: 14.0),
-                          ),
-                        ),
-                      ))
-            ]),
         body: PageView(
           controller: _logic.page,
           onPageChanged: _logic.onPageChange,
           children: [
             ClientUI(nik: widget.nik, nikDataModel: widget.model),
-            _buildSecondPage(),
+            _buildButton(),
           ],
         ));
   }
 
+  Widget _buildButton() {
+    return Center(
+      child: Container(
+        margin: EdgeInsets.all(32.0),
+        constraints: BoxConstraints(maxHeight: 100.0),
+        child: CustomButton('navigate to survey',
+            onpress: _logic.navigateToQuisioner, buttonWidth: double.infinity),
+      ),
+    );
+  }
 
   Widget _buildSecondPage() {
     return ListView(
@@ -91,7 +83,6 @@ class _SurveyUIState extends NewState<SurveyUI> {
       ],
     );
   }
-
 
   Widget _buildImage(String title, int index) {
     return InkWell(

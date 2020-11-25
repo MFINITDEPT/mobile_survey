@@ -78,4 +78,13 @@ class StringUtils {
       return 'error';
     }
   }
+
+  static String formatDate(DateTime date, {String format = 'dd/MM/yyyy'}) {
+    try {
+      DateFormat _df = DateFormat(format);
+      return _df.format(date);
+    } catch (Exception) {
+      return 'error';
+    }
+  }
 }

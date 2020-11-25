@@ -1,5 +1,9 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
 import 'package:mobilesurvey/model/nik_data.dart';
+import 'package:mobilesurvey/model/quisioner.dart';
+import 'package:mobilesurvey/model/zipcode.dart';
 import 'package:mobilesurvey/utilities/string_utils.dart';
 import 'package:ridjnaelcrypt/ridjnaelcrypt.dart';
 
@@ -8,6 +12,7 @@ import 'enum.dart';
 class APIRequest {
   static Dio _dio = Dio();
   static String _url = "https://ver-itrack.mncfinance.net/";
+  static String _urldev = "http://172.31.9.104:9993/api/master/";
   static String _baseurl = "${_url}api/ITrack/";
   static String baseImageUrl = "${_url}profile/";
 
@@ -56,5 +61,41 @@ class APIRequest {
 
     var res = result != null ? NikDataModel.fromJson(result.data['ct']) : null;
     return res;
+  }
+
+  static Future<List<QuisionerModel>> masterQuisioner() async {
+    Options options = await _getDioOptions(contentType: contentType.json);
+
+    String url = _urldev + "question";
+
+    var result =
+        await _dio.get<dynamic>(url, options: options).catchError((error) {
+    });
+
+    List<QuisionerModel> res = [];
+    if(result.data != null) {
+      var list = List.from(result.data);
+      list.forEach((element) => res.add(QuisionerModel.fromJson(element)));
+    }
+
+    return res;
+  }
+
+  static Future<List<ZipCodeModel>> masterZipCode() async {
+    Options options = await _getDioOptions(contentType: contentType.json);
+
+    String url = _urldev + "zipcode";
+
+    var result =
+    await _dio.get<dynamic>(url, options: options).catchError((error) {
+    });
+
+    List<ZipCodeModel> res = [];
+    if(result.data != null) {
+      var list = List.from(result.data);
+      list.forEach((element) => res.add(ZipCodeModel.fromJson(element)));
+    }
+
+    return result.data != null ? res : null;
   }
 }
