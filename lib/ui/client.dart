@@ -5,7 +5,6 @@ import 'package:flutter/services.dart';
 import 'package:mobilesurvey/logic/client.dart';
 import 'package:mobilesurvey/model/zipcode.dart';
 import 'package:mobilesurvey/repositories/master.dart';
-import 'package:mobilesurvey/utilities/constant.dart';
 import 'package:mobilesurvey/utilities/enum.dart';
 
 import '../boilerplate/new_state.dart';
@@ -30,7 +29,7 @@ class _ClientUIState extends NewState<ClientUI> {
   @override
   void initState() {
     _logic = ClientBase(this, widget.nik, widget.nikDataModel);
-
+    _logic.checkData();
     super.initState();
   }
 
@@ -96,8 +95,6 @@ class _ClientUIState extends NewState<ClientUI> {
         break;
     }
 
-    print("astoge $title ${!disable} $type");
-
     return AdvRow(
       padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
       children: [
@@ -155,8 +152,7 @@ class _ClientUIState extends NewState<ClientUI> {
         inputFormatters: [FilteringTextInputFormatter.digitsOnly],
         clearOnSubmit: false,
         submitOnSuggestionTap: true,
-        itemBuilder: (BuildContext context, ZipCodeModel item) =>
-            Padding(
+        itemBuilder: (BuildContext context, ZipCodeModel item) => Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text("${item.kodePos} ${item.kota} ${item.kecamatan}"),
             ),

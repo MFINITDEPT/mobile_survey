@@ -22,6 +22,26 @@ mixin _$ClientBase on _ClientLogic, Store {
           Computed<String>(() => super.nik, name: '_ClientLogic.nik'))
       .value;
 
+  final _$datePickerAsyncAction = AsyncAction('_ClientLogic.datePicker');
+
+  @override
+  Future<void> datePicker() {
+    return _$datePickerAsyncAction.run(() => super.datePicker());
+  }
+
+  final _$_ClientLogicActionController = ActionController(name: '_ClientLogic');
+
+  @override
+  void autoFill(ZipCodeModel item) {
+    final _$actionInfo = _$_ClientLogicActionController.startAction(
+        name: '_ClientLogic.autoFill');
+    try {
+      return super.autoFill(item);
+    } finally {
+      _$_ClientLogicActionController.endAction(_$actionInfo);
+    }
+  }
+
   @override
   String toString() {
     return '''

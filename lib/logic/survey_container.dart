@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:mobilesurvey/boilerplate/new_state.dart';
 import 'package:mobilesurvey/model/nik_data.dart';
 import 'package:mobilesurvey/model/quisioner.dart';
+import 'package:mobilesurvey/repositories/master.dart';
 import 'package:mobilesurvey/utilities/api_request.dart';
 import 'package:mobilesurvey/utilities/translation.dart';
 import 'package:mobx/mobx.dart';
@@ -34,7 +35,7 @@ abstract class _SurveyContainerLogic with Store {
       if (_nik != null && _model != null) {
         Toast.showToast(_context, translation.getText('verified_by_dukcapil'));
       }
-      model = await APIRequest.masterQuisioner();
+      model = MasterRepositories.quisioners;
     });
   }
 }

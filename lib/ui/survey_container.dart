@@ -25,6 +25,7 @@ class _SurveyContainerUIState extends NewState<SurveyContainerUI> {
   @override
   void initState() {
     _logic = SurveyContainerBase(this, widget.nik, widget.model);
+    _logic.getData();
     super.initState();
   }
 
@@ -58,10 +59,13 @@ class _SurveyContainerUIState extends NewState<SurveyContainerUI> {
         body: TabBarView(
           physics: NeverScrollableScrollPhysics(),
           children: [
-            Observer(builder: (_) =>
+            Observer(
+                builder: (_) =>
                     ClientUI(nik: _logic.nik, nikDataModel: _logic.nikModel)),
-            QuisionerUI(),
-            ClientUI()
+            Observer(builder: (_) => QuisionerUI(model: _logic.model)),
+            Container(
+                color: Palette.gold,
+                child: Center(child: Text("Under Development")))
           ],
         ),
       ),

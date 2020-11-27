@@ -1,6 +1,8 @@
 import 'dart:convert';
 
 import 'package:dio/dio.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:mobilesurvey/model/configuration.dart';
 import 'package:mobilesurvey/model/nik_data.dart';
 import 'package:mobilesurvey/model/quisioner.dart';
 import 'package:mobilesurvey/model/zipcode.dart';
@@ -12,7 +14,9 @@ import 'enum.dart';
 class APIRequest {
   static Dio _dio = Dio();
   static String _url = "https://ver-itrack.mncfinance.net/";
-  static String _urldev = "http://172.31.9.104:9993/api/master/";
+  static String _urldev = "https://ver-itrack.mncfinance.net/api/master/";
+
+//  static String _urldev = "http://172.31.9.104:9993/api/master/";
   static String _baseurl = "${_url}api/ITrack/";
   static String baseImageUrl = "${_url}profile/";
 
@@ -69,11 +73,10 @@ class APIRequest {
     String url = _urldev + "question";
 
     var result =
-        await _dio.get<dynamic>(url, options: options).catchError((error) {
-    });
+        await _dio.get<dynamic>(url, options: options).catchError((error) {});
 
     List<QuisionerModel> res = [];
-    if(result.data != null) {
+    if (result.data != null) {
       var list = List.from(result.data);
       list.forEach((element) => res.add(QuisionerModel.fromJson(element)));
     }
@@ -82,20 +85,56 @@ class APIRequest {
   }
 
   static Future<List<ZipCodeModel>> masterZipCode() async {
-    Options options = await _getDioOptions(contentType: contentType.json);
+//    Options options = await _getDioOptions(contentType: contentType.json);
+    _dio.options.connectTimeout = 100 *1000;
+    _dio.options.receiveTimeout = 100 *1000;
+
+    Options options =
+        await _getDioOptions(contentType: contentType.json);
 
     String url = _urldev + "zipcode";
 
     var result =
-    await _dio.get<dynamic>(url, options: options).catchError((error) {
+        await _dio.get<dynamic>(url, options: options).catchError((error) {
+
+          print("err masterZipCode connect ${error.request.connectTimeout}");
+          print("err masterZipCode receiveTimeout ${error.request.receiveTimeout}");
+      Fluttertoast.showToast(
+          msg: error.toString(),
+          toastLength: Toast.LENGTH_SHORT,
+          gravity: ToastGravity.CENTER,
+          timeInSecForIosWeb: 1,
+          fontSize: 16.0);
     });
 
+    print("success masterZipCode connect ${result.request.connectTimeout}");
+    print("success masterZipCode receiveTimeout ${result.request.receiveTimeout}");
+
     List<ZipCodeModel> res = [];
-    if(result.data != null) {
+    if (result.data != null) {
       var list = List.from(result.data);
       list.forEach((element) => res.add(ZipCodeModel.fromJson(element)));
     }
 
     return result.data != null ? res : null;
+  }
+
+  static Future<ConfigurationModel> getConfiguration() async {
+    Options options = await _getDioOptions(contentType: contentType.json);
+
+    String url = _urldev + "configuration";
+
+    var result =
+        await _dio.get<dynamic>(url, options: options).catchError((error) {
+          print("err getConfiguration connect ${error.request.connectTimeout}");
+          print("err getConfiguration receiveTimeout ${error.request.receiveTimeout}");
+        });
+
+    print("success getConfiguration connect ${result.request.connectTimeout}");
+    print("success getConfiguration receiveTimeout ${result.request.receiveTimeout}");
+
+    var res = result != null ? ConfigurationModel.fromJson(result.data) : null;
+
+    return res;
   }
 }

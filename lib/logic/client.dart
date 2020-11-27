@@ -96,7 +96,8 @@ abstract class _ClientLogic with Store {
   }
 
   @action
-  void datePicker() async {
+  Future<void> datePicker() async {
+    FocusScope.of(_context).unfocus();
     var finalResult = await DatePicker.showSimpleDatePicker(
       _context,
       initialDate: DateTime.now(),

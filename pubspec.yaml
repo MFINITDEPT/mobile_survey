@@ -33,6 +33,7 @@ dependencies:
   mobx: ^1.2.1+2
   flutter_holo_date_picker: ^0.2.3
   flutter_mobx: ^1.1.0+2
+  fluttertoast: ^7.1.5
   firebase_ml_vision:
   path_provider: ^1.6.24
   provider: ^4.3.2+2

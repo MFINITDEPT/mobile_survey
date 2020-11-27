@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -6,6 +8,7 @@ import 'package:mobilesurvey/ui/login.dart';
 import 'package:mobilesurvey/ui/splashscreen.dart';
 import 'package:mobilesurvey/utilities/api_request.dart';
 import 'package:mobilesurvey/utilities/constant.dart';
+import 'package:mobilesurvey/utilities/enum.dart';
 import 'package:mobilesurvey/utilities/translation.dart';
 import 'package:ridjnaelcrypt/ridjnaelcrypt.dart';
 
@@ -56,7 +59,7 @@ class _ITrackAppState extends State<ITrackApp>
         uiBuilder: _uiBuilder,
         fetcher: _fetcher,
         localizationsDelegates: [FallbackLocalizationDelegate()],
-        totalApiRequest: 1,
+        totalApiRequest: 3,
         theme: kTheme,
         controller: _controller);
   }
@@ -111,77 +114,78 @@ class _ITrackAppState extends State<ITrackApp>
     Future.delayed(Duration(seconds: 3))
         .then((value) => _controller.updateProgress("success", true));*/
 
-    APIRequest.masterZipCode().then((value) {
+/*    bool masterQuestionExist =
+        await MasterRepositories.checkFileExist(master.question);
+    bool masterZipCodeExist =
+        await MasterRepositories.checkFileExist(master.zipcode);*/
+
+    APIRequest.getConfiguration().then((value) {
       if (value == null) {
+        print("error config");
+        _controller.updateProgress("get_configuration_error", false);
+      } else {
+        print("success config");
+        _controller.updateProgress("get_configuration_success", true);
+
+        if (value.lastUpdateZipCode !=
+            PreferenceUtils.getString(kLastUpdateZipCode)) {
+          APIRequest.masterZipCode().then((value) {
+            if (value == null) {
+              print("error zipcode");
+              _controller.updateProgress("get_zipcode_error", false);
+            } else {
+              print("success zipcode");
+              _controller.updateProgress("get_zipcode_success", true);
+              MasterRepositories.saveZipCodes(value);
+            }
+          });
+        } else {
+          print("anggapannya udah ada zipcode");
+          MasterRepositories.readFromFile(master.zipcode).then((value) =>
+              _controller.updateProgress("get_local_success", value ?? false));
+          //ambil dari local storage, tapi cek dulu ada filenya apa engga
+        }
+
+        if (value.lastUpdateQuestion !=
+            PreferenceUtils.getString(kLastUpdateQuestion)) {
+          APIRequest.masterQuisioner().then((value) {
+            if (value == null) {
+              print("error question");
+              _controller.updateProgress("get_question_error", false);
+            } else {
+              print("success question");
+              _controller.updateProgress("get_question_success", true);
+              MasterRepositories.saveQuestion(value);
+            }
+          });
+        } else {
+          print("anggapannya udah ada question");
+          MasterRepositories.readFromFile(master.question).then((value) =>
+              _controller.updateProgress("get_local_success", value ?? false));
+          //ambil dari local storage, tapi cek dulu ada filenya apa engga
+        }
+        MasterRepositories.saveConfiguration(value);
+      }
+    });
+    /* APIRequest.masterZipCode().then((value) {
+      if (value == null) {
+        print("error zipcode");
         _controller.updateProgress("get_zipcode_error", false);
       } else {
+        print("success zipcode");
         _controller.updateProgress("get_zipcode_success", true);
         MasterRepositories.saveZipCodes(value);
       }
     });
 
-/*    APIRequest.getCity().then((value) {
+    APIRequest.masterQuisioner().then((value) {
       if (value == null) {
-        print("error 1");
-        _controller.updateProgress(
-            translation.getText('get_city_error'), false);
+        print("error question");
+        _controller.updateProgress("get_question_error", false);
       } else {
-        print("success 1");
-        MasterRepositories.saveCities(value);
-        _controller.updateProgress(
-            translation.getText('get_city_success'), true);
-      }
-    });
-
-    APIRequest.getBranch().then((value) {
-      if (value == null) {
-        print("error 2");
-        _controller.updateProgress(
-            translation.getText('get_branch_error'), false);
-      } else {
-        print("success 2");
-        MasterRepositories.saveBranches(value);
-        _controller.updateProgress(
-            translation.getText('get_branch_success'), true);
-      }
-    });
-
-    APIRequest.getPlat().then((value) {
-      if (value == null) {
-        print("error 3");
-        _controller.updateProgress(
-            translation.getText('get_plat_error'), false);
-      } else {
-        print("success 3");
-        MasterRepositories.savePlat(value);
-        _controller.updateProgress(
-            translation.getText('get_plat_success'), true);
-      }
-    });
-
-    APIRequest.getInsurance().then((value) {
-      if (value == null) {
-        print("error 4");
-        _controller.updateProgress(
-            translation.getText('get_insurance_error'), false);
-      } else {
-        print("success 4");
-        MasterRepositories.saveInsurance(value);
-        _controller.updateProgress(
-            translation.getText('get_insurance_success'), true);
-      }
-    });
-
-    APIRequest.getMerkFromMaster().then((value) {
-      if (value == null) {
-        print("error 5");
-        _controller.updateProgress(
-            translation.getText('get_merk_error'), false);
-      } else {
-        print("success 5");
-        MasterRepositories.saveMerk(value);
-        _controller.updateProgress(
-            translation.getText('get_merk_success'), true);
+        print("success question");
+        _controller.updateProgress("get_question_success", true);
+        MasterRepositories.saveQuestion(value);
       }
     });*/
   }

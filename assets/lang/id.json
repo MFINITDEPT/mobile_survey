@@ -107,5 +107,8 @@
   "handphone_no": "No Handphone",
   "phone_no": "No Telp",
   "fax": "Faks",
-  "identity_city": "Kota Asal"
+  "identity_city": "Kota Asal",
+  "client": "Client",
+  "quisioner": "Quisioner",
+  "assets": "Assets"
 }

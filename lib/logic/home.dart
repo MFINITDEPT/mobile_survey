@@ -60,7 +60,7 @@ abstract class _HomeLogic with Store {
         return;
       }
       Navigator.of(_context).push(
-          MaterialPageRoute(builder: (_) => SurveyUI(model: result, nik: nik)));
+          MaterialPageRoute(builder: (_) => SurveyContainerUI(model: result, nik: nik)));
     });
   }
 

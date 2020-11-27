@@ -11,7 +11,8 @@ String kRijndaelIV = "mncsecurity";
 //SharePreferences Key
 String kLang = "language";
 String kUserId = "userid";
-
+String kLastUpdateZipCode = "lastUpdateZipcode";
+String kLastUpdateQuestion = "lastUpdateQuestion";
 
 //int constant
 int kCaptchaLength = 6;

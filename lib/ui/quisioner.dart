@@ -8,6 +8,10 @@ import 'package:mobilesurvey/model/dropdown.dart';
 import 'package:mobilesurvey/model/quisioner.dart';
 
 class QuisionerUI extends StatefulWidget {
+  final List<QuisionerModel> model;
+
+  const QuisionerUI({Key key, this.model}) : super(key: key);
+
   @override
   _QuisionerUIState createState() => _QuisionerUIState();
 }
@@ -17,7 +21,7 @@ class _QuisionerUIState extends NewState<QuisionerUI> {
 
   @override
   void initState() {
-    _logic = QuisionerBase(this);
+    _logic = QuisionerBase(this, widget.model);
     _logic.getData();
     super.initState();
   }
@@ -85,7 +89,7 @@ class _QuisionerUIState extends NewState<QuisionerUI> {
                       child: Text(model.itemList[index],
                           style: TextStyle(fontSize: 12.0)),
                     ))),
-            onChanged: (c) => print('hhhh $c'))
+            onChanged: (c) => setState(() => model.value = c))
       ],
     );
   }

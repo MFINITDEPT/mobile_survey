@@ -23,4 +23,13 @@ class ZipCodeModel {
             ? ParseUtils.castString(json['KodePos'])
             : null);
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      "Kota": this.kota,
+      "Kecamatan": this.kecamatan,
+      "Kelurahan": this.kelurahan,
+      "KodePos": this.kodePos
+    };
+  }
 }

@@ -20,4 +20,17 @@ class QuisionerModel {
             : null,
         choice: _choices);
   }
+
+  Map<String, dynamic> toJson() {
+    List<String> _choices = [];
+    if (this.choice != null && this.choice is List) {
+      for (var item in this.choice) {
+        _choices.add(item);
+      }
+    }
+    return {
+      "Question": this.question,
+      "Choice": _choices.length == 0 ? null : _choices
+    };
+  }
 }

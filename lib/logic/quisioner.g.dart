@@ -9,33 +9,27 @@ part of 'quisioner.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$QuisionerBase on _QuisionerLogic, Store {
-  final _$modelAtom = Atom(name: '_QuisionerLogic.model');
+  Computed<List<QuisionerModel>> _$modelComputed;
 
   @override
-  List<QuisionerModel> get model {
-    _$modelAtom.reportRead();
-    return super.model;
+  List<QuisionerModel> get model =>
+      (_$modelComputed ??= Computed<List<QuisionerModel>>(() => super.model,
+              name: '_QuisionerLogic.model'))
+          .value;
+
+  final _$_newmodelAtom = Atom(name: '_QuisionerLogic._newmodel');
+
+  @override
+  List<QuisionerModel> get _newmodel {
+    _$_newmodelAtom.reportRead();
+    return super._newmodel;
   }
 
   @override
-  set model(List<QuisionerModel> value) {
-    _$modelAtom.reportWrite(value, super.model, () {
-      super.model = value;
+  set _newmodel(List<QuisionerModel> value) {
+    _$_newmodelAtom.reportWrite(value, super._newmodel, () {
+      super._newmodel = value;
     });
-  }
-
-  final _$_QuisionerLogicActionController =
-      ActionController(name: '_QuisionerLogic');
-
-  @override
-  void getData() {
-    final _$actionInfo = _$_QuisionerLogicActionController.startAction(
-        name: '_QuisionerLogic.getData');
-    try {
-      return super.getData();
-    } finally {
-      _$_QuisionerLogicActionController.endAction(_$actionInfo);
-    }
   }
 
   @override

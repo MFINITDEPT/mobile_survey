@@ -107,5 +107,8 @@
   "handphone_no": "Handphone No",
   "phone_no": "Phone No",
   "fax": "Fax",
-  "identity_city": "Identity City"
+  "identity_city": "Identity City",
+  "client" : "Client",
+  "quisioner" : "Quisioner",
+  "assets" : "Assets"
 }
