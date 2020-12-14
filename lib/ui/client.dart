@@ -2,7 +2,11 @@ import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:mobilesurvey/component/adv_column.dart';
+import 'package:mobilesurvey/component/adv_dropdown.dart';
 import 'package:mobilesurvey/logic/client.dart';
+import 'package:mobilesurvey/model/dropdown.dart';
 import 'package:mobilesurvey/model/zipcode.dart';
 import 'package:mobilesurvey/repositories/master.dart';
 import 'package:mobilesurvey/utilities/enum.dart';
@@ -49,6 +53,7 @@ class _ClientUIState extends NewState<ClientUI> {
           ],
         ),
         _buildTextField('identity_city', _logic.identityCity),
+        Observer(builder: (_) => _buildDropDown(_logic.ao)),
         _buildTextField('birth_location', _logic.birthLocation),
         _buildTextField('birth_date', _logic.birthDate,
             type: inputType.date, disable: true),
@@ -154,11 +159,37 @@ class _ClientUIState extends NewState<ClientUI> {
         submitOnSuggestionTap: true,
         itemBuilder: (BuildContext context, ZipCodeModel item) => Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Text("${item.kodePos} ${item.kota} ${item.kecamatan}"),
+              child:
+                  Text("${item.kodePos} ${item.kelurahan} ${item.kecamatan}"),
             ),
         itemSorter: (ZipCodeModel item, ZipCodeModel compare) =>
             item.kodePos.compareTo(compare.kodePos),
-        itemFilter: (ZipCodeModel item, String query) =>
-            item.kodePos.startsWith(query));
+        itemFilter: _logic.actionFilter);
+  }
+
+  Widget _buildDropDown(SearchModel model) {
+    return AdvColumn(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(model.title),
+        AdvDropdownButton(
+            value: model.value,
+            icon: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 8.0),
+                child: Icon(Icons.keyboard_arrow_down)),
+            isExpanded: true,
+            outerActions: AdvDropdownAction(),
+            items: List.generate(
+                model.itemList.length,
+                (index) => AdvDropdownMenuItem(
+                    value: model.itemList[index],
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Text(model.itemList[index],
+                          style: TextStyle(fontSize: 12.0)),
+                    ))),
+            onChanged: (c) => setState(() => model.value = c))
+      ],
+    );
   }
 }

@@ -21,6 +21,27 @@ mixin _$ClientBase on _ClientLogic, Store {
   String get nik => (_$nikComputed ??=
           Computed<String>(() => super.nik, name: '_ClientLogic.nik'))
       .value;
+  Computed<SearchModel> _$aoComputed;
+
+  @override
+  SearchModel get ao => (_$aoComputed ??=
+          Computed<SearchModel>(() => super.ao, name: '_ClientLogic.ao'))
+      .value;
+
+  final _$_aoAtom = Atom(name: '_ClientLogic._ao');
+
+  @override
+  SearchModel get _ao {
+    _$_aoAtom.reportRead();
+    return super._ao;
+  }
+
+  @override
+  set _ao(SearchModel value) {
+    _$_aoAtom.reportWrite(value, super._ao, () {
+      super._ao = value;
+    });
+  }
 
   final _$datePickerAsyncAction = AsyncAction('_ClientLogic.datePicker');
 
@@ -43,10 +64,22 @@ mixin _$ClientBase on _ClientLogic, Store {
   }
 
   @override
+  bool actionFilter(ZipCodeModel item, String query) {
+    final _$actionInfo = _$_ClientLogicActionController.startAction(
+        name: '_ClientLogic.actionFilter');
+    try {
+      return super.actionFilter(item, query);
+    } finally {
+      _$_ClientLogicActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 model: ${model},
-nik: ${nik}
+nik: ${nik},
+ao: ${ao}
     ''';
   }
 }

@@ -3,7 +3,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_holo_date_picker/date_picker.dart';
 import 'package:flutter_holo_date_picker/i18n/date_picker_i18n.dart';
+import 'package:mobilesurvey/model/dropdown.dart';
 import 'package:mobilesurvey/model/zipcode.dart';
+import 'package:mobilesurvey/repositories/master.dart';
 import 'package:mobilesurvey/utilities/constant.dart';
 import 'package:mobilesurvey/utilities/string_utils.dart';
 import 'package:mobx/mobx.dart';
@@ -83,6 +85,14 @@ abstract class _ClientLogic with Store {
 
   TextEditingController get fax => _faxCtrl;
 
+  List<String> _aoList = MasterRepositories.ao.map((e) => e.descs).toList();
+
+  @observable
+  SearchModel _ao;
+
+  @computed
+  SearchModel get ao => _ao;
+
   void checkData() {
     if (_nik != null && _model != null) {
       _nameCtrl.text = _model.namaLengkap;
@@ -93,6 +103,11 @@ abstract class _ClientLogic with Store {
 
       Toast.showToast(_context, translation.getText('verified_by_dukcapil'));
     }
+
+    _ao = SearchModel(
+        title: translation.getText('ao'),
+        itemList: _aoList,
+        value: _aoList.first);
   }
 
   @action
@@ -101,7 +116,7 @@ abstract class _ClientLogic with Store {
     var finalResult = await DatePicker.showSimpleDatePicker(
       _context,
       initialDate: DateTime.now(),
-      firstDate: DateTime(1990),
+      firstDate: DateTime(1940),
       lastDate: DateTime.now(),
       dateFormat: "dd-MMMM-yyyy",
       locale: DateTimePickerLocale.en_us,
@@ -118,5 +133,12 @@ abstract class _ClientLogic with Store {
     _zipCodeCtrl.text = item.kodePos;
     _districtCtrl.text = item.kelurahan;
     _villageCtrl.text = item.kecamatan;
+  }
+
+  @action
+  bool actionFilter(ZipCodeModel item, String query) {
+    _districtCtrl.text = '';
+    _villageCtrl.text = '';
+    return item.kodePos.startsWith(query);
   }
 }

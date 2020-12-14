@@ -13,6 +13,7 @@ String kLang = "language";
 String kUserId = "userid";
 String kLastUpdateZipCode = "lastUpdateZipcode";
 String kLastUpdateQuestion = "lastUpdateQuestion";
+String kLastUpdateAO = "lastUpdateAO";
 
 //int constant
 int kCaptchaLength = 6;

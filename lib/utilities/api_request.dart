@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:mobilesurvey/model/ao.dart';
 import 'package:mobilesurvey/model/configuration.dart';
 import 'package:mobilesurvey/model/nik_data.dart';
 import 'package:mobilesurvey/model/quisioner.dart';
@@ -17,8 +18,7 @@ class APIRequest {
   static String _urldev = "https://ver-itrack.mncfinance.net/api/master/";
 
 //  static String _urldev = "http://172.31.9.104:9993/api/master/";
-  static String _baseurl = "${_url}api/ITrack/";
-  static String baseImageUrl = "${_url}profile/";
+
 
   static Future<Options> _getDioOptions({contentType contentType}) async {
     return Options(
@@ -47,7 +47,9 @@ class APIRequest {
 
     var result = await _dio
         .post<dynamic>(url, data: param, options: options)
-        .catchError((error) {});
+        .catchError((error) {
+      return null;
+    });
 
     return result == null ? _getBearerToken() : result?.data["access_token"];
   }
@@ -61,7 +63,9 @@ class APIRequest {
 
     var result = await _dio
         .post<dynamic>(url, data: param, options: options)
-        .catchError((error) {});
+        .catchError((error) {
+      return null;
+    });
 
     var res = result != null ? NikDataModel.fromJson(result.data['ct']) : null;
     return res;
@@ -73,7 +77,9 @@ class APIRequest {
     String url = _urldev + "question";
 
     var result =
-        await _dio.get<dynamic>(url, options: options).catchError((error) {});
+        await _dio.get<dynamic>(url, options: options).catchError((error) {
+          return null;
+        });
 
     List<QuisionerModel> res = [];
     if (result.data != null) {
@@ -86,8 +92,8 @@ class APIRequest {
 
   static Future<List<ZipCodeModel>> masterZipCode() async {
 //    Options options = await _getDioOptions(contentType: contentType.json);
-    _dio.options.connectTimeout = 100 *1000;
-    _dio.options.receiveTimeout = 100 *1000;
+    _dio.options.connectTimeout = 300 *1000;
+    _dio.options.receiveTimeout = 300 *1000;
 
     Options options =
         await _getDioOptions(contentType: contentType.json);
@@ -97,18 +103,15 @@ class APIRequest {
     var result =
         await _dio.get<dynamic>(url, options: options).catchError((error) {
 
-          print("err masterZipCode connect ${error.request.connectTimeout}");
-          print("err masterZipCode receiveTimeout ${error.request.receiveTimeout}");
       Fluttertoast.showToast(
           msg: error.toString(),
           toastLength: Toast.LENGTH_SHORT,
           gravity: ToastGravity.CENTER,
           timeInSecForIosWeb: 1,
           fontSize: 16.0);
+      return null;
     });
 
-    print("success masterZipCode connect ${result.request.connectTimeout}");
-    print("success masterZipCode receiveTimeout ${result.request.receiveTimeout}");
 
     List<ZipCodeModel> res = [];
     if (result.data != null) {
@@ -126,15 +129,29 @@ class APIRequest {
 
     var result =
         await _dio.get<dynamic>(url, options: options).catchError((error) {
-          print("err getConfiguration connect ${error.request.connectTimeout}");
-          print("err getConfiguration receiveTimeout ${error.request.receiveTimeout}");
+          return null;
         });
-
-    print("success getConfiguration connect ${result.request.connectTimeout}");
-    print("success getConfiguration receiveTimeout ${result.request.receiveTimeout}");
 
     var res = result != null ? ConfigurationModel.fromJson(result.data) : null;
 
+    return res;
+  }
+
+  static Future<List<AoModel>> masterAo() async {
+    Options options = await _getDioOptions(contentType: contentType.json);
+
+    String url = _urldev + "ao";
+
+    var result =
+    await _dio.get<dynamic>(url, options: options).catchError((error) {
+      return null;
+    });
+
+    List<AoModel> res = [];
+    if (result.data != null) {
+      var list = List.from(result.data);
+      list.forEach((element) => res.add(AoModel.fromJson(element)));
+    }
     return res;
   }
 }

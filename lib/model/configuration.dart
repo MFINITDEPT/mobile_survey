@@ -3,8 +3,10 @@ import 'package:mobilesurvey/utilities/parse_utils.dart';
 class ConfigurationModel {
   final String lastUpdateQuestion;
   final String lastUpdateZipCode;
+  final String lastUpdateAo;
 
-  ConfigurationModel({this.lastUpdateQuestion, this.lastUpdateZipCode});
+  ConfigurationModel(
+      {this.lastUpdateQuestion, this.lastUpdateZipCode, this.lastUpdateAo});
 
   factory ConfigurationModel.fromJson(Map<String, dynamic> json) {
     return ConfigurationModel(
@@ -13,6 +15,9 @@ class ConfigurationModel {
             : null,
         lastUpdateZipCode: json.containsKey('LastModDateZipCode')
             ? ParseUtils.castString(json['LastModDateZipCode'])
+            : null,
+        lastUpdateAo: json.containsKey('LastModDateAO')
+            ? ParseUtils.castString(json['LastModDateAO'])
             : null);
   }
 }

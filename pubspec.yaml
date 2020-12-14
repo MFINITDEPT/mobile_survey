@@ -36,6 +36,7 @@ dependencies:
   fluttertoast: ^7.1.5
   firebase_ml_vision:
   path_provider: ^1.6.24
+  pit_permission:
   provider: ^4.3.2+2
   shared_preferences:
   ridjnaelcrypt:

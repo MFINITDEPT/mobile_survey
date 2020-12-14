@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:mobilesurvey/model/ao.dart';
 import 'package:mobilesurvey/model/configuration.dart';
 import 'package:mobilesurvey/model/quisioner.dart';
 import 'package:mobilesurvey/model/zipcode.dart';
@@ -19,6 +20,10 @@ class MasterRepositories {
 
   static List<QuisionerModel> get quisioners => _quisioners;
 
+  static List<AoModel> _ao;
+
+  static List<AoModel> get ao => _ao;
+
   static void saveZipCodes(List<ZipCodeModel> value) {
     _saveZipCodeToLocalStorage(value);
     _zipcodes = value;
@@ -30,14 +35,20 @@ class MasterRepositories {
     _quisioners = value;
   }
 
+  static void saveAO(List<AoModel> value) {
+    _saveAOToLocalStorage(value);
+    _ao = value;
+  }
+
   static void saveConfiguration(ConfigurationModel value) {
     PreferenceUtils.setString(kLastUpdateQuestion, value.lastUpdateQuestion);
     PreferenceUtils.setString(kLastUpdateZipCode, value.lastUpdateZipCode);
+    PreferenceUtils.setString(kLastUpdateAO, value.lastUpdateAo);
   }
 
   static Future<void> _saveZipCodeToLocalStorage(
       List<ZipCodeModel> value) async {
-    Directory dir = await getExternalStorageDirectory();
+    Directory dir = await getApplicationDocumentsDirectory();
     File file = File("${dir.path}/ZipCode.json");
     List<Map<String, dynamic>> result = List<Map<String, dynamic>>();
     for (ZipCodeModel item in value) {
@@ -48,10 +59,20 @@ class MasterRepositories {
 
   static Future<void> _saveQuisionerToLocalStorage(
       List<QuisionerModel> value) async {
-    Directory dir = await getExternalStorageDirectory();
+    Directory dir = await getApplicationDocumentsDirectory();
     File file = File("${dir.path}/Quisioner.json");
     List<Map<String, dynamic>> result = List<Map<String, dynamic>>();
     for (QuisionerModel item in value) {
+      result.add(item.toJson());
+    }
+    file.writeAsString(json.encode(result));
+  }
+
+  static Future<void> _saveAOToLocalStorage(List<AoModel> value) async {
+    Directory dir = await getApplicationDocumentsDirectory();
+    File file = File("${dir.path}/AO.json");
+    List<Map<String, dynamic>> result = List<Map<String, dynamic>>();
+    for (AoModel item in value) {
       result.add(item.toJson());
     }
     file.writeAsString(json.encode(result));
@@ -63,6 +84,8 @@ class MasterRepositories {
         return await _readQuisionerFromFile();
       case master.zipcode:
         return await _readZipCodeFromFile();
+      case master.ao:
+        return await _readAOFromFile();
       default:
         debugPrint("error: masterType");
         return false;
@@ -71,7 +94,7 @@ class MasterRepositories {
 
   static Future<bool> _readQuisionerFromFile() async {
     try {
-      Directory dir = await getExternalStorageDirectory();
+      Directory dir = await getApplicationDocumentsDirectory();
       File file = File('${dir.path}/Quisioner.json');
       String text = await file.readAsString();
       List<Map<String, dynamic>> res = List.from(jsonDecode(text));
@@ -89,7 +112,7 @@ class MasterRepositories {
 
   static Future<bool> _readZipCodeFromFile() async {
     try {
-      Directory dir = await getExternalStorageDirectory();
+      Directory dir = await getApplicationDocumentsDirectory();
       File file = File('${dir.path}/ZipCode.json');
       String text = await file.readAsString();
       List<Map<String, dynamic>> res = List.from(jsonDecode(text));
@@ -105,8 +128,26 @@ class MasterRepositories {
     }
   }
 
+  static Future<bool> _readAOFromFile() async {
+    try {
+      Directory dir = await getApplicationDocumentsDirectory();
+      File file = File('${dir.path}/AO.json');
+      String text = await file.readAsString();
+      List<Map<String, dynamic>> res = List.from(jsonDecode(text));
+      List<AoModel> finalResult = [];
+      for (var item in res) {
+        finalResult.add(AoModel.fromJson(item));
+      }
+      saveAO(finalResult);
+      return Future.value(true);
+    } catch (e) {
+      debugPrint("error :${e.toString()}");
+      return Future.value(false);
+    }
+  }
+
   static Future<bool> checkFileExist(master masterType) async {
-    Directory dir = await getExternalStorageDirectory();
+    Directory dir = await getApplicationDocumentsDirectory();
 
     switch (masterType) {
       case master.question:
