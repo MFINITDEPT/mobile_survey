@@ -5,7 +5,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mobilesurvey/component/adv_column.dart';
 import 'package:mobilesurvey/component/adv_dropdown.dart';
-import 'package:mobilesurvey/logic/client.dart';
+import 'package:mobilesurvey/component/custom_button.dart';
+import 'package:mobilesurvey/logic/new_client.dart';
 import 'package:mobilesurvey/model/dropdown.dart';
 import 'package:mobilesurvey/model/zipcode.dart';
 import 'package:mobilesurvey/repositories/master.dart';
@@ -17,60 +18,86 @@ import '../model/nik_data.dart';
 import '../utilities/palette.dart';
 import '../utilities/translation.dart';
 
-class ClientUI extends StatefulWidget {
+class NewClientUI extends StatefulWidget {
   final NikDataModel nikDataModel;
   final String nik;
 
-  const ClientUI({Key key, this.nikDataModel, this.nik}) : super(key: key);
+  const NewClientUI({Key key, this.nikDataModel, this.nik}) : super(key: key);
 
   @override
   _ClientUIState createState() => _ClientUIState();
 }
 
-class _ClientUIState extends NewState<ClientUI> {
-  ClientBase _logic;
+class _ClientUIState extends NewState<NewClientUI> {
+  NewClient _logic;
 
   @override
   void initState() {
-    _logic = ClientBase(this, widget.nik, widget.nikDataModel);
-    _logic.checkData();
+    _logic =
+        NewClient(this, identityNo: widget.nik, nikModel: widget.nikDataModel);
     super.initState();
   }
 
   @override
   Widget buildView(BuildContext context) {
-    return ListView(
-      children: [
-        _buildTextField('name', _logic.name),
-        _buildTextField('identity_no', _logic.identityNo, type: inputType.nik),
-        AdvRow(
-          children: [
-            Expanded(
-                child: _buildTextField('effective_of', _logic.effectiveOf,
-                    type: inputType.year)),
-            Expanded(
-                child: _buildTextField('to', _logic.to, type: inputType.year)),
-          ],
-        ),
-        _buildTextField('identity_city', _logic.identityCity),
-        Observer(builder: (_) => _buildDropDown(_logic.ao)),
-        _buildTextField('birth_location', _logic.birthLocation),
-        _buildTextField('birth_date', _logic.birthDate,
-            type: inputType.date, disable: true),
-        _buildTextField('address', _logic.address),
-        _buildTextField('mother_name', _logic.motherName),
-        _buildTextField('rt', _logic.rt, type: inputType.numeric),
-        _buildTextField('rw', _logic.rw, type: inputType.numeric),
-        _buildTextField('zip_code', _logic.zipcode, type: inputType.zipcode),
-        _buildTextField('village', _logic.village,
-            type: inputType.zipcode, disable: true),
-        _buildTextField('district', _logic.district,
-            type: inputType.zipcode, disable: true),
-        _buildTextField('handphone_no', _logic.handphoneNo,
-            type: inputType.phone),
-        _buildTextField('phone_no', _logic.phoneNo, type: inputType.phone),
-        _buildTextField('fax', _logic.fax),
-      ],
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(translation.getText('client')),
+      ),
+      body: Column(
+        children: [
+          Expanded(
+              child: ListView(
+            children: [
+              _buildTextField('prefix_salute', _logic.prefixSalute),
+              _buildTextField('name', _logic.name),
+              _buildTextField('suffix_salute', _logic.suffixSalute),
+              _buildTextField('identity_no', _logic.nik, type: inputType.nik),
+              AdvRow(
+                children: [
+                  Expanded(
+                      child: _buildTextField('effective_of', _logic.effectiveOf,
+                          type: inputType.date, disable: true)),
+                  Expanded(
+                      child: _buildTextField('to', _logic.expired,
+                          type: inputType.date, disable: true)),
+                ],
+              ),
+              _buildTextField('identity_city', _logic.identityCity),
+              Observer(builder: (_) => _buildDropDown(_logic.ao)),
+              _buildTextField('birth_location', _logic.birthLocation),
+              _buildTextField('birth_date', _logic.birthDate,
+                  type: inputType.date, disable: true),
+              _buildTextField('address', _logic.address1),
+              _buildTextField(null, _logic.address2),
+              _buildTextField(null, _logic.address3),
+              _buildTextField('mother_name', _logic.motherName),
+              _buildTextField('rt', _logic.rt, type: inputType.numeric),
+              _buildTextField('rw', _logic.rw, type: inputType.numeric),
+              _buildTextField('zip_code', _logic.zipCode,
+                  type: inputType.zipcode),
+              _buildTextField('village', _logic.village,
+                  type: inputType.zipcode, disable: true),
+              _buildTextField('district', _logic.district,
+                  type: inputType.zipcode, disable: true),
+              _buildTextField('handphone_no', _logic.handphoneNo,
+                  type: inputType.phone),
+              _buildTextField('phone_area', _logic.phoneArea,
+                  type: inputType.year),
+              _buildTextField('phone_no', _logic.phoneNo,
+                  type: inputType.phone),
+              _buildTextField('fax', _logic.fax),
+            ],
+          )),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: CustomButton(
+              "submit",
+              onpress: _logic.submit,
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -104,18 +131,22 @@ class _ClientUIState extends NewState<ClientUI> {
       padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
       children: [
         Expanded(
-            child: TextField(
-                style: TextStyle(fontSize: 14.0),
-                decoration: InputDecoration(
-                    enabled: false,
-                    hintText: translation.getText(title),
-                    hintStyle: TextStyle(color: Palette.blue),
-                    disabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Palette.prime))))),
+            child: title == null
+                ? Container()
+                : TextField(
+                    style: TextStyle(fontSize: 14.0),
+                    decoration: InputDecoration(
+                        enabled: false,
+                        hintText: translation.getText(title),
+                        hintStyle: TextStyle(color: Palette.blue),
+                        disabledBorder: UnderlineInputBorder(
+                            borderSide: BorderSide(color: Palette.prime))))),
         Expanded(
             flex: 2,
             child: InkWell(
-              onTap: type == inputType.date ? () => _logic.datePicker() : null,
+              onTap: type == inputType.date
+                  ? () => _logic.datePicker(controller)
+                  : null,
               child: type == inputType.zipcode && !disable
                   ? _autoComplete()
                   : TextField(
@@ -134,6 +165,7 @@ class _ClientUIState extends NewState<ClientUI> {
                             keyboardType == TextInputType.phone)
                           FilteringTextInputFormatter.digitsOnly
                       ],
+                      onSubmitted: title == 'name' ? _logic.onSubmitted : null,
                       decoration: InputDecoration(
                           focusedBorder: UnderlineInputBorder(
                               borderSide: BorderSide(color: Palette.prime)),
@@ -149,7 +181,7 @@ class _ClientUIState extends NewState<ClientUI> {
 
   Widget _autoComplete() {
     return AutoCompleteTextField<ZipCodeModel>(
-        controller: _logic.zipcode,
+        controller: _logic.zipCode,
         itemSubmitted: _logic.autoFill,
         key: null,
         suggestions: MasterRepositories.zipcodes,
@@ -172,7 +204,10 @@ class _ClientUIState extends NewState<ClientUI> {
       padding: EdgeInsets.symmetric(horizontal: 16.0),
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(model.title),
+        Text(
+          model.title,
+          style: TextStyle(fontSize: 14.0, color: Palette.blue),
+        ),
         AdvDropdownButton(
             value: model.value,
             icon: Padding(
@@ -187,9 +222,9 @@ class _ClientUIState extends NewState<ClientUI> {
                     child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 8.0),
                       child: Text(model.itemList[index],
-                          style: TextStyle(fontSize: 12.0)),
+                          style: TextStyle(fontSize: 11.0)),
                     ))),
-            onChanged: (c) => setState(() => model.value = c))
+            onChanged: _logic.onSelected)
       ],
     );
   }

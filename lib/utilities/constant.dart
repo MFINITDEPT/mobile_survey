@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:mobilesurvey/logic/loading.dart';
 import 'package:mobilesurvey/utilities/palette.dart';
 
-
 //String Constant
 String kRijndaelKey = "mncbangkredit";
 String kRijndaelIV = "mncsecurity";
-
 
 //SharePreferences Key
 String kLang = "language";
@@ -21,14 +19,18 @@ int kMaxSizeUpload = 1003102 * 2;
 int kMaxData = 100;
 
 // array constant
-List<String> kSupportedLanguages = ['id','en'];
+List<String> kSupportedLanguages = ['id', 'en'];
 
 //
 Loading kLoading;
 
 // MediaQuery
-double kDeviceTopPadding(BuildContext context) => MediaQuery.of(context).padding.top;
-double kDeviceHeight(BuildContext context) => MediaQuery.of(context).size.height;
+double kDeviceTopPadding(BuildContext context) =>
+    MediaQuery.of(context).padding.top;
+
+double kDeviceHeight(BuildContext context) =>
+    MediaQuery.of(context).size.height;
+
 double kDeviceWidth(BuildContext context) => MediaQuery.of(context).size.width;
 
 //constant

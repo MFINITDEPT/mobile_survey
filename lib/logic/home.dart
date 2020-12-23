@@ -7,6 +7,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mobilesurvey/boilerplate/new_state.dart';
 import 'package:mobilesurvey/model/nik_data.dart';
+import 'package:mobilesurvey/ui/application.dart';
+import 'package:mobilesurvey/ui/new_client.dart';
 import 'package:mobilesurvey/ui/survey.dart';
 import 'package:mobilesurvey/ui/survey_container.dart';
 import 'package:mobilesurvey/utilities/api_request.dart';
@@ -49,7 +51,10 @@ abstract class _HomeLogic with Store {
   }
 
   void navigateToSurvey() {
-    Navigator.of(_context).push(MaterialPageRoute(builder: (_) => SurveyContainerUI()));
+//    Navigator.of(_context)
+//        .push(MaterialPageRoute(builder: (_) => NewClientUI()));
+    Navigator.of(_context)
+        .push(MaterialPageRoute(builder: (_) => ApplicationUI()));
   }
 
   void _processNIK(String nik) {
@@ -59,8 +64,8 @@ abstract class _HomeLogic with Store {
         Toast.showToast(_context, translation.getText('data_not_found'));
         return;
       }
-      Navigator.of(_context).push(
-          MaterialPageRoute(builder: (_) => SurveyContainerUI(model: result, nik: nik)));
+      Navigator.of(_context).push(MaterialPageRoute(
+          builder: (_) => NewClientUI(nikDataModel: result, nik: nik)));
     });
   }
 

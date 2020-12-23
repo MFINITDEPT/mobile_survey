@@ -110,5 +110,9 @@
   "identity_city": "Kota Asal",
   "client": "Client",
   "quisioner": "Quisioner",
-  "assets": "Assets"
+  "assets": "Assets",
+  "ao": "A/O",
+  "prefix_salute": "Gelar Depan",
+  "suffix_salute": "Gelar Belakang",
+  "phone_area": "Kode Telepon"
 }

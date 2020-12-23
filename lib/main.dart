@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:mobilesurvey/repositories/master.dart';
+import 'package:mobilesurvey/ui/home.dart';
 import 'package:mobilesurvey/ui/login.dart';
 import 'package:mobilesurvey/ui/splashscreen.dart';
 import 'package:mobilesurvey/utilities/api_request.dart';
@@ -107,11 +108,9 @@ class _ITrackAppState extends State<ITrackApp>
   Future<void> _fetcher() async {
     await PreferenceUtils.init();
 
-    _widget = PreferenceUtils.getString(kUserId) != null
-        ? HomeContainerUI()
-        : LoginUI();
+    _widget = PreferenceUtils.getString(kUserId) != null ? HomeUI() : LoginUI();
 
-   await PitPermission.requestSinglePermission(PermissionName.storage);
+    await PitPermission.requestSinglePermission(PermissionName.storage);
 /*
     Future.delayed(Duration(seconds: 3))
         .then((value) => _controller.updateProgress("success", true));*/
@@ -167,7 +166,7 @@ class _ITrackAppState extends State<ITrackApp>
           //ambil dari local storage, tapi cek dulu ada filenya apa engga
         }
 
-        if(value.lastUpdateAo != PreferenceUtils.getString(kLastUpdateAO)){
+        if (value.lastUpdateAo != PreferenceUtils.getString(kLastUpdateAO)) {
           APIRequest.masterAo().then((value) {
             if (value == null) {
               debugPrint("error ao");
