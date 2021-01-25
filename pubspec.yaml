@@ -34,6 +34,7 @@ dependencies:
   flutter_holo_date_picker: ^0.2.3
   flutter_mobx: ^1.1.0+2
   fluttertoast: ^7.1.5
+  firebase_messaging:
   firebase_ml_vision:
   path_provider: ^1.6.24
   pit_permission:

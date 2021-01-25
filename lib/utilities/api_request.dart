@@ -16,8 +16,8 @@ import 'enum.dart';
 class APIRequest {
   static Dio _dio = Dio();
   static String _url = "https://ver-itrack.mncfinance.net/";
-  static String _urldev = "https://ver-itrack.mncfinance.net/api/master/";
-//  static String _urldev = "http://10.1.80.83:45457/api/master/";
+//  static String _urldev = "https://ver-itrack.mncfinance.net/api/master/";
+  static String _urldev = "http://10.1.80.83:45457/api/master/";
 
 //  static String _urldev = "http://172.31.9.104:9993/api/master/";
 

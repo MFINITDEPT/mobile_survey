@@ -48,9 +48,18 @@ android {
         }
     }
 }
+dependencies {
+    implementation 'com.google.android.gms:play-services-vision:20.0.0'
+    implementation 'com.google.firebase:firebase-messaging:20.0.0'
+
+    implementation 'com.google.firebase:firebase-ml-vision:24.0.3'
+    implementation 'com.google.firebase:firebase-ml-vision-barcode-model:16.1.1'
+
+}
 
 flutter {
     source '../..'
 }
 
 apply plugin: 'com.google.gms.google-services'
+googleServices { disableVersionCheck = true }

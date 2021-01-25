@@ -22,7 +22,7 @@
         android:required="false" />
 
     <application
-        android:name="io.flutter.app.FlutterApplication"
+        android:name=".MyApplication"
         android:label="mobilesurvey"
         android:icon="@mipmap/ic_launcher">
         <activity

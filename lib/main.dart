@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -17,7 +18,6 @@ import 'package:ridjnaelcrypt/ridjnaelcrypt.dart';
 import 'component/adv_column.dart';
 import 'component/custom_button.dart';
 import 'component/setup.dart';
-import 'ui/home_container.dart';
 import 'utilities/assets.dart';
 import 'utilities/shared_preferences_utils.dart';
 
@@ -30,6 +30,20 @@ void main() {
   });
 }
 
+Future<dynamic> myBackgroundMessageHandler(Map<String, dynamic> message) async {
+  if (message.containsKey('data')) {
+    final dynamic data = message['data'];
+    print("print data : $data");
+  }
+
+  if (message.containsKey('notification')) {
+    final dynamic notification = message['notification'];
+    print("notif : $notification");
+  }
+
+  // Or do other work.
+}
+
 class ITrackApp extends StatefulWidget {
   @override
   _ITrackAppState createState() => _ITrackAppState();
@@ -39,6 +53,7 @@ class _ITrackAppState extends State<ITrackApp>
     with SingleTickerProviderStateMixin {
   Widget _widget = Container();
   SetupController _controller;
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
 
   @override
   void initState() {
@@ -50,6 +65,20 @@ class _ITrackAppState extends State<ITrackApp>
     WidgetsBinding.instance.addPostFrameCallback((_) {
       precacheImage(AssetImage(Assets.logo), context);
       precacheImage(AssetImage(Assets.splashscreen), context);
+    });
+
+    _firebaseMessaging.configure(
+      onMessage:myBackgroundMessageHandler,
+      onBackgroundMessage: myBackgroundMessageHandler,
+      onLaunch:myBackgroundMessageHandler,
+      onResume: myBackgroundMessageHandler
+    );
+    _firebaseMessaging.requestNotificationPermissions(
+        const IosNotificationSettings(
+            sound: true, badge: true, alert: true, provisional: true));
+    _firebaseMessaging.onIosSettingsRegistered
+        .listen((IosNotificationSettings settings) {
+      print("Settings registered: $settings");
     });
 
     super.initState();
