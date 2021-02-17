@@ -16,5 +16,6 @@ public class MyApplication extends FlutterApplication implements PluginRegistran
     @Override
     public void registerWith(PluginRegistry registry) {
         FirebaseCloudMessagingPluginRegistrant.registerWith(registry);
+        FlutterLocalNotificationPluginRegistrant.registerWith(registry);
     }
 }

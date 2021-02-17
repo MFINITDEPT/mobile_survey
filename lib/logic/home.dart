@@ -51,10 +51,10 @@ abstract class _HomeLogic with Store {
   }
 
   void navigateToSurvey() {
-//    Navigator.of(_context)
-//        .push(MaterialPageRoute(builder: (_) => NewClientUI()));
     Navigator.of(_context)
-        .push(MaterialPageRoute(builder: (_) => ApplicationUI()));
+        .push(MaterialPageRoute(builder: (_) => NewClientUI()));
+//    Navigator.of(_context)
+//        .push(MaterialPageRoute(builder: (_) => ApplicationUI()));
   }
 
   void _processNIK(String nik) {

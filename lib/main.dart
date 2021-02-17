@@ -4,6 +4,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:mobilesurvey/repositories/master.dart';
 import 'package:mobilesurvey/ui/home.dart';
 import 'package:mobilesurvey/ui/login.dart';
@@ -21,6 +22,10 @@ import 'component/setup.dart';
 import 'utilities/assets.dart';
 import 'utilities/shared_preferences_utils.dart';
 
+
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+FlutterLocalNotificationsPlugin();
+
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
@@ -34,15 +39,49 @@ Future<dynamic> myBackgroundMessageHandler(Map<String, dynamic> message) async {
   if (message.containsKey('data')) {
     final dynamic data = message['data'];
     print("print data : $data");
+    showNotification(data);
+    return;
   }
 
   if (message.containsKey('notification')) {
     final dynamic notification = message['notification'];
     print("notif : $notification");
+    showNotification(notification);
+    return;
   }
 
-  // Or do other work.
 }
+
+Future<void> showNotification(data) async {
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = new FlutterLocalNotificationsPlugin();
+// initialise the plugin. app_icon needs to be a added as a drawable resource to the Android head project
+  var initializationSettingsAndroid =
+  new AndroidInitializationSettings('app_icon');
+  var initializationSettingsIOS = new IOSInitializationSettings(
+      onDidReceiveLocalNotification: onDidReceiveLocalNotification);
+  var initializationSettings = new InitializationSettings(
+      android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
+  flutterLocalNotificationsPlugin.initialize(initializationSettings,
+      onSelectNotification: onSelectNotification);
+    var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+        'your channel id', 'your channel name', 'your channel description',
+        importance: Importance.high, priority: Priority.high, ticker: 'ticker');
+    var iOSPlatformChannelSpecifics = IOSNotificationDetails();
+    var platformChannelSpecifics = NotificationDetails(
+        android: androidPlatformChannelSpecifics, iOS: iOSPlatformChannelSpecifics);
+    await flutterLocalNotificationsPlugin.show(
+        0, data['title'], data['body'], platformChannelSpecifics,
+        payload: 'item x');
+}
+
+Future onDidReceiveLocalNotification(int id, String title, String body, String payload) {
+  print("title : $title, payload :$payload");
+}
+
+Future onSelectNotification(String payload) {
+  print("ini payload :$payload");
+}
+
 
 class ITrackApp extends StatefulWidget {
   @override
