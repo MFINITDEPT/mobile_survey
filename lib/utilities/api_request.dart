@@ -92,7 +92,6 @@ class APIRequest {
   }
 
   static Future<List<ZipCodeModel>> masterZipCode() async {
-//    Options options = await _getDioOptions(contentType: contentType.json);
     _dio.options.connectTimeout = 300 * 1000;
     _dio.options.receiveTimeout = 300 * 1000;
 

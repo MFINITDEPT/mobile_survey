@@ -5,6 +5,7 @@ import 'package:mobilesurvey/utilities/palette.dart';
 //String Constant
 String kRijndaelKey = "mncbangkredit";
 String kRijndaelIV = "mncsecurity";
+String kHiveKey = "MobileMNCFlutter";
 
 //SharePreferences Key
 String kLang = "language";
@@ -12,6 +13,9 @@ String kUserId = "userid";
 String kLastUpdateZipCode = "lastUpdateZipcode";
 String kLastUpdateQuestion = "lastUpdateQuestion";
 String kLastUpdateAO = "lastUpdateAO";
+String kHiveKeys_1 = "AO";
+String kHiveKeys_2 = "Quisioner";
+String kHiveKeys_3 = "Zipcode";
 
 //int constant
 int kCaptchaLength = 6;

@@ -193,7 +193,6 @@ class _ITrackAppState extends State<ITrackApp>
 
     await PitPermission.requestSinglePermission(PermissionName.storage);
 
-    Timer t1 = Timer.periodic(Duration(seconds: 1), (timer) { });
     APIRequest.getConfiguration().then((value) {
       if (value == null) {
         debugPrint("error config");
@@ -217,7 +216,6 @@ class _ITrackAppState extends State<ITrackApp>
           debugPrint("anggapannya udah ada zipcode");
           MasterRepositories.readFromHive(master.zipcode).then((value) =>
               _controller.updateProgress("get_local_success", value ?? false));
-          //ambil dari local storage, tapi cek dulu ada filenya apa engga
         }
 
         if (value.lastUpdateQuestion !=
@@ -236,7 +234,6 @@ class _ITrackAppState extends State<ITrackApp>
           debugPrint("anggapannya udah ada question");
           MasterRepositories.readFromHive(master.question).then((value) =>
               _controller.updateProgress("get_local_success", value ?? false));
-          //ambil dari local storage, tapi cek dulu ada filenya apa engga
         }
 
         if (value.lastUpdateAo != PreferenceUtils.getString(kLastUpdateAO)) {
@@ -258,26 +255,5 @@ class _ITrackAppState extends State<ITrackApp>
         MasterRepositories.saveConfiguration(value);
       }
     });
-    /* APIRequest.masterZipCode().then((value) {
-      if (value == null) {
-        print("error zipcode");
-        _controller.updateProgress("get_zipcode_error", false);
-      } else {
-        print("success zipcode");
-        _controller.updateProgress("get_zipcode_success", true);
-        MasterRepositories.saveZipCodes(value);
-      }
-    });
-
-    APIRequest.masterQuisioner().then((value) {
-      if (value == null) {
-        print("error question");
-        _controller.updateProgress("get_question_error", false);
-      } else {
-        print("success question");
-        _controller.updateProgress("get_question_success", true);
-        MasterRepositories.saveQuestion(value);
-      }
-    });*/
   }
 }

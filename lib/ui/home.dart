@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hive/hive.dart';
 import 'package:mobilesurvey/boilerplate/new_state.dart';
 import 'package:mobilesurvey/logic/home.dart';
 import 'package:mobilesurvey/utilities/assets.dart';
@@ -17,6 +18,9 @@ class _HomeUIState extends NewState<HomeUI> {
   @override
   void initState() {
     _logic = HomeBase(this);
+    if (Hive.isBoxOpen(kHiveKeys_1) ||
+        Hive.isBoxOpen(kHiveKeys_2) ||
+        Hive.isBoxOpen(kHiveKeys_3)) Hive.close();
     super.initState();
   }
 
