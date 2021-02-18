@@ -1,7 +1,13 @@
 import 'package:mobilesurvey/utilities/parse_utils.dart';
+import 'package:hive/hive.dart';
 
+part 'quisioner.g.dart';
+
+@HiveType()
 class QuisionerModel {
+  @HiveField(0)
   final String question;
+  @HiveField(1)
   final List<String> choice;
 
   QuisionerModel({this.question, this.choice});

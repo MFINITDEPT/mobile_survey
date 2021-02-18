@@ -83,6 +83,28 @@ mixin _$NewClient on _NewClientBase, Store {
   }
 
   @override
+  void submit() {
+    final _$actionInfo = _$_NewClientBaseActionController.startAction(
+        name: '_NewClientBase.submit');
+    try {
+      return super.submit();
+    } finally {
+      _$_NewClientBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
+  void onSubmitted(String name) {
+    final _$actionInfo = _$_NewClientBaseActionController.startAction(
+        name: '_NewClientBase.onSubmitted');
+    try {
+      return super.onSubmitted(name);
+    } finally {
+      _$_NewClientBaseActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   String toString() {
     return '''
 ao: ${ao}

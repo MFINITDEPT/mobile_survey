@@ -30,6 +30,8 @@ dependencies:
   autocomplete_textfield: ^1.6.4
   cupertino_icons: ^1.0.0
   dio:
+  hive: ^1.4.4+1
+  hive_generator: ^0.5.0
   mobx: ^1.2.1+2
   flutter_holo_date_picker: ^0.2.3
   flutter_local_notifications: ^3.0.3

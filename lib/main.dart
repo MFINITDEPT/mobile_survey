@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -5,6 +6,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:hive/hive.dart';
+import 'package:mobilesurvey/model/quisioner.dart';
+import 'package:mobilesurvey/model/zipcode.dart';
+import 'package:mobilesurvey/model/ao.dart';
 import 'package:mobilesurvey/repositories/master.dart';
 import 'package:mobilesurvey/ui/home.dart';
 import 'package:mobilesurvey/ui/login.dart';
@@ -13,6 +18,7 @@ import 'package:mobilesurvey/utilities/api_request.dart';
 import 'package:mobilesurvey/utilities/constant.dart';
 import 'package:mobilesurvey/utilities/enum.dart';
 import 'package:mobilesurvey/utilities/translation.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:pit_permission/pit_permission.dart';
 import 'package:ridjnaelcrypt/ridjnaelcrypt.dart';
 
@@ -31,7 +37,14 @@ void main() {
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((_) {
     translation.init('en');
-    runApp(ITrackApp());
+    getExternalStorageDirectory().then((value) {
+      Hive
+        ..init(value.path)
+        ..registerAdapter(QuisionerModelAdapter())
+        ..registerAdapter(ZipCodeModelAdapter())
+        ..registerAdapter(AoModelAdapter());
+      runApp(ITrackApp());
+    });
   });
 }
 
@@ -179,15 +192,8 @@ class _ITrackAppState extends State<ITrackApp>
     _widget = PreferenceUtils.getString(kUserId) != null ? HomeUI() : LoginUI();
 
     await PitPermission.requestSinglePermission(PermissionName.storage);
-/*
-    Future.delayed(Duration(seconds: 3))
-        .then((value) => _controller.updateProgress("success", true));*/
 
-/*    bool masterQuestionExist =
-        await MasterRepositories.checkFileExist(master.question);
-    bool masterZipCodeExist =
-        await MasterRepositories.checkFileExist(master.zipcode);*/
-
+    Timer t1 = Timer.periodic(Duration(seconds: 1), (timer) { });
     APIRequest.getConfiguration().then((value) {
       if (value == null) {
         debugPrint("error config");
@@ -195,7 +201,6 @@ class _ITrackAppState extends State<ITrackApp>
       } else {
         debugPrint("success config");
         _controller.updateProgress("get_configuration_success", true);
-
         if (value.lastUpdateZipCode !=
             PreferenceUtils.getString(kLastUpdateZipCode)) {
           APIRequest.masterZipCode().then((value) {
@@ -210,7 +215,7 @@ class _ITrackAppState extends State<ITrackApp>
           });
         } else {
           debugPrint("anggapannya udah ada zipcode");
-          MasterRepositories.readFromFile(master.zipcode).then((value) =>
+          MasterRepositories.readFromHive(master.zipcode).then((value) =>
               _controller.updateProgress("get_local_success", value ?? false));
           //ambil dari local storage, tapi cek dulu ada filenya apa engga
         }
@@ -229,7 +234,7 @@ class _ITrackAppState extends State<ITrackApp>
           });
         } else {
           debugPrint("anggapannya udah ada question");
-          MasterRepositories.readFromFile(master.question).then((value) =>
+          MasterRepositories.readFromHive(master.question).then((value) =>
               _controller.updateProgress("get_local_success", value ?? false));
           //ambil dari local storage, tapi cek dulu ada filenya apa engga
         }
@@ -247,7 +252,7 @@ class _ITrackAppState extends State<ITrackApp>
           });
         } else {
           debugPrint("anggapannya udah ada AO");
-          MasterRepositories.readFromFile(master.ao).then((value) =>
+          MasterRepositories.readFromHive(master.ao).then((value) =>
               _controller.updateProgress("get_ao_success", value ?? false));
         }
         MasterRepositories.saveConfiguration(value);

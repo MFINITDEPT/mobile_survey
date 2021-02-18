@@ -1,7 +1,9 @@
+import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
+import 'package:hive/hive.dart';
 import 'package:mobilesurvey/model/ao.dart';
 import 'package:mobilesurvey/model/configuration.dart';
 import 'package:mobilesurvey/model/quisioner.dart';
@@ -25,18 +27,18 @@ class MasterRepositories {
   static List<AoModel> get ao => _ao;
 
   static void saveZipCodes(List<ZipCodeModel> value) {
-    _saveZipCodeToLocalStorage(value);
+    _saveToHive(value, master.zipcode);
     _zipcodes = value;
     _zipcodes.sort((a, b) => a.kota.compareTo(b.kota));
   }
 
   static void saveQuestion(List<QuisionerModel> value) {
-    _saveQuisionerToLocalStorage(value);
+    _saveToHive(value, master.question);
     _quisioners = value;
   }
 
   static void saveAO(List<AoModel> value) {
-    _saveAOToLocalStorage(value);
+    _saveToHive(value, master.ao);
     _ao = value;
   }
 
@@ -46,117 +48,76 @@ class MasterRepositories {
     PreferenceUtils.setString(kLastUpdateAO, value.lastUpdateAo);
   }
 
-  static Future<void> _saveZipCodeToLocalStorage(
-      List<ZipCodeModel> value) async {
-    Directory dir = await getApplicationDocumentsDirectory();
-    File file = File("${dir.path}/ZipCode.json");
-    List<Map<String, dynamic>> result = List<Map<String, dynamic>>();
-    for (ZipCodeModel item in value) {
-      result.add(item.toJson());
-    }
-    file.writeAsString(json.encode(result));
+  static Future<void> _saveToHive(List<dynamic> value, master masterType) async {
+   try{
+     switch(masterType){
+       case master.zipcode:
+         var box = await Hive.openBox<ZipCodeModel>('zipcode');
+         List<ZipCodeModel> values = List<ZipCodeModel>.from(value);
+         box.addAll(values);
+         break;
+       case master.ao:
+         var box = await Hive.openBox<AoModel>('ao');
+         List<AoModel> values = List<AoModel>.from(value);
+         box.addAll(values);
+         break;
+       case master.question:
+         var box = await Hive.openBox<QuisionerModel>('quisioner');
+         List<QuisionerModel> values = List<QuisionerModel>.from(value);
+         box.addAll(values);
+         break;
+       default:
+         break;
+     }
+   } catch(Exception){
+   }
+
+  /*  if (value.runtimeType is List<ZipCodeModel>) {
+      print('valeus :$value');
+      Hive.openBox<List<ZipCodeModel>>('zipcode')
+          .then((box) => box.put('zipcode', value));
+    } else if (value.runtimeType is List<AoModel>) {
+      print('valeus :$value');
+      Hive.openBox<List<AoModel>>('ao').then((box) => box.put('ao', value));
+    } else if (value.runtimeType is List<QuisionerModel>) {
+      print('valeus :$value');
+      Hive.openBox<List<QuisionerModel>>('quisioner')
+          .then((box) => box.put('quisioner', value));
+    }*/
   }
 
-  static Future<void> _saveQuisionerToLocalStorage(
-      List<QuisionerModel> value) async {
-    Directory dir = await getApplicationDocumentsDirectory();
-    File file = File("${dir.path}/Quisioner.json");
-    List<Map<String, dynamic>> result = List<Map<String, dynamic>>();
-    for (QuisionerModel item in value) {
-      result.add(item.toJson());
-    }
-    file.writeAsString(json.encode(result));
-  }
-
-  static Future<void> _saveAOToLocalStorage(List<AoModel> value) async {
-    Directory dir = await getApplicationDocumentsDirectory();
-    File file = File("${dir.path}/AO.json");
-    List<Map<String, dynamic>> result = List<Map<String, dynamic>>();
-    for (AoModel item in value) {
-      result.add(item.toJson());
-    }
-    file.writeAsString(json.encode(result));
-  }
-
-  static Future<bool> readFromFile(master masterType) async {
-    switch (masterType) {
-      case master.question:
-        return await _readQuisionerFromFile();
-      case master.zipcode:
-        return await _readZipCodeFromFile();
-      case master.ao:
-        return await _readAOFromFile();
-      default:
-        debugPrint("error: masterType");
-        return false;
-    }
-  }
-
-  static Future<bool> _readQuisionerFromFile() async {
+  static Future<bool> readFromHive(master masterType) async {
     try {
-      Directory dir = await getApplicationDocumentsDirectory();
-      File file = File('${dir.path}/Quisioner.json');
-      String text = await file.readAsString();
-      List<Map<String, dynamic>> res = List.from(jsonDecode(text));
-      List<QuisionerModel> finalResult = [];
-      for (var item in res) {
-        finalResult.add(QuisionerModel.fromJson(item));
+      switch (masterType) {
+        case master.question:
+          bool _boxExists = await Hive.boxExists('quisioner');
+          if (_boxExists) {
+            var box = await Hive.openBox<QuisionerModel>('quisioner');
+            await saveQuestion(box.values.toList());
+            box.close();
+          }
+          return Future.value(true);
+        case master.zipcode:
+          bool _boxExists = await Hive.boxExists('zipcode');
+          if (_boxExists) {
+            var box = await Hive.openBox<ZipCodeModel>('zipcode');
+            await saveZipCodes(box.values.toList());
+            box.close();
+          }
+          return Future.value(true);
+        case master.ao:
+          bool _boxExists = await Hive.boxExists('ao');
+          if (_boxExists) {
+            var box = await Hive.openBox<AoModel>('ao');
+            await saveAO(box.values.toList());
+            box.close();
+          }
+          return Future.value(true);
+        default:
+          return Future.value(false);
       }
-      saveQuestion(finalResult);
-      return Future.value(true);
-    } catch (e) {
-      debugPrint("error :${e.toString()}");
+    } catch (Exception ) {
       return Future.value(false);
-    }
-  }
-
-  static Future<bool> _readZipCodeFromFile() async {
-    try {
-      Directory dir = await getApplicationDocumentsDirectory();
-      File file = File('${dir.path}/ZipCode.json');
-      String text = await file.readAsString();
-      List<Map<String, dynamic>> res = List.from(jsonDecode(text));
-      List<ZipCodeModel> finalResult = [];
-      for (var item in res) {
-        finalResult.add(ZipCodeModel.fromJson(item));
-      }
-      saveZipCodes(finalResult);
-      return Future.value(true);
-    } catch (e) {
-      debugPrint("error :${e.toString()}");
-      return Future.value(false);
-    }
-  }
-
-  static Future<bool> _readAOFromFile() async {
-    try {
-      Directory dir = await getApplicationDocumentsDirectory();
-      File file = File('${dir.path}/AO.json');
-      String text = await file.readAsString();
-      List<Map<String, dynamic>> res = List.from(jsonDecode(text));
-      List<AoModel> finalResult = [];
-      for (var item in res) {
-        finalResult.add(AoModel.fromJson(item));
-      }
-      saveAO(finalResult);
-      return Future.value(true);
-    } catch (e) {
-      debugPrint("error :${e.toString()}");
-      return Future.value(false);
-    }
-  }
-
-  static Future<bool> checkFileExist(master masterType) async {
-    Directory dir = await getApplicationDocumentsDirectory();
-
-    switch (masterType) {
-      case master.question:
-        return await File('${dir.path}/Quisioner.json').exists();
-      case master.zipcode:
-        return await File('${dir.path}/ZipCode.json').exists();
-      default:
-        debugPrint("error : masterType unrecognized");
-        return false;
     }
   }
 }

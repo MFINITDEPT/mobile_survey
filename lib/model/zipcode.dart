@@ -1,9 +1,17 @@
 import 'package:mobilesurvey/utilities/parse_utils.dart';
+import 'package:hive/hive.dart';
 
+part 'zipcode.g.dart';
+
+@HiveType()
 class ZipCodeModel {
+  @HiveField(0)
   final String kota;
+  @HiveField(1)
   final String kecamatan;
+  @HiveField(2)
   final String kelurahan;
+  @HiveField(3)
   final String kodePos;
 
   ZipCodeModel({this.kota, this.kecamatan, this.kelurahan, this.kodePos});
