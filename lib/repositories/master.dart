@@ -24,6 +24,9 @@ class MasterRepositories {
 
   static List<AoModel> get ao => _ao;
 
+  static List<String> get aoList => MasterRepositories.ao.map((e) => e.descs).toList();
+
+
   static void saveZipCodes(List<ZipCodeModel> value) {
     _saveToHive(value, master.zipcode);
     _zipcodes = value;

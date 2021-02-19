@@ -33,7 +33,6 @@ class _ClientUIState extends NewState<ClientUI> {
   @override
   void initState() {
     _logic = ClientBase(this, widget.nik, widget.nikDataModel);
-    _logic.checkData();
     super.initState();
   }
 

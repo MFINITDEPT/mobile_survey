@@ -2,6 +2,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:mobilesurvey/boilerplate/new_state.dart';
 import 'package:mobilesurvey/ui/home.dart';
+import 'package:mobilesurvey/ui/home_container.dart';
 import 'package:mobx/mobx.dart';
 
 part 'login.g.dart';
@@ -17,10 +18,12 @@ abstract class _LoginLogic with Store {
 
   @action
   void signIn() {
-    FirebaseMessaging().getToken().then((value) {
+    Navigator.of(_context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (_) => HomeContainerUI()), (route) => false);
+   /* FirebaseMessaging().getToken().then((value) {
       print("ini token: $value");
       Navigator.of(_context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (_) => HomeUI()), (route) => false);
-    });
+          MaterialPageRoute(builder: (_) => HomeContainerUI()), (route) => false);
+    });*/
   }
 }

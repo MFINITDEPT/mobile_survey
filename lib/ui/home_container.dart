@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:mobilesurvey/boilerplate/new_state.dart';
 import 'package:mobilesurvey/logic/home_container.dart';
 import 'package:mobilesurvey/model/nik_data.dart';
+import 'package:mobilesurvey/ui/client.dart';
+import 'package:mobilesurvey/ui/quisioner.dart';
 import 'package:mobilesurvey/ui/survey.dart';
 import 'package:mobilesurvey/utilities/assets.dart';
 import 'package:mobilesurvey/utilities/palette.dart';
@@ -79,8 +81,8 @@ class _HomeContainerUIState extends NewState<HomeContainerUI> {
         body: TabBarView(
           children: [
             Container(color: Palette.gold),
-            SurveyUI(model: _logic.model, nik: _logic.nik),
-            Container(color: Palette.black26),
+            ClientUI(),
+            QuisionerUI(),
             Container(color: Palette.black26),
           ],
         ),

@@ -88,27 +88,13 @@ abstract class _ClientLogic with Store {
   List<String> _aoList = MasterRepositories.ao.map((e) => e.descs).toList();
 
   @observable
-  SearchModel _ao;
+  SearchModel _ao = SearchModel(
+      title: translation.getText('ao'),
+      itemList: MasterRepositories.aoList,
+      value: MasterRepositories.aoList.first);
 
   @computed
   SearchModel get ao => _ao;
-
-  void checkData() {
-    if (_nik != null && _model != null) {
-      _nameCtrl.text = _model.namaLengkap;
-      _birthLocationCtrl.text = _model.tempatLahir;
-      _birthDateCtrl.text = _model.tanggalLahir;
-      _addressCtrl.text = _model.alamat;
-      _nikCtrl.text = _nik;
-
-      Toast.showToast(_context, translation.getText('verified_by_dukcapil'));
-    }
-
-    _ao = SearchModel(
-        title: translation.getText('ao'),
-        itemList: _aoList,
-        value: _aoList.first);
-  }
 
   @action
   Future<void> datePicker() async {

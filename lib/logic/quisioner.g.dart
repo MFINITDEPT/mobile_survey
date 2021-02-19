@@ -17,18 +17,18 @@ mixin _$QuisionerBase on _QuisionerLogic, Store {
               name: '_QuisionerLogic.model'))
           .value;
 
-  final _$_newmodelAtom = Atom(name: '_QuisionerLogic._newmodel');
+  final _$_questionAtom = Atom(name: '_QuisionerLogic._question');
 
   @override
-  List<QuisionerModel> get _newmodel {
-    _$_newmodelAtom.reportRead();
-    return super._newmodel;
+  List<QuisionerModel> get _question {
+    _$_questionAtom.reportRead();
+    return super._question;
   }
 
   @override
-  set _newmodel(List<QuisionerModel> value) {
-    _$_newmodelAtom.reportWrite(value, super._newmodel, () {
-      super._newmodel = value;
+  set _question(List<QuisionerModel> value) {
+    _$_questionAtom.reportWrite(value, super._question, () {
+      super._question = value;
     });
   }
 

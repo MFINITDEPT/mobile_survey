@@ -21,8 +21,7 @@ class _QuisionerUIState extends NewState<QuisionerUI> {
 
   @override
   void initState() {
-    _logic = QuisionerBase(this, widget.model);
-    _logic.getData();
+    _logic = QuisionerBase(this);
     super.initState();
   }
 
