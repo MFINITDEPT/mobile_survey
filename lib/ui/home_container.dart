@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:mobilesurvey/boilerplate/new_state.dart';
 import 'package:mobilesurvey/logic/home_container.dart';
 import 'package:mobilesurvey/model/nik_data.dart';
+import 'package:mobilesurvey/ui/assets.dart';
 import 'package:mobilesurvey/ui/client.dart';
 import 'package:mobilesurvey/ui/quisioner.dart';
 import 'package:mobilesurvey/ui/survey.dart';
@@ -54,13 +55,13 @@ class _HomeContainerUIState extends NewState<HomeContainerUI> {
                   child: Text(translation.getText('home'),
                       maxLines: 1, style: TextStyle(fontSize: 12.0))),
               Tab(
-                  child: Text(translation.getText('survey'),
+                  child: Text(translation.getText('client'),
                       maxLines: 1, style: TextStyle(fontSize: 12.0))),
               Tab(
-                  child: Text(translation.getText('history'),
+                  child: Text(translation.getText('quisioner'),
                       maxLines: 1, style: TextStyle(fontSize: 12.0))),
               Tab(
-                  child: Text(translation.getText('performance'),
+                  child: Text(translation.getText('assets'),
                       maxLines: 1, style: TextStyle(fontSize: 12.0))),
             ],
           ),
@@ -83,7 +84,7 @@ class _HomeContainerUIState extends NewState<HomeContainerUI> {
             Container(color: Palette.gold),
             ClientUI(),
             QuisionerUI(),
-            Container(color: Palette.black26),
+            AssetsUI(),
           ],
         ),
       ),

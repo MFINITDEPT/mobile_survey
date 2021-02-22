@@ -6,6 +6,9 @@ import 'package:mobilesurvey/component/adv_dropdown.dart';
 import 'package:mobilesurvey/logic/quisioner.dart';
 import 'package:mobilesurvey/model/dropdown.dart';
 import 'package:mobilesurvey/model/quisioner.dart';
+import 'package:mobilesurvey/model/quisioner_answer.dart';
+import 'package:mobilesurvey/utilities/palette.dart';
+import 'package:mobilesurvey/utilities/translation.dart';
 
 class QuisionerUI extends StatefulWidget {
   final List<QuisionerModel> model;
@@ -29,15 +32,18 @@ class _QuisionerUIState extends NewState<QuisionerUI> {
   Widget buildView(BuildContext context) {
     return Scaffold(
       body: Observer(builder: (_) {
-        if (_logic.model.length != 0) {
-          return ListView.separated(
-            padding: EdgeInsets.all(32.0),
-            itemBuilder: (_, int index) => _buildQuisioner(_logic.model[index]),
-            itemCount: _logic.model.length,
-            separatorBuilder: (_, __) => Container(
-              height: 1.0,
-              padding: EdgeInsets.symmetric(vertical: 4.0),
-            ),
+        if (_logic.quisioner.length != 0) {
+          return Column(
+            children: [Expanded(child: ListView.separated(
+              padding: EdgeInsets.all(16.0),
+              itemBuilder: (_, int index) => _buildQuisioner(_logic.quisioner[index]),
+              itemCount: _logic.quisioner.length,
+              separatorBuilder: (_, __) => Container(
+                height: 2.0,
+                color: Palette.gold,
+                margin: EdgeInsets.symmetric(vertical: 4.0),
+              ),
+            )), FlatButton(onPressed: _logic.testSubmit, child: Text('Submit'))],
           );
         } else {
           return Container();
@@ -46,94 +52,34 @@ class _QuisionerUIState extends NewState<QuisionerUI> {
     );
   }
 
-  Widget _buildQuisioner(QuisionerModel model) {
+  Widget _buildQuisioner(QuisionerAnswerModel model) {
     Widget _child = Container();
-    TextEditingController controller = TextEditingController();
-    if (model.choice.length != 0) {
-      SearchModel searchModel = SearchModel(
-          title: '', itemList: model.choice, value: model.choice.first);
-      _child = _buildDropDown(searchModel);
+    Widget _optionChoice = Container();
+    if(model.choice != null) {
+      _child = _buildDropDown(model.choice);
+      if(model.choice.value.contains(",")) {
+        _optionChoice = TextField(controller: model.controller,  decoration: InputDecoration(hintText: translation.getText('global_hint')),);
+      };
     } else {
-      _child = TextField(controller: controller);
+      _child = TextField(controller : model.controller);
     }
 
-    return AdvColumn(
-      mainAxisSize: MainAxisSize.min,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(model.question),
-        _child,
-      ],
-    );
-  }
-
-  Widget _buildDropDown(SearchModel model) {
-    return AdvColumn(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(model.title),
-        AdvDropdownButton(
-            value: model.value,
-            icon: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 8.0),
-                child: Icon(Icons.keyboard_arrow_down)),
-            isExpanded: true,
-            outerActions: AdvDropdownAction(),
-            items: List.generate(
-                model.itemList.length,
-                (index) => AdvDropdownMenuItem(
-                    value: model.itemList[index],
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: Text(model.itemList[index],
-                          style: TextStyle(fontSize: 12.0)),
-                    ))),
-            onChanged: (c) => setState(() => model.value = c))
-      ],
-    );
-  }
-
-/* @override
-  Widget buildView(BuildContext context) {
-    return Scaffold(
-      body: Observer(builder: (_) {
-        if (_logic?.model.length != 0) {
-          return PageView(
-           //   physics: NeverScrollableScrollPhysics(),
-              children: List.generate(_logic?.model.length,
-                  (index) => _buildQuisioner(_logic.model[index])));
-        } else {
-          return Container();
-        }
-      }),
-    );
-  }
-
-  Widget _buildQuisioner(QuisionerModel model) {
-    Widget _child = Container();
-    TextEditingController controller = TextEditingController();
-    if (model.choice.length != 0) {
-      SearchModel searchModel = SearchModel(
-          title: '', itemList: model.choice, value: model.choice.first);
-      _child = _buildDropDown(searchModel);
-    } else {
-      _child = TextField(controller: controller);
-    }
-
-    return Center(
+    return Container(
+      color: Palette.grey,
       child: AdvColumn(
         mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(model.question),
           _child,
-          CustomButton("next", buttonWidth: double.infinity)
+          if(_optionChoice is TextField) _optionChoice
         ],
       ),
     );
   }
 
   Widget _buildDropDown(SearchModel model) {
-    return AdvColumn(
+    return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(model.title),
@@ -153,9 +99,8 @@ class _QuisionerUIState extends NewState<QuisionerUI> {
                       child: Text(model.itemList[index],
                           style: TextStyle(fontSize: 12.0)),
                     ))),
-            onChanged: (c) =>
-                print('hhhh $c') */ /*_logic.onSelectedValue(c, model)*/ /*)
+            onChanged: (c) => _logic.onSelectedValue(c, model))
       ],
     );
-  }*/
+  }
 }

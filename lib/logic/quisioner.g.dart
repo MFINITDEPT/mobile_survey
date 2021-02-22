@@ -9,33 +9,43 @@ part of 'quisioner.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$QuisionerBase on _QuisionerLogic, Store {
-  Computed<List<QuisionerModel>> _$modelComputed;
+  Computed<List<QuisionerAnswerModel>> _$quisionerComputed;
 
   @override
-  List<QuisionerModel> get model =>
-      (_$modelComputed ??= Computed<List<QuisionerModel>>(() => super.model,
-              name: '_QuisionerLogic.model'))
-          .value;
+  List<QuisionerAnswerModel> get quisioner => (_$quisionerComputed ??=
+          Computed<List<QuisionerAnswerModel>>(() => super.quisioner,
+              name: '_QuisionerLogic.quisioner'))
+      .value;
 
-  final _$_questionAtom = Atom(name: '_QuisionerLogic._question');
+  final _$_QuisionerLogicActionController =
+      ActionController(name: '_QuisionerLogic');
 
   @override
-  List<QuisionerModel> get _question {
-    _$_questionAtom.reportRead();
-    return super._question;
+  void onSelectedValue(String s, SearchModel model) {
+    final _$actionInfo = _$_QuisionerLogicActionController.startAction(
+        name: '_QuisionerLogic.onSelectedValue');
+    try {
+      return super.onSelectedValue(s, model);
+    } finally {
+      _$_QuisionerLogicActionController.endAction(_$actionInfo);
+    }
   }
 
   @override
-  set _question(List<QuisionerModel> value) {
-    _$_questionAtom.reportWrite(value, super._question, () {
-      super._question = value;
-    });
+  void testSubmit() {
+    final _$actionInfo = _$_QuisionerLogicActionController.startAction(
+        name: '_QuisionerLogic.testSubmit');
+    try {
+      return super.testSubmit();
+    } finally {
+      _$_QuisionerLogicActionController.endAction(_$actionInfo);
+    }
   }
 
   @override
   String toString() {
     return '''
-model: ${model}
+quisioner: ${quisioner}
     ''';
   }
 }

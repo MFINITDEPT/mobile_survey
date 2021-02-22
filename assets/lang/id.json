@@ -114,5 +114,6 @@
   "ao": "A/O",
   "prefix_salute": "Gelar Depan",
   "suffix_salute": "Gelar Belakang",
-  "phone_area": "Kode Telepon"
+  "phone_area": "Kode Telepon",
+  "global_hint": "Isikan jawaban anda"
 }
