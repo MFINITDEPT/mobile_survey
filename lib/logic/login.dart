@@ -4,6 +4,7 @@ import 'package:mobilesurvey/boilerplate/new_state.dart';
 import 'package:mobilesurvey/ui/home.dart';
 import 'package:mobilesurvey/ui/home_container.dart';
 import 'package:mobx/mobx.dart';
+import 'package:pit_permission/pit_permission.dart';
 
 part 'login.g.dart';
 
@@ -20,10 +21,5 @@ abstract class _LoginLogic with Store {
   void signIn() {
     Navigator.of(_context).pushAndRemoveUntil(
         MaterialPageRoute(builder: (_) => HomeContainerUI()), (route) => false);
-   /* FirebaseMessaging().getToken().then((value) {
-      print("ini token: $value");
-      Navigator.of(_context).pushAndRemoveUntil(
-          MaterialPageRoute(builder: (_) => HomeContainerUI()), (route) => false);
-    });*/
   }
 }

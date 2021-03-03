@@ -51,6 +51,8 @@ dependencies:
     git:
       url: git://github.com/Suzaku10/adv_image_picker.git
       ref: v3
+#  flutter_better_camera:
+#    git: git://github.com/Suzaku10/flutter_better_camera.git
 
 dev_dependencies:
   flutter_test:

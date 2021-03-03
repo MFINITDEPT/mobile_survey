@@ -85,13 +85,13 @@ abstract class _ClientLogic with Store {
 
   TextEditingController get fax => _faxCtrl;
 
-  List<String> _aoList = MasterRepositories.ao.map((e) => e.descs).toList();
+  List<String> _aoList = MasterRepositories.ao.map((e) => e.descs).take(10).toList();
 
   @observable
   SearchModel _ao = SearchModel(
       title: translation.getText('ao'),
-      itemList: MasterRepositories.aoList,
-      value: MasterRepositories.aoList.first);
+      itemList: MasterRepositories.aoList.take(10).toList(),
+      value: MasterRepositories.aoList.take(10).toList().first);
 
   @computed
   SearchModel get ao => _ao;
