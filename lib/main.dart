@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:hive/hive.dart';
+import 'package:mobilesurvey/model/photo_form.dart';
 import 'package:mobilesurvey/model/quisioner.dart';
 import 'package:mobilesurvey/model/zipcode.dart';
 import 'package:mobilesurvey/model/ao.dart';
@@ -28,23 +29,16 @@ import 'component/setup.dart';
 import 'utilities/assets.dart';
 import 'utilities/shared_preferences_utils.dart';
 
-
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-FlutterLocalNotificationsPlugin();
+    FlutterLocalNotificationsPlugin();
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((_) {
     translation.init('en');
-    getExternalStorageDirectory().then((value) {
-      Hive
-        ..init(value.path)
-        ..registerAdapter(QuisionerModelAdapter())
-        ..registerAdapter(ZipCodeModelAdapter())
-        ..registerAdapter(AoModelAdapter());
-      runApp(ITrackApp());
-    });
+    runApp(ITrackApp());
+
   });
 }
 
@@ -62,39 +56,40 @@ Future<dynamic> myBackgroundMessageHandler(Map<String, dynamic> message) async {
     showNotification(notification);
     return;
   }
-
 }
 
 Future<void> showNotification(data) async {
-  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin = new FlutterLocalNotificationsPlugin();
+  FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      new FlutterLocalNotificationsPlugin();
 // initialise the plugin. app_icon needs to be a added as a drawable resource to the Android head project
   var initializationSettingsAndroid =
-  new AndroidInitializationSettings('app_icon');
+      new AndroidInitializationSettings('app_icon');
   var initializationSettingsIOS = new IOSInitializationSettings(
       onDidReceiveLocalNotification: onDidReceiveLocalNotification);
   var initializationSettings = new InitializationSettings(
       android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
   flutterLocalNotificationsPlugin.initialize(initializationSettings,
       onSelectNotification: onSelectNotification);
-    var androidPlatformChannelSpecifics = AndroidNotificationDetails(
-        'your channel id', 'your channel name', 'your channel description',
-        importance: Importance.high, priority: Priority.high, ticker: 'ticker');
-    var iOSPlatformChannelSpecifics = IOSNotificationDetails();
-    var platformChannelSpecifics = NotificationDetails(
-        android: androidPlatformChannelSpecifics, iOS: iOSPlatformChannelSpecifics);
-    await flutterLocalNotificationsPlugin.show(
-        0, data['title'], data['body'], platformChannelSpecifics,
-        payload: 'item x');
+  var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+      'your channel id', 'your channel name', 'your channel description',
+      importance: Importance.high, priority: Priority.high, ticker: 'ticker');
+  var iOSPlatformChannelSpecifics = IOSNotificationDetails();
+  var platformChannelSpecifics = NotificationDetails(
+      android: androidPlatformChannelSpecifics,
+      iOS: iOSPlatformChannelSpecifics);
+  await flutterLocalNotificationsPlugin.show(
+      0, data['title'], data['body'], platformChannelSpecifics,
+      payload: 'item x');
 }
 
-Future onDidReceiveLocalNotification(int id, String title, String body, String payload) {
+Future onDidReceiveLocalNotification(
+    int id, String title, String body, String payload) {
   print("title : $title, payload :$payload");
 }
 
 Future onSelectNotification(String payload) {
   print("ini payload :$payload");
 }
-
 
 class ITrackApp extends StatefulWidget {
   @override
@@ -120,11 +115,10 @@ class _ITrackAppState extends State<ITrackApp>
     });
 
     _firebaseMessaging.configure(
-      onMessage:myBackgroundMessageHandler,
-      onBackgroundMessage: myBackgroundMessageHandler,
-      onLaunch:myBackgroundMessageHandler,
-      onResume: myBackgroundMessageHandler
-    );
+        onMessage: myBackgroundMessageHandler,
+        onBackgroundMessage: myBackgroundMessageHandler,
+        onLaunch: myBackgroundMessageHandler,
+        onResume: myBackgroundMessageHandler);
     _firebaseMessaging.requestNotificationPermissions(
         const IosNotificationSettings(
             sound: true, badge: true, alert: true, provisional: true));
@@ -142,7 +136,7 @@ class _ITrackAppState extends State<ITrackApp>
         uiBuilder: _uiBuilder,
         fetcher: _fetcher,
         localizationsDelegates: [FallbackLocalizationDelegate()],
-        totalApiRequest: 4,
+        totalApiRequest: 6,
         theme: kTheme,
         controller: _controller);
   }
@@ -192,6 +186,14 @@ class _ITrackAppState extends State<ITrackApp>
     _widget = PreferenceUtils.getString(kUserId) != null ? HomeUI() : LoginUI();
 
     await PitPermission.requestSinglePermission(PermissionName.storage);
+    var value = await getExternalStorageDirectory();
+
+    Hive
+    ..init(value.path)
+    ..registerAdapter(QuisionerModelAdapter())
+    ..registerAdapter(ZipCodeModelAdapter())
+    ..registerAdapter(AoModelAdapter())
+    ..registerAdapter(PhotoFormAdapter());
 
     APIRequest.getConfiguration().then((value) {
       if (value == null) {
@@ -252,6 +254,39 @@ class _ITrackAppState extends State<ITrackApp>
           MasterRepositories.readFromHive(master.ao).then((value) =>
               _controller.updateProgress("get_ao_success", value ?? false));
         }
+
+        if (value.lastUpdateForm !=
+            PreferenceUtils.getString(kLastUpdateForm)) {
+          APIRequest.getFotoForm(0).then((value) {
+            if (value == null) {
+              print("gagal get document form");
+              _controller.updateProgress("get_doc_failed", false);
+            } else {
+              print("berhasil foto");
+              MasterRepositories.savePhotoForm(value, 0);
+              _controller.updateProgress("get_doc_success", true);
+            }
+          });
+          APIRequest.getFotoForm(1).then((value) {
+            if (value == null) {
+              print("gagal get pic form");
+              _controller.updateProgress("get_pic_failed", false);
+            } else {
+              print("berhasil doc");
+              MasterRepositories.savePhotoForm(value, 1);
+              _controller.updateProgress("get_pic_success", true);
+            }
+          });
+        } else {
+          debugPrint("anggapannya udah ada PIC");
+          MasterRepositories.readFromHive(master.pic).then((value) =>
+              _controller.updateProgress("get_pic_success", value ?? false));
+
+          debugPrint("anggapannya udah ada doc");
+          MasterRepositories.readFromHive(master.doc).then((value) =>
+              _controller.updateProgress("get_pic_success", value ?? false));
+        }
+
         MasterRepositories.saveConfiguration(value);
       }
     });

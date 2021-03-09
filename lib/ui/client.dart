@@ -18,10 +18,9 @@ import '../utilities/palette.dart';
 import '../utilities/translation.dart';
 
 class ClientUI extends StatefulWidget {
-  final NikDataModel nikDataModel;
-  final String nik;
+  final String id;
 
-  const ClientUI({Key key, this.nikDataModel, this.nik}) : super(key: key);
+  const ClientUI({Key key, this.id}) : super(key: key);
 
   @override
   _ClientUIState createState() => _ClientUIState();
@@ -32,7 +31,7 @@ class _ClientUIState extends NewState<ClientUI> {
 
   @override
   void initState() {
-    _logic = ClientBase(this, widget.nik, widget.nikDataModel);
+    _logic = ClientBase(this, widget.id);
     super.initState();
   }
 

@@ -231,6 +231,15 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.0.10"
+  documents_picker:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: v2
+      resolved-ref: "9ac7c4f84cb55a1296ba2aa62f7c59e9b6d5e452"
+      url: "git://github.com/Suzaku10/Flutter_Documents_Picker.git"
+    source: git
+    version: "1.0.0"
   fake_async:
     dependency: transitive
     description:
@@ -450,7 +459,7 @@ packages:
     source: hosted
     version: "1.3.0-nullsafety.3"
   mime:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: mime
       url: "https://pub.dartlang.org"
@@ -491,6 +500,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "1.2.0"
+  open_file:
+    dependency: "direct main"
+    description:
+      name: open_file
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "3.0.3"
   package_config:
     dependency: transitive
     description:

@@ -5,6 +5,7 @@ import 'package:crypto/crypto.dart' as crypt;
 import 'package:hive/hive.dart';
 import 'package:mobilesurvey/model/ao.dart';
 import 'package:mobilesurvey/model/configuration.dart';
+import 'package:mobilesurvey/model/photo_form.dart';
 import 'package:mobilesurvey/model/quisioner.dart';
 import 'package:mobilesurvey/model/zipcode.dart';
 import 'package:mobilesurvey/utilities/constant.dart';
@@ -24,8 +25,33 @@ class MasterRepositories {
 
   static List<AoModel> get ao => _ao;
 
-  static List<String> get aoList => MasterRepositories.ao.map((e) => e.descs).toList();
+  static List<String> get aoList =>
+      MasterRepositories.ao.map((e) => e.descs).toList();
 
+  static List<PhotoForm> _photoForm;
+
+  static List<PhotoForm> get photoForm => _photoForm;
+
+  static List<PhotoForm> _docPhoto;
+
+  static List<PhotoForm> get docPhoto => _docPhoto;
+
+  static void savePhotoForm(List<PhotoForm> value, int type) {
+    //type 1 = foto; 0 = dokumen
+    switch (type) {
+      case 0:
+        _saveToHive(value, master.doc);
+        _docPhoto = value;
+        break;
+      case 1:
+        _saveToHive(value, master.pic);
+        _photoForm = value;
+        break;
+      default:
+        return;
+    }
+    print("udah di save");
+  }
 
   static void saveZipCodes(List<ZipCodeModel> value) {
     _saveToHive(value, master.zipcode);
@@ -47,6 +73,7 @@ class MasterRepositories {
     PreferenceUtils.setString(kLastUpdateQuestion, value.lastUpdateQuestion);
     PreferenceUtils.setString(kLastUpdateZipCode, value.lastUpdateZipCode);
     PreferenceUtils.setString(kLastUpdateAO, value.lastUpdateAo);
+    PreferenceUtils.setString(kLastUpdateForm, value.lastUpdateForm);
   }
 
   static Future<void> _saveToHive(
@@ -55,21 +82,38 @@ class MasterRepositories {
     try {
       switch (masterType) {
         case master.zipcode:
-          var box = await Hive.openBox<ZipCodeModel>(kHiveKeys_3, encryptionCipher: _chiper);
+          var box = await Hive.openBox<ZipCodeModel>(kHiveKeys_3,
+              encryptionCipher: _chiper);
           await box.deleteAll(box.keys);
           List<ZipCodeModel> values = List<ZipCodeModel>.from(value);
           box.addAll(values);
           break;
         case master.ao:
-          var box = await Hive.openBox<AoModel>(kHiveKeys_1,  encryptionCipher: _chiper);
+          var box = await Hive.openBox<AoModel>(kHiveKeys_1,
+              encryptionCipher: _chiper);
           await box.deleteAll(box.keys);
           List<AoModel> values = List<AoModel>.from(value);
           box.addAll(values);
           break;
         case master.question:
-          var box = await Hive.openBox<QuisionerModel>(kHiveKeys_2, encryptionCipher: _chiper);
+          var box = await Hive.openBox<QuisionerModel>(kHiveKeys_2,
+              encryptionCipher: _chiper);
           await box.deleteAll(box.keys);
           List<QuisionerModel> values = List<QuisionerModel>.from(value);
+          box.addAll(values);
+          break;
+        case master.pic:
+          var box = await Hive.openBox<PhotoForm>(kHiveKeys_4,
+              encryptionCipher: _chiper);
+          await box.deleteAll(box.keys);
+          List<PhotoForm> values = List<PhotoForm>.from(value);
+          box.addAll(values);
+          break;
+        case master.doc:
+          var box = await Hive.openBox<PhotoForm>(kHiveKeys_5,
+              encryptionCipher: _chiper);
+          await box.deleteAll(box.keys);
+          List<PhotoForm> values = List<PhotoForm>.from(value);
           box.addAll(values);
           break;
         default:
@@ -108,6 +152,22 @@ class MasterRepositories {
             saveAO(box.values.toList());
           }
           return Future.value(true);
+        case master.pic:
+          bool _boxExists = await Hive.boxExists(kHiveKeys_4);
+          if (_boxExists) {
+            var box = await Hive.openBox<PhotoForm>(kHiveKeys_4,
+                encryptionCipher: _chiper);
+            savePhotoForm(box.values.toList(), 1);
+          }
+          return Future.value(true);
+        case master.doc:
+          bool _boxExists = await Hive.boxExists(kHiveKeys_5);
+          if (_boxExists) {
+            var box = await Hive.openBox<PhotoForm>(kHiveKeys_5,
+                encryptionCipher: _chiper);
+            savePhotoForm(box.values.toList(), 0);
+          }
+          return Future.value(true);
         default:
           return Future.value(false);
       }
@@ -116,7 +176,7 @@ class MasterRepositories {
     }
   }
 
-  static HiveAesCipher _key(){
+  static HiveAesCipher _key() {
     var _keys = utf8.encode(kHiveKey);
     var _md5 = crypt.md5.convert(_keys);
     var _sha = crypt.sha256.convert(_md5.bytes);

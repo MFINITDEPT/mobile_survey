@@ -46,5 +46,5 @@ class AoModelAdapter extends TypeAdapter<AoModel> {
 
   @override
   // TODO: implement typeId
-  int get typeId => 1;
+  int get typeId => 0;
 }

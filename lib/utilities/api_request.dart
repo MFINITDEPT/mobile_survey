@@ -1,10 +1,13 @@
 import 'dart:convert';
+import 'dart:io';
 
+import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mobilesurvey/model/ao.dart';
 import 'package:mobilesurvey/model/configuration.dart';
 import 'package:mobilesurvey/model/nik_data.dart';
+import 'package:mobilesurvey/model/photo_form.dart';
 import 'package:mobilesurvey/model/quisioner.dart';
 import 'package:mobilesurvey/model/zipcode.dart';
 import 'package:mobilesurvey/repositories/master.dart';
@@ -14,12 +17,23 @@ import 'package:ridjnaelcrypt/ridjnaelcrypt.dart';
 import 'enum.dart';
 
 class APIRequest {
-  static Dio _dio = Dio();
+  static Dio _dio = config();
   static String _url = "https://ver-itrack.mncfinance.net/";
-  static String _urldev = "https://ver-itrack.mncfinance.net/api/master/";
-//  static String _urldev = "http://10.1.80.83:45457/api/master/";
+//  static String _urldev = "https://ver-itrack.mncfinance.net/api/master/";
+  static String _urldev = "https://10.1.80.83:45456/api/master/";
 
 //  static String _urldev = "http://172.31.9.104:9993/api/master/";
+
+  static Dio config(){
+      Dio _newDio = new Dio();
+//      _newDio.options.connectTimeout = 3600 * 1000;
+      (_newDio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate = (HttpClient client) {
+        client.badCertificateCallback =
+            (X509Certificate cert, String host, int port) => true;
+      };
+
+      return _newDio;
+  }
 
   static Future<Options> _getDioOptions({contentType contentType}) async {
     return Options(
@@ -75,10 +89,11 @@ class APIRequest {
   static Future<List<QuisionerModel>> masterQuisioner() async {
     Options options = await _getDioOptions(contentType: contentType.json);
 
-    String url = _urldev + "question";
+    String url = _urldev + "Quisioner";
 
     var result =
         await _dio.get<dynamic>(url, options: options).catchError((error) {
+          print("$url Error");
       return null;
     });
 
@@ -92,9 +107,6 @@ class APIRequest {
   }
 
   static Future<List<ZipCodeModel>> masterZipCode() async {
-    _dio.options.connectTimeout = 300 * 1000;
-    _dio.options.receiveTimeout = 300 * 1000;
-
     Options options = await _getDioOptions(contentType: contentType.json);
 
     String url = _urldev + "zipcode";
@@ -107,6 +119,7 @@ class APIRequest {
           gravity: ToastGravity.CENTER,
           timeInSecForIosWeb: 1,
           fontSize: 16.0);
+      print("$url Error");
       return null;
     });
 
@@ -122,10 +135,12 @@ class APIRequest {
   static Future<ConfigurationModel> getConfiguration() async {
     Options options = await _getDioOptions(contentType: contentType.json);
 
+
     String url = _urldev + "configuration";
 
     var result =
         await _dio.get<dynamic>(url, options: options).catchError((error) {
+          print("$url Error");
       return null;
     });
 
@@ -141,6 +156,7 @@ class APIRequest {
 
     var result =
         await _dio.get<dynamic>(url, options: options).catchError((error) {
+          print("$url Error");
       return null;
     });
 
@@ -149,6 +165,26 @@ class APIRequest {
       var list = List.from(result.data);
       list.forEach((element) => res.add(AoModel.fromJson(element)));
     }
+    return res;
+  }
+
+  static Future<dynamic> getFotoForm(int id) async {
+    Options options = await _getDioOptions(contentType: contentType.json);
+
+    String url = _urldev + 'getFotoForm';
+    Map<String, int> params = Map<String, int>()..putIfAbsent("id", () => id);
+    var result =
+    await _dio.get<dynamic>(url, options: options, queryParameters: params).catchError((error) {
+      print("$url Error");
+      return null;
+    });
+
+    List<PhotoForm> res = [];
+    if (result.data != null) {
+      var list = List.from(result.data);
+      list.forEach((element) => res.add(PhotoForm.fromJson(element)));
+    }
+
     return res;
   }
 

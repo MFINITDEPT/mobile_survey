@@ -13,13 +13,17 @@ String kUserId = "userid";
 String kLastUpdateZipCode = "lastUpdateZipcode";
 String kLastUpdateQuestion = "lastUpdateQuestion";
 String kLastUpdateAO = "lastUpdateAO";
+String kLastUpdateForm = "lastUpdateForm";
 String kHiveKeys_1 = "AO";
 String kHiveKeys_2 = "Quisioner";
 String kHiveKeys_3 = "Zipcode";
+String kHiveKeys_4 = "Pic";
+String kHiveKeys_5 = "Doc";
+String kLastSavedClient;
 
 //int constant
 int kCaptchaLength = 6;
-int kMaxSizeUpload = 1003102 * 2;
+int kMaxSizeUpload = 1003102 * 100;
 int kMaxData = 100;
 
 // array constant

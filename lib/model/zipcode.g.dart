@@ -36,5 +36,6 @@ class ZipCodeModelAdapter extends TypeAdapter<ZipCodeModel> {
   }
 
   @override
-  int get typeId => 0;
+  // TODO: implement typeId
+  int get typeId => 2;
 }

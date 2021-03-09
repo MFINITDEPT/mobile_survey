@@ -14,15 +14,15 @@ class QuisionerModel {
 
   factory QuisionerModel.fromJson(Map<String, dynamic> json) {
     List<String> _choices = [];
-    if (json.containsKey('Choice') != null && json['Choice'] is List) {
-      for (var item in json['Choice']) {
+    if (json.containsKey('choice') != null && json['choice'] is List) {
+      for (var item in json['choice']) {
         _choices.add(item);
       }
     }
 
     return QuisionerModel(
-        question: json.containsKey('Question')
-            ? ParseUtils.castString(json['Question'])
+        question: json.containsKey('question')
+            ? ParseUtils.castString(json['question'])
             : null,
         choice: _choices);
   }
@@ -35,8 +35,8 @@ class QuisionerModel {
       }
     }
     return {
-      "Question": this.question,
-      "Choice": _choices.length == 0 ? null : _choices
+      "question": this.question,
+      "choice": _choices.length == 0 ? null : _choices
     };
   }
 }

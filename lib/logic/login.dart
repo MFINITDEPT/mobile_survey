@@ -1,10 +1,9 @@
-import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:mobilesurvey/boilerplate/new_state.dart';
-import 'package:mobilesurvey/ui/home.dart';
+import 'package:mobilesurvey/ui/assets.dart';
 import 'package:mobilesurvey/ui/home_container.dart';
+import 'package:mobilesurvey/ui/inquiry.dart';
 import 'package:mobx/mobx.dart';
-import 'package:pit_permission/pit_permission.dart';
 
 part 'login.g.dart';
 
@@ -20,6 +19,6 @@ abstract class _LoginLogic with Store {
   @action
   void signIn() {
     Navigator.of(_context).pushAndRemoveUntil(
-        MaterialPageRoute(builder: (_) => HomeContainerUI()), (route) => false);
+        MaterialPageRoute(builder: (_) => InquiryUI()), (route) => false);
   }
 }

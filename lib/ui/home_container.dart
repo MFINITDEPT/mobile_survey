@@ -4,20 +4,18 @@ import 'package:mobilesurvey/logic/home_container.dart';
 import 'package:mobilesurvey/model/nik_data.dart';
 import 'package:mobilesurvey/ui/assets.dart';
 import 'package:mobilesurvey/ui/client.dart';
+import 'package:mobilesurvey/ui/document.dart';
 import 'package:mobilesurvey/ui/quisioner.dart';
-import 'package:mobilesurvey/ui/survey.dart';
 import 'package:mobilesurvey/utilities/assets.dart';
 import 'package:mobilesurvey/utilities/palette.dart';
 import 'package:mobilesurvey/component/custom_circular_tab_indicator.dart';
 import 'package:mobilesurvey/utilities/translation.dart';
 
 class HomeContainerUI extends StatefulWidget {
-  final NikDataModel model;
-  final String nik;
   final int index;
+  final String id;
 
-  const HomeContainerUI({Key key, this.model, this.nik, this.index})
-      : super(key: key);
+  const HomeContainerUI({Key key, this.index, this.id}) : super(key: key);
 
   @override
   _HomeContainerUIState createState() => _HomeContainerUIState();
@@ -28,7 +26,7 @@ class _HomeContainerUIState extends NewState<HomeContainerUI> {
 
   @override
   void initState() {
-    _logic = HomeContainerBase(this, widget.model, widget.nik);
+//    _logic = HomeContainerBase(this, widget.id);
     super.initState();
   }
 
@@ -52,9 +50,6 @@ class _HomeContainerUIState extends NewState<HomeContainerUI> {
             indicator: CircleTabIndicator(color: Palette.gold, radius: 3),
             tabs: [
               Tab(
-                  child: Text(translation.getText('home'),
-                      maxLines: 1, style: TextStyle(fontSize: 12.0))),
-              Tab(
                   child: Text(translation.getText('client'),
                       maxLines: 1, style: TextStyle(fontSize: 12.0))),
               Tab(
@@ -62,6 +57,9 @@ class _HomeContainerUIState extends NewState<HomeContainerUI> {
                       maxLines: 1, style: TextStyle(fontSize: 12.0))),
               Tab(
                   child: Text(translation.getText('assets'),
+                      maxLines: 1, style: TextStyle(fontSize: 12.0))),
+              Tab(
+                  child: Text(translation.getText('document'),
                       maxLines: 1, style: TextStyle(fontSize: 12.0))),
             ],
           ),
@@ -81,10 +79,10 @@ class _HomeContainerUIState extends NewState<HomeContainerUI> {
         ),
         body: TabBarView(
           children: [
-            Container(color: Palette.gold),
-            ClientUI(),
+            ClientUI(id: widget.id),
             QuisionerUI(),
             AssetsUI(),
+            DocumentUI(),
           ],
         ),
       ),

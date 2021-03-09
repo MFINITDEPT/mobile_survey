@@ -29,24 +29,24 @@ class AoModel {
 
   factory AoModel.fromJson(Map<String, dynamic> json) {
     return AoModel(
-        code: json['CODE'] ?? "",
-        cCode: json['C_CODE'] ?? "",
-        isHO: json["IS_HO"] ?? "0",
-        descs: json['DESCS'] ?? "",
-        maxClientLoad: json["MAX_CLIENT_LOAD"] ?? 0,
-        currentLoad: json["CURRENT_LOAD"] ?? 0,
-        modDate: json["MOD_DATE"] ?? "");
+        code: json['code'] ?? "",
+        cCode: json['cCode'] ?? "",
+        isHO: json["isHo"] ?? "0",
+        descs: json['descs'] ?? "",
+        maxClientLoad: json["maxClientLoad"] ?? 0,
+        currentLoad: json["currentLoad"] ?? 0,
+        modDate: json["modDate"] ?? "");
   }
 
   Map<String, dynamic> toJson() {
     return {
-      "CODE": this.code,
-      "C_CODE": this.cCode,
-      "IS_HO": this.isHO,
-      "DESCS": this.descs,
-      "MAX_CLIENT_LOAD": this.maxClientLoad,
-      "CURRENT_LOAD": this.currentLoad,
-      "MOD_DATE": this.modDate,
+      "code": this.code,
+      "cCode": this.cCode,
+      "isHo": this.isHO,
+      "descs": this.descs,
+      "maxClientLoad": this.maxClientLoad,
+      "currentLoad": this.currentLoad,
+      "modDate": this.modDate,
     };
   }
 }

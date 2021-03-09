@@ -7,6 +7,7 @@ import 'package:mobilesurvey/model/dropdown.dart';
 import 'package:mobilesurvey/model/zipcode.dart';
 import 'package:mobilesurvey/repositories/master.dart';
 import 'package:mobilesurvey/utilities/constant.dart';
+import 'package:mobilesurvey/utilities/hive_utils.dart';
 import 'package:mobilesurvey/utilities/string_utils.dart';
 import 'package:mobx/mobx.dart';
 
@@ -20,36 +21,29 @@ class ClientBase = _ClientLogic with _$ClientBase;
 
 abstract class _ClientLogic with Store {
   final NewState _state;
-  final String _nik;
-  final NikDataModel _model;
+  final String _id;
 
-  _ClientLogic(this._state, this._nik, this._model);
-
-  @computed
-  NikDataModel get model => _model;
-
-  @computed
-  String get nik => _nik;
+  _ClientLogic(this._state, this._id);
 
   BuildContext get _context => _state.context;
 
-  TextEditingController _nameCtrl = TextEditingController();
-  TextEditingController _birthLocationCtrl = TextEditingController();
-  TextEditingController _nikCtrl = TextEditingController();
-  TextEditingController _birthDateCtrl = TextEditingController();
-  TextEditingController _addressCtrl = TextEditingController();
-  TextEditingController _effectiveOfCtrl = TextEditingController();
-  TextEditingController _toCtrl = TextEditingController();
-  TextEditingController _identityCityCtrl = TextEditingController();
-  TextEditingController _motherNameCtrl = TextEditingController();
-  TextEditingController _rtCtrl = TextEditingController();
-  TextEditingController _rwCtrl = TextEditingController();
-  TextEditingController _zipCodeCtrl = TextEditingController();
-  TextEditingController _villageCtrl = TextEditingController();
-  TextEditingController _districtCtrl = TextEditingController();
-  TextEditingController _handphoneNoCtrl = TextEditingController();
-  TextEditingController _phoneNoCtrl = TextEditingController();
-  TextEditingController _faxCtrl = TextEditingController();
+  static TextEditingController _nameCtrl = TextEditingController();
+  static TextEditingController _birthLocationCtrl = TextEditingController();
+  static TextEditingController _nikCtrl = TextEditingController();
+  static TextEditingController _birthDateCtrl = TextEditingController();
+  static TextEditingController _addressCtrl = TextEditingController();
+  static TextEditingController _effectiveOfCtrl = TextEditingController();
+  static TextEditingController _toCtrl = TextEditingController();
+  static TextEditingController _identityCityCtrl = TextEditingController();
+  static TextEditingController _motherNameCtrl = TextEditingController();
+  static TextEditingController _rtCtrl = TextEditingController();
+  static TextEditingController _rwCtrl = TextEditingController();
+  static TextEditingController _zipCodeCtrl = TextEditingController();
+  static TextEditingController _villageCtrl = TextEditingController();
+  static TextEditingController _districtCtrl = TextEditingController();
+  static TextEditingController _handphoneNoCtrl = TextEditingController();
+  static TextEditingController _phoneNoCtrl = TextEditingController();
+  static TextEditingController _faxCtrl = TextEditingController();
 
   TextEditingController get name => _nameCtrl;
 
@@ -85,7 +79,54 @@ abstract class _ClientLogic with Store {
 
   TextEditingController get fax => _faxCtrl;
 
-  List<String> _aoList = MasterRepositories.ao.map((e) => e.descs).take(10).toList();
+  var dispose = autorun((_) {
+    print(kLastSavedClient);
+    List<TextEditingController> controllers = [
+      _nameCtrl,
+      _birthLocationCtrl,
+      _birthDateCtrl,
+      _addressCtrl,
+      _nikCtrl,
+      _effectiveOfCtrl,
+      _toCtrl,
+      _identityCityCtrl,
+      _motherNameCtrl,
+      _rtCtrl,
+      _rwCtrl,
+      _zipCodeCtrl,
+      _villageCtrl,
+      _districtCtrl,
+      _handphoneNoCtrl,
+      _phoneNoCtrl,
+      _faxCtrl
+    ];
+    List<String> controllerNames = [
+      "nama",
+      "tempatLahir",
+      "tglLahir",
+      "alamat",
+      "nik",
+      "efektif",
+      "to",
+      "identityCity",
+      "motherName",
+      "rt",
+      "rw",
+      "zipcode",
+      "village",
+      "district",
+      "handphoneNo",
+      "phoneNo",
+      "fax"
+    ];
+
+    HiveUtils.readFromBox(
+        kLastSavedClient, controllers, controllerNames, "Client");
+
+    controllers.forEach((element) => element.addListener(() =>
+        HiveUtils.addListenner(kLastSavedClient, element,
+            controllerNames[controllers.indexOf(element)], "Client")));
+  });
 
   @observable
   SearchModel _ao = SearchModel(

@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:adv_image_picker/adv_image_picker.dart';
 import 'package:documents_picker/documents_picker.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mobilesurvey/boilerplate/new_state.dart';
 import 'package:mobilesurvey/model/photo_form.dart';
@@ -15,14 +15,14 @@ import 'package:mobx/mobx.dart';
 import 'package:open_file/open_file.dart';
 import 'package:pit_permission/pit_permission.dart';
 
-part 'assets.g.dart';
+part 'document.g.dart';
 
-class AssetsBase = _AssetsLogic with _$AssetsBase;
+class DocumentBase = _DocumentLogic with _$DocumentBase;
 
-abstract class _AssetsLogic with Store {
+abstract class _DocumentLogic with Store {
   NewState _state;
 
-  _AssetsLogic(this._state);
+  _DocumentLogic(this._state);
 
   BuildContext get _context => _state.context;
 
@@ -32,10 +32,10 @@ abstract class _AssetsLogic with Store {
   @computed
   ObservableList<PhotoResult> get results {
     List<PhotoResult> _result = List<PhotoResult>();
-    MasterRepositories.photoForm.forEach((element) {
+    MasterRepositories.docPhoto.forEach((element) {
       PhotoResult _item = PhotoResult();
       _item.form =
-          MasterRepositories.photoForm.firstWhere((item) => element == item);
+          MasterRepositories.docPhoto.firstWhere((item) => element == item);
       _item.result = List<File>(element.count);
 
       _result.add(_item);

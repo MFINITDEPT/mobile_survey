@@ -18,26 +18,26 @@ class ZipCodeModel {
 
   factory ZipCodeModel.fromJson(Map<String, dynamic> json) {
     return ZipCodeModel(
-        kota: json.containsKey('Kota')
-            ? ParseUtils.castString(json['Kota'])
+        kota: json.containsKey('kota')
+            ? ParseUtils.castString(json['kota'])
             : null,
-        kecamatan: json.containsKey('Kecamatan')
-            ? ParseUtils.castString(json['Kecamatan'])
+        kecamatan: json.containsKey('kecamatan')
+            ? ParseUtils.castString(json['kecamatan'])
             : null,
-        kelurahan: json.containsKey('Kelurahan')
-            ? ParseUtils.castString(json['Kelurahan'])
+        kelurahan: json.containsKey('kelurahan')
+            ? ParseUtils.castString(json['kelurahan'])
             : null,
-        kodePos: json.containsKey('KodePos')
-            ? ParseUtils.castString(json['KodePos'])
+        kodePos: json.containsKey('kodePos')
+            ? ParseUtils.castString(json['kodePos'])
             : null);
   }
 
   Map<String, dynamic> toJson() {
     return {
-      "Kota": this.kota,
-      "Kecamatan": this.kecamatan,
-      "Kelurahan": this.kelurahan,
-      "KodePos": this.kodePos
+      "kota": this.kota,
+      "kecamatan": this.kecamatan,
+      "kelurahan": this.kelurahan,
+      "kodePos": this.kodePos
     };
   }
 }

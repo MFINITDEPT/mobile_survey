@@ -2,22 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mobilesurvey/boilerplate/new_state.dart';
 import 'package:mobilesurvey/component/adv_column.dart';
-import 'package:mobilesurvey/logic/assets.dart';
+import 'package:mobilesurvey/logic/document.dart';
 import 'package:mobilesurvey/model/photo_result.dart';
 import 'package:mobilesurvey/utilities/mime_utils.dart';
 import 'package:mobilesurvey/utilities/palette.dart';
 
-class AssetsUI extends StatefulWidget {
+class DocumentUI extends StatefulWidget {
   @override
-  _AssetsUIState createState() => _AssetsUIState();
+  _DocumentUIState createState() => _DocumentUIState();
 }
 
-class _AssetsUIState extends NewState<AssetsUI> {
-  AssetsBase _logic;
+class _DocumentUIState extends NewState<DocumentUI> {
+  DocumentBase _logic;
 
   @override
   void initState() {
-    _logic = AssetsBase(this);
+    _logic = DocumentBase(this);
     super.initState();
   }
 
@@ -67,9 +67,9 @@ class _AssetsUIState extends NewState<AssetsUI> {
               child: Container(
                   child: _logic.image(photo.form, index) != null
                       ? MimeUtils.isImage(_logic.image(photo.form, index).path)
-                      ? Image.file(_logic.image(photo.form, index),
-                      fit: BoxFit.cover)
-                      : Icon(Icons.description)
+                          ? Image.file(_logic.image(photo.form, index),
+                              fit: BoxFit.cover)
+                          : Icon(Icons.description)
                       : Icon(Icons.add),
                   color: Palette.black26,
                   height: 100,

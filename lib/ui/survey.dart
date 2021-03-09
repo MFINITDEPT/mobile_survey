@@ -1,3 +1,4 @@
+/*
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:mobilesurvey/boilerplate/new_state.dart';
@@ -98,3 +99,4 @@ class _SurveyUIState extends NewState<SurveyUI> {
     );
   }
 }
+*/

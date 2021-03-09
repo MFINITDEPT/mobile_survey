@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:mobilesurvey/boilerplate/new_state.dart';
 import 'package:mobilesurvey/model/dropdown.dart';
-import 'package:mobilesurvey/model/quisioner.dart';
 import 'package:mobilesurvey/model/quisioner_answer.dart';
 import 'package:mobilesurvey/repositories/master.dart';
 import 'package:mobx/mobx.dart';
@@ -46,7 +44,6 @@ abstract class _QuisionerLogic with Store {
 
   @action
   void testSubmit(){
-    print("loh?");
     _quisioner.forEach((element) {
       print("${_quisioner.indexOf(element)} : ${element.question} : ${element.choice?.value}: ${element.controller?.text}");
     });
