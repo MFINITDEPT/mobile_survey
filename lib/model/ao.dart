@@ -1,7 +1,7 @@
 import 'package:hive/hive.dart';
 part 'ao.g.dart';
 
-@HiveType()
+@HiveType(typeId: 0)
 class AoModel {
   @HiveField(0)
   final String code;

@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:crypto/crypto.dart' as crypt;
+import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
 import 'package:mobilesurvey/model/ao.dart';
 import 'package:mobilesurvey/model/configuration.dart';
@@ -12,6 +13,61 @@ import 'package:mobilesurvey/model/zipcode.dart';
 import 'package:mobilesurvey/utilities/constant.dart';
 import 'package:mobilesurvey/utilities/enum.dart';
 import 'package:mobilesurvey/utilities/shared_preferences_utils.dart';
+
+Future<void> heavyTaskWriteZipCode(Map<String, dynamic> map) async {
+  HiveInterface hive = Hive..init(map['path']);
+  if (!hive.isAdapterRegistered(ZipCodeModelAdapter().typeId))
+    hive..registerAdapter(ZipCodeModelAdapter());
+  var box = await Hive.openBox<ZipCodeModel>(kHiveKeys_3,
+      encryptionCipher: map['chiper']);
+  await box.deleteAll(box.keys);
+  List<ZipCodeModel> values = List<ZipCodeModel>.from(map['value']);
+  await box.addAll(values);
+}
+
+Future<void> heavyTaskWriteAo(Map<String, dynamic> map) async {
+  HiveInterface hive = Hive..init(map['path']);
+  if (!hive.isAdapterRegistered(AoModelAdapter().typeId))
+    hive..registerAdapter(AoModelAdapter());
+  var box =
+      await Hive.openBox<AoModel>(kHiveKeys_1, encryptionCipher: map['chiper']);
+  await box.deleteAll(box.keys);
+  List<AoModel> values = List<AoModel>.from(map['value']);
+  await box.addAll(values);
+}
+
+Future<void> heavyTaskWriteQuestion(Map<String, dynamic> map) async {
+  HiveInterface hive = Hive..init(map['path']);
+  if (!hive.isAdapterRegistered(QuisionerModelAdapter().typeId))
+    hive..registerAdapter(QuisionerModelAdapter());
+  var box = await Hive.openBox<QuisionerModel>(kHiveKeys_2,
+      encryptionCipher: map['chiper']);
+  await box.deleteAll(box.keys);
+  List<QuisionerModel> values = List<QuisionerModel>.from(map['value']);
+  await box.addAll(values);
+}
+
+Future<void> heavyTaskWritePhotoForm(Map<String, dynamic> map) async {
+  HiveInterface hive = Hive..init(map['path']);
+  if (!hive.isAdapterRegistered(PhotoFormAdapter().typeId))
+    hive..registerAdapter(PhotoFormAdapter());
+  var box = await Hive.openBox<PhotoForm>(kHiveKeys_4,
+      encryptionCipher: map['chiper']);
+  await box.deleteAll(box.keys);
+  List<PhotoForm> values = List<PhotoForm>.from(map['value']);
+  await box.addAll(values);
+}
+
+Future<void> heavyTaskWriteDocForm(Map<String, dynamic> map) async {
+  HiveInterface hive = Hive..init(map['path']);
+  if (!hive.isAdapterRegistered(PhotoFormAdapter().typeId))
+    hive..registerAdapter(PhotoFormAdapter());
+  var box = await Hive.openBox<PhotoForm>(kHiveKeys_5,
+      encryptionCipher: map['chiper']);
+  await box.deleteAll(box.keys);
+  List<PhotoForm> values = List<PhotoForm>.from(map['value']);
+  await box.addAll(values);
+}
 
 class MasterRepositories {
   static List<ZipCodeModel> _zipcodes;
@@ -44,6 +100,8 @@ class MasterRepositories {
   static List<PhotoResult> _docFormResult;
 
   static List<PhotoResult> get docFormResult => _docFormResult;
+
+  static String hivePath;
 
   static void clearSavedPhotoFormResult(master type) {
     switch (type) {
@@ -116,39 +174,39 @@ class MasterRepositories {
     try {
       switch (masterType) {
         case master.zipcode:
-          var box = await Hive.openBox<ZipCodeModel>(kHiveKeys_3,
-              encryptionCipher: _chiper);
-          await box.deleteAll(box.keys);
-          List<ZipCodeModel> values = List<ZipCodeModel>.from(value);
-          box.addAll(values);
+          Map<String, dynamic> map = Map<String, dynamic>();
+          map.putIfAbsent('chiper', () => _chiper);
+          map.putIfAbsent('value', () => value);
+          map.putIfAbsent('path', () => hivePath);
+          await compute(heavyTaskWriteZipCode, map);
           break;
         case master.ao:
-          var box = await Hive.openBox<AoModel>(kHiveKeys_1,
-              encryptionCipher: _chiper);
-          await box.deleteAll(box.keys);
-          List<AoModel> values = List<AoModel>.from(value);
-          box.addAll(values);
+          Map<String, dynamic> map = Map<String, dynamic>();
+          map.putIfAbsent('chiper', () => _chiper);
+          map.putIfAbsent('value', () => value);
+          map.putIfAbsent('path', () => hivePath);
+          await compute(heavyTaskWriteAo, map);
           break;
         case master.question:
-          var box = await Hive.openBox<QuisionerModel>(kHiveKeys_2,
-              encryptionCipher: _chiper);
-          await box.deleteAll(box.keys);
-          List<QuisionerModel> values = List<QuisionerModel>.from(value);
-          box.addAll(values);
+          Map<String, dynamic> map = Map<String, dynamic>();
+          map.putIfAbsent('chiper', () => _chiper);
+          map.putIfAbsent('value', () => value);
+          map.putIfAbsent('path', () => hivePath);
+          await compute(heavyTaskWriteQuestion, map);
           break;
         case master.pic:
-          var box = await Hive.openBox<PhotoForm>(kHiveKeys_4,
-              encryptionCipher: _chiper);
-          await box.deleteAll(box.keys);
-          List<PhotoForm> values = List<PhotoForm>.from(value);
-          box.addAll(values);
+          Map<String, dynamic> map = Map<String, dynamic>();
+          map.putIfAbsent('chiper', () => _chiper);
+          map.putIfAbsent('value', () => value);
+          map.putIfAbsent('path', () => hivePath);
+          await compute(heavyTaskWritePhotoForm, map);
           break;
         case master.doc:
-          var box = await Hive.openBox<PhotoForm>(kHiveKeys_5,
-              encryptionCipher: _chiper);
-          await box.deleteAll(box.keys);
-          List<PhotoForm> values = List<PhotoForm>.from(value);
-          box.addAll(values);
+          Map<String, dynamic> map = Map<String, dynamic>();
+          map.putIfAbsent('chiper', () => _chiper);
+          map.putIfAbsent('value', () => value);
+          map.putIfAbsent('path', () => hivePath);
+          await compute(heavyTaskWriteDocForm, map);
           break;
         default:
           break;
@@ -157,7 +215,6 @@ class MasterRepositories {
       print(Exception.toString());
     }
   }
-
   static Future<bool> readFromHive(master masterType) async {
     HiveAesCipher _chiper = _key();
     try {
@@ -206,6 +263,7 @@ class MasterRepositories {
           return Future.value(false);
       }
     } catch (Exception) {
+      print(Exception.toString());
       return Future.value(false);
     }
   }

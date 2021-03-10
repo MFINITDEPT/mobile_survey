@@ -3,7 +3,7 @@ import 'package:hive/hive.dart';
 
 part 'quisioner.g.dart';
 
-@HiveType()
+@HiveType(typeId: 1)
 class QuisionerModel {
   @HiveField(0)
   final String question;

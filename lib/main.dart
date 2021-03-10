@@ -37,8 +37,18 @@ void main() {
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
       .then((_) {
     translation.init('en');
-    runApp(ITrackApp());
+    PitPermission.requestSinglePermission(PermissionName.storage);
+    getApplicationDocumentsDirectory().then((value) {
+      Hive
+        ..init(value.path)
+        ..registerAdapter(QuisionerModelAdapter())
+        ..registerAdapter(AoModelAdapter())
+        ..registerAdapter(ZipCodeModelAdapter())
+        ..registerAdapter(PhotoFormAdapter());
 
+      MasterRepositories.hivePath = value.path;
+    });
+    runApp(ITrackApp());
   });
 }
 
@@ -184,16 +194,6 @@ class _ITrackAppState extends State<ITrackApp>
     await PreferenceUtils.init();
 
     _widget = PreferenceUtils.getString(kUserId) != null ? HomeUI() : LoginUI();
-
-    await PitPermission.requestSinglePermission(PermissionName.storage);
-    var value = await getExternalStorageDirectory();
-
-    Hive
-    ..init(value.path)
-    ..registerAdapter(QuisionerModelAdapter())
-    ..registerAdapter(ZipCodeModelAdapter())
-    ..registerAdapter(AoModelAdapter())
-    ..registerAdapter(PhotoFormAdapter());
 
     APIRequest.getConfiguration().then((value) {
       if (value == null) {

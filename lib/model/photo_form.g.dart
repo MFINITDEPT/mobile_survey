@@ -55,5 +55,5 @@ class PhotoFormAdapter extends TypeAdapter<PhotoForm> {
 
   @override
   // TODO: implement typeId
-  int get typeId => 4;
+  int get typeId => 3;
 }

@@ -3,7 +3,7 @@ import 'package:hive/hive.dart';
 
 part 'zipcode.g.dart';
 
-@HiveType()
+@HiveType(typeId: 2)
 class ZipCodeModel {
   @HiveField(0)
   final String kota;

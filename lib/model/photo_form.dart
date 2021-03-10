@@ -3,7 +3,7 @@ import 'package:mobilesurvey/utilities/parse_utils.dart';
 
 part 'photo_form.g.dart';
 
-@HiveType()
+@HiveType(typeId: 3)
 class PhotoForm {
   @HiveField(0)
   final String id;
