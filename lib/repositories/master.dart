@@ -6,6 +6,7 @@ import 'package:hive/hive.dart';
 import 'package:mobilesurvey/model/ao.dart';
 import 'package:mobilesurvey/model/configuration.dart';
 import 'package:mobilesurvey/model/photo_form.dart';
+import 'package:mobilesurvey/model/photo_result.dart';
 import 'package:mobilesurvey/model/quisioner.dart';
 import 'package:mobilesurvey/model/zipcode.dart';
 import 'package:mobilesurvey/utilities/constant.dart';
@@ -36,36 +37,69 @@ class MasterRepositories {
 
   static List<PhotoForm> get docPhoto => _docPhoto;
 
-  static void savePhotoForm(List<PhotoForm> value, int type) {
+  static List<PhotoResult> _photoFormResult;
+
+  static List<PhotoResult> get photoFormResult => _photoFormResult;
+
+  static List<PhotoResult> _docFormResult;
+
+  static List<PhotoResult> get docFormResult => _docFormResult;
+
+  static void clearSavedPhotoFormResult(master type) {
+    switch (type) {
+      case master.doc:
+        _docFormResult = null;
+        break;
+      case master.pic:
+        _photoFormResult = null;
+        break;
+      default:
+        break;
+    }
+  }
+
+  static void savePhotoFormResult(List<PhotoResult> value, master type) {
+    switch (type) {
+      case master.doc:
+        _docFormResult = value;
+        break;
+      case master.pic:
+        _photoFormResult = value;
+        break;
+      default:
+        break;
+    }
+  }
+
+  static void savePhotoForm(List<PhotoForm> value, master type) async {
     //type 1 = foto; 0 = dokumen
     switch (type) {
-      case 0:
-        _saveToHive(value, master.doc);
+      case master.doc:
+        await _saveToHive(value, master.doc);
         _docPhoto = value;
         break;
-      case 1:
-        _saveToHive(value, master.pic);
+      case master.pic:
+        await _saveToHive(value, master.pic);
         _photoForm = value;
         break;
       default:
         return;
     }
-    print("udah di save");
   }
 
-  static void saveZipCodes(List<ZipCodeModel> value) {
-    _saveToHive(value, master.zipcode);
+  static void saveZipCodes(List<ZipCodeModel> value) async {
+    await _saveToHive(value, master.zipcode);
     _zipcodes = value;
     _zipcodes.sort((a, b) => a.kota.compareTo(b.kota));
   }
 
-  static void saveQuestion(List<QuisionerModel> value) {
-    _saveToHive(value, master.question);
+  static void saveQuestion(List<QuisionerModel> value) async {
+    await _saveToHive(value, master.question);
     _quisioners = value;
   }
 
-  static void saveAO(List<AoModel> value) {
-    _saveToHive(value, master.ao);
+  static void saveAO(List<AoModel> value) async {
+    await _saveToHive(value, master.ao);
     _ao = value;
   }
 
@@ -157,7 +191,7 @@ class MasterRepositories {
           if (_boxExists) {
             var box = await Hive.openBox<PhotoForm>(kHiveKeys_4,
                 encryptionCipher: _chiper);
-            savePhotoForm(box.values.toList(), 1);
+            savePhotoForm(box.values.toList(), master.pic);
           }
           return Future.value(true);
         case master.doc:
@@ -165,7 +199,7 @@ class MasterRepositories {
           if (_boxExists) {
             var box = await Hive.openBox<PhotoForm>(kHiveKeys_5,
                 encryptionCipher: _chiper);
-            savePhotoForm(box.values.toList(), 0);
+            savePhotoForm(box.values.toList(), master.doc);
           }
           return Future.value(true);
         default:

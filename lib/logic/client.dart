@@ -80,7 +80,6 @@ abstract class _ClientLogic with Store {
   TextEditingController get fax => _faxCtrl;
 
   var dispose = autorun((_) {
-    print(kLastSavedClient);
     List<TextEditingController> controllers = [
       _nameCtrl,
       _birthLocationCtrl,

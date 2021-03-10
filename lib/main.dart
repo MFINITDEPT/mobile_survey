@@ -263,7 +263,7 @@ class _ITrackAppState extends State<ITrackApp>
               _controller.updateProgress("get_doc_failed", false);
             } else {
               print("berhasil foto");
-              MasterRepositories.savePhotoForm(value, 0);
+              MasterRepositories.savePhotoForm(value, master.doc);
               _controller.updateProgress("get_doc_success", true);
             }
           });
@@ -273,7 +273,7 @@ class _ITrackAppState extends State<ITrackApp>
               _controller.updateProgress("get_pic_failed", false);
             } else {
               print("berhasil doc");
-              MasterRepositories.savePhotoForm(value, 1);
+              MasterRepositories.savePhotoForm(value, master.pic);
               _controller.updateProgress("get_pic_success", true);
             }
           });

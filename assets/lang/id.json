@@ -111,9 +111,14 @@
   "client": "Client",
   "quisioner": "Quisioner",
   "assets": "Assets",
+  "document" : "Document",
   "ao": "A/O",
   "prefix_salute": "Gelar Depan",
   "suffix_salute": "Gelar Belakang",
   "phone_area": "Kode Telepon",
-  "global_hint": "Isikan jawaban anda"
+  "global_hint": "Isikan jawaban anda",
+  "cancel" : "Batalkan",
+  "gallery" : "Galeri",
+  "camera" : "Kamera",
+  "file_manager" : "Pengelola File"
 }

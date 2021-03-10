@@ -9,6 +9,8 @@ import 'package:mobilesurvey/model/photo_form.dart';
 import 'package:mobilesurvey/model/photo_result.dart';
 import 'package:mobilesurvey/repositories/master.dart';
 import 'package:mobilesurvey/utilities/constant.dart';
+import 'package:mobilesurvey/utilities/enum.dart';
+import 'package:mobilesurvey/utilities/hive_utils.dart';
 import 'package:mobilesurvey/utilities/translation.dart';
 import 'package:mobilesurvey/utilities/ui_utils.dart';
 import 'package:mobx/mobx.dart';
@@ -26,23 +28,33 @@ abstract class _DocumentLogic with Store {
 
   BuildContext get _context => _state.context;
 
-  @observable
-  ObservableList<PhotoResult> _results = ObservableList.of([]);
-
-  @computed
-  ObservableList<PhotoResult> get results {
-    List<PhotoResult> _result = List<PhotoResult>();
-    MasterRepositories.docPhoto.forEach((element) {
-      PhotoResult _item = PhotoResult();
-      _item.form =
-          MasterRepositories.docPhoto.firstWhere((item) => element == item);
-      _item.result = List<File>(element.count);
-
-      _result.add(_item);
+  var _dispose = autorun((_) {
+    List<PhotoResult> newDocResult = List<PhotoResult>();
+    MasterRepositories.docFormResult.forEach((element) {
+      PhotoResult _photoResult = PhotoResult();
+      _photoResult.form = element.form;
+      List<File> files = List<File>(element.result.length);
+      for (int i = 0; i < element.result.length; i++) {
+        var result = HiveUtils.readFilePathFromBox(
+            kLastSavedClient, _photoResult.form, i, "dokumen");
+        if (result != null) {
+          files[i] = File(result);
+        }
+      }
+      _photoResult.result = files;
+      newDocResult.add(_photoResult);
     });
 
-    return _results = ObservableList.of(_result);
-  }
+    MasterRepositories.clearSavedPhotoFormResult(master.doc);
+    MasterRepositories.savePhotoFormResult(newDocResult, master.doc);
+  });
+
+  @observable
+  ObservableList<PhotoResult> _results =
+  ObservableList.of(MasterRepositories.docFormResult);
+
+  @computed
+  ObservableList<PhotoResult> get results => _results;
 
   @action
   Future<void> browseFile(PhotoForm form, int index) async {
@@ -78,6 +90,8 @@ abstract class _DocumentLogic with Store {
             if (file.first.lengthSync() < kMaxSizeUpload)
               _state.setState(() {
                 _files[index] = file.first;
+                HiveUtils.saveFilePathToBox(
+                    kLastSavedClient, file.first.path, form, index, "dokumen");
               });
             else if (file.first.lengthSync() > kMaxSizeUpload)
               Fluttertoast.showToast(
@@ -93,6 +107,8 @@ abstract class _DocumentLogic with Store {
             if (file.lengthSync() < kMaxSizeUpload)
               _state.setState(() {
                 _files[_files.indexOf(null)] = file;
+                HiveUtils.saveFilePathToBox(
+                    kLastSavedClient, file.path, form, docPaths.indexOf(item), "dokumen");
               });
             else if (file.lengthSync() > kMaxSizeUpload)
               Fluttertoast.showToast(
@@ -108,6 +124,8 @@ abstract class _DocumentLogic with Store {
             if (file.lengthSync() < kMaxSizeUpload)
               _state.setState(() {
                 _files[_files.indexOf(null)] = file;
+                HiveUtils.saveFilePathToBox(
+                    kLastSavedClient, file.path, form, docPaths.indexOf(item), "dokumen");
               });
             else if (file.lengthSync() > kMaxSizeUpload)
               Fluttertoast.showToast(
@@ -121,7 +139,11 @@ abstract class _DocumentLogic with Store {
     } else if (form.type.toLowerCase() == "foto") {
       List<File> files = await AdvImagePicker.pickImagesToFile(_context,
           usingGallery: false, useCustomView: false);
-      _getFileFromResult(form)[index] = files.first;
+      _state.setState(() {
+        _getFileFromResult(form)[index] = files.first;
+        HiveUtils.saveFilePathToBox(
+            kLastSavedClient, files.first.path, form, index, "dokumen");
+      });
     }
   }
 
@@ -129,6 +151,7 @@ abstract class _DocumentLogic with Store {
   void removePhoto(PhotoResult photo, int index) {
     _state.setState(() {
       photo.result[index] = null;
+      HiveUtils.deleteFilePathFromBox(kLastSavedClient, photo.form, index, "dokumen");
     });
   }
 

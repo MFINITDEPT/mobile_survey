@@ -52,7 +52,6 @@ class _AssetsUIState extends NewState<AssetsUI> {
       ),
     );
   }
-
   Widget _buildBox(PhotoResult photo, int index) {
     return Stack(
       overflow: Overflow.visible,
@@ -92,4 +91,43 @@ class _AssetsUIState extends NewState<AssetsUI> {
       ],
     );
   }
+/*  Widget _buildBox(PhotoResult photo, int index) {
+    return Stack(
+      overflow: Overflow.visible,
+      children: [
+        ClipRRect(
+          borderRadius: BorderRadius.circular(20.0),
+          child: InkWell(
+              onTap: () => _logic.image(photo.form, index) != null
+                  ? _logic.openFile(_logic.image(photo.form, index).path)
+                  : _logic.browseFile(photo.form, index),
+              borderRadius: BorderRadius.circular(20.0),
+              child: Container(
+                  child: _logic.image(photo.form, index) != null
+                      ? MimeUtils.isImage(_logic.image(photo.form, index).path)
+                      ? Image.file(_logic.image(photo.form, index),
+                      fit: BoxFit.cover)
+                      : Icon(Icons.description)
+                      : Icon(Icons.add),
+                  color: Palette.black26,
+                  height: 100,
+                  width: 100)),
+        ),
+        if (_logic.image(photo.form, index) != null)
+          Positioned.fill(
+              child: Align(
+                alignment: Alignment.topRight,
+                child: MaterialButton(
+                  onPressed: () => _logic.removePhoto(photo, index),
+                  color: Colors.blue,
+                  textColor: Colors.white,
+                  child: Icon(Icons.close, size: 20.0),
+                  shape: CircleBorder(),
+                ),
+              ),
+              top: -15.0,
+              right: -30.0)
+      ],
+    );
+  }*/
 }

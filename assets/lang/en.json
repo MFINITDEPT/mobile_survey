@@ -111,9 +111,14 @@
   "client" : "Client",
   "quisioner" : "Quisioner",
   "assets" : "Assets",
+  "document" : "Document",
   "ao" : "A/O",
   "prefix_salute" : "Prefix Salute",
   "suffix_salute" : "Suffix Salute",
   "phone_area" : "Phone Area",
-  "global_hint" : "Fill your answer"
+  "global_hint" : "Fill your answer",
+  "cancel" : "Cancel",
+  "gallery" : "Gallery",
+  "camera" : "Camera",
+  "file_manager" : "File Manager"
 }

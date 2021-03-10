@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:hive/hive.dart';
+import 'package:mobilesurvey/model/photo_form.dart';
 
 class HiveUtils {
   static void _saveTextFieldControllerToHive(
@@ -47,6 +50,46 @@ class HiveUtils {
     } else {
       Box<dynamic> box = await Hive.openBox(boxName);
       _saveTextFieldControllerToHive(id, controller, controllerName, type, box);
+    }
+  }
+
+  static Future<void> saveFilePathToBox(
+      String id, String filePath, PhotoForm form, int index,
+      [String type = "foto"]) async {
+    String boxName = "$type$id";
+    if (Hive.isBoxOpen(boxName)) {
+      Box<dynamic> box = Hive.box(boxName);
+      box.put("${form.kelengkapan}$id$type$index", filePath);
+    } else {
+      Box<dynamic> box = await Hive.openBox(boxName);
+      box.put("${form.kelengkapan}$id$type$index", filePath);
+    }
+  }
+
+  static Future<void> deleteFilePathFromBox(
+      String id, PhotoForm form, int index,
+      [String type = "foto"]) async {
+    String boxName = "$type$id";
+    if (Hive.isBoxOpen(boxName)) {
+      Box<dynamic> box = Hive.box(boxName);
+      box.delete("${form.kelengkapan}$id$type$index");
+    } else {
+      Box<dynamic> box = await Hive.openBox(boxName);
+      box.delete("${form.kelengkapan}$id$type$index");
+    }
+  }
+
+  static String readFilePathFromBox(
+      String id, PhotoForm form, int index,
+      [String type = "foto"]) {
+    String boxName = "$type$id";
+    if (Hive.isBoxOpen(boxName)) {
+      Box<dynamic> box = Hive.box(boxName);
+      return(box.get("${form.kelengkapan}$id$type$index"));
+    } else {
+     Hive.openBox(boxName).then((value){
+       return value.get("${form.kelengkapan}$id$type$index");
+      });
     }
   }
 }
