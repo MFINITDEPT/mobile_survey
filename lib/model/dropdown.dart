@@ -1,8 +1,15 @@
+import 'package:hive/hive.dart';
 import 'package:mobilesurvey/utilities/parse_utils.dart';
 
+part 'dropdown.g.dart';
+
+@HiveType(typeId: 4)
 class SearchModel {
+  @HiveField(0)
   final String title;
+  @HiveField(1)
   final List<String> itemList;
+  @HiveField(2)
   String value;
 
   SearchModel({this.title, this.itemList, this.value,});

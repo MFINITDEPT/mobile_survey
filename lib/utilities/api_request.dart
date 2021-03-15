@@ -26,7 +26,6 @@ class APIRequest {
 
   static Dio config(){
       Dio _newDio = new Dio();
-//      _newDio.options.connectTimeout = 3600 * 1000;
       (_newDio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate = (HttpClient client) {
         client.badCertificateCallback =
             (X509Certificate cert, String host, int port) => true;

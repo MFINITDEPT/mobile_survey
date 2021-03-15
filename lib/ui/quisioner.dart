@@ -43,7 +43,7 @@ class _QuisionerUIState extends NewState<QuisionerUI> {
                 color: Palette.gold,
                 margin: EdgeInsets.symmetric(vertical: 4.0),
               ),
-            )), FlatButton(onPressed: _logic.testSubmit, child: Text('Submit'))],
+            )),],
           );
         } else {
           return Container();
@@ -79,28 +79,22 @@ class _QuisionerUIState extends NewState<QuisionerUI> {
   }
 
   Widget _buildDropDown(SearchModel model) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(model.title),
-        AdvDropdownButton(
-            value: model.value,
-            icon: Padding(
-                padding: EdgeInsets.symmetric(horizontal: 8.0),
-                child: Icon(Icons.keyboard_arrow_down)),
-            isExpanded: true,
-            outerActions: AdvDropdownAction(),
-            items: List.generate(
-                model.itemList.length,
-                (index) => AdvDropdownMenuItem(
-                    value: model.itemList[index],
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: Text(model.itemList[index],
-                          style: TextStyle(fontSize: 12.0)),
-                    ))),
-            onChanged: (c) => _logic.onSelectedValue(c, model))
-      ],
-    );
+    return AdvDropdownButton(
+        value: model.value,
+        icon: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 8.0),
+            child: Icon(Icons.keyboard_arrow_down)),
+        isExpanded: true,
+        outerActions: AdvDropdownAction(),
+        items: List.generate(
+            model.itemList.length,
+            (index) => AdvDropdownMenuItem(
+                value: model.itemList[index],
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: Text(model.itemList[index],
+                      style: TextStyle(fontSize: 12.0)),
+                ))),
+        onChanged: (c) => _logic.onSelectedValue(c, model));
   }
 }

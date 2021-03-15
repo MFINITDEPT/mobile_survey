@@ -9,6 +9,7 @@ import 'package:mobilesurvey/model/configuration.dart';
 import 'package:mobilesurvey/model/photo_form.dart';
 import 'package:mobilesurvey/model/photo_result.dart';
 import 'package:mobilesurvey/model/quisioner.dart';
+import 'package:mobilesurvey/model/quisioner_answer.dart';
 import 'package:mobilesurvey/model/zipcode.dart';
 import 'package:mobilesurvey/utilities/constant.dart';
 import 'package:mobilesurvey/utilities/enum.dart';
@@ -101,7 +102,14 @@ class MasterRepositories {
 
   static List<PhotoResult> get docFormResult => _docFormResult;
 
+  static List<QuisionerAnswerModel> _quisioner;
+
+  static List<QuisionerAnswerModel> get quisionerList => _quisioner;
+
   static String hivePath;
+
+  static void saveQuisioner(List<QuisionerAnswerModel> value) =>
+      _quisioner = value;
 
   static void clearSavedPhotoFormResult(master type) {
     switch (type) {
@@ -215,6 +223,7 @@ class MasterRepositories {
       print(Exception.toString());
     }
   }
+
   static Future<bool> readFromHive(master masterType) async {
     HiveAesCipher _chiper = _key();
     try {

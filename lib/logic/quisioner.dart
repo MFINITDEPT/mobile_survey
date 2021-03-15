@@ -1,8 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:mobilesurvey/boilerplate/new_state.dart';
 import 'package:mobilesurvey/model/dropdown.dart';
 import 'package:mobilesurvey/model/quisioner_answer.dart';
 import 'package:mobilesurvey/repositories/master.dart';
+import 'package:mobilesurvey/utilities/constant.dart';
+import 'package:mobilesurvey/utilities/hive_utils.dart';
 import 'package:mobx/mobx.dart';
 
 part 'quisioner.g.dart';
@@ -14,38 +15,57 @@ abstract class _QuisionerLogic with Store {
 
   _QuisionerLogic(this._state);
 
+  var _dispose = autorun((_) {
+    List<QuisionerAnswerModel> newQuisioner = List<QuisionerAnswerModel>();
+    MasterRepositories.quisionerList.forEach((element) {
+      QuisionerAnswerModel _quisioner = QuisionerAnswerModel();
+      _quisioner.question = element.question;
+      var newChoice;
+      if (element.choice != null)
+        newChoice = HiveUtils.readChoiceFromHive(
+            kLastSavedClient, element.choice,
+            type: "quisioner");
+      _quisioner.choice = newChoice ?? element.choice;
+      _quisioner.controller = element.controller;
+      if (element.controller != null) {
+        HiveUtils.readControllerFromHive(kLastSavedClient, element.controller,
+            element.question, "quisioner");
+      }
+      newQuisioner.add(_quisioner);
+
+      /*  QuisionerAnswerModel _photoResult = QuisionerAnswerModel();
+      _photoResult.form = element.form;
+      List<File> files = List<File>(element.result.length);
+      for (int i = 0; i < element.result.length; i++) {
+        var result = HiveUtils.readFilePathFromBox(
+            kLastSavedClient, _photoResult.form, i, "foto");
+        if (result != null) {
+          files[i] = File(result);
+        }
+      }
+      _photoResult.result = files;
+      newQuisioner.add(_photoResult);*/
+    });
+
+    MasterRepositories.saveQuisioner(newQuisioner);
+  });
+
+  @observable
   ObservableList<QuisionerAnswerModel> _quisioner =
-      ObservableList<QuisionerAnswerModel>.of([]);
+      ObservableList<QuisionerAnswerModel>.of(MasterRepositories.quisionerList);
 
   @computed
-  List<QuisionerAnswerModel> get quisioner {
-    MasterRepositories.quisioners.forEach((element) {
-      QuisionerAnswerModel _questionModel = QuisionerAnswerModel();
-      _questionModel.question = element.question;
-      if (element.choice.isNotEmpty) {
-        _questionModel.choice = SearchModel(
-            title: "", itemList: element.choice, value: element.choice.first);
-       if( element.choice.where((element) => element.contains(',')).length > 0) _questionModel.controller = TextEditingController();
-      }
-      if (element.choice.isEmpty)
-        _questionModel.controller = TextEditingController();
-      _quisioner.add(_questionModel);
-    });
-
-    return _quisioner;
-  }
+  List<QuisionerAnswerModel> get quisioner => _quisioner;
 
   @action
-  void onSelectedValue(String s, SearchModel model) {
-   _state.setState(() {
-     model.value = s;
-   });
-  }
+  void onSelectedValue(String s, SearchModel model) => _state.setState(() {
+        model.value = s;
+        HiveUtils.saveChoiceToHive(kLastSavedClient, model);
+      });
 
   @action
-  void testSubmit(){
-    _quisioner.forEach((element) {
-      print("${_quisioner.indexOf(element)} : ${element.question} : ${element.choice?.value}: ${element.controller?.text}");
-    });
-  }
+  void testSubmit() => _quisioner.forEach((element) {
+        print(
+            "${_quisioner.indexOf(element)} : ${element.question} : ${element.choice?.value}: ${element.controller?.text}");
+      });
 }

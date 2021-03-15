@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:hive/hive.dart';
+import 'package:mobilesurvey/model/dropdown.dart';
 import 'package:mobilesurvey/model/photo_form.dart';
 import 'package:mobilesurvey/model/quisioner.dart';
 import 'package:mobilesurvey/model/zipcode.dart';
@@ -44,7 +45,8 @@ void main() {
         ..registerAdapter(QuisionerModelAdapter())
         ..registerAdapter(AoModelAdapter())
         ..registerAdapter(ZipCodeModelAdapter())
-        ..registerAdapter(PhotoFormAdapter());
+        ..registerAdapter(PhotoFormAdapter())
+        ..registerAdapter(SearchModelAdapter());
 
       MasterRepositories.hivePath = value.path;
     });

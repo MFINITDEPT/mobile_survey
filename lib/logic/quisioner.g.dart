@@ -17,6 +17,21 @@ mixin _$QuisionerBase on _QuisionerLogic, Store {
               name: '_QuisionerLogic.quisioner'))
       .value;
 
+  final _$_quisionerAtom = Atom(name: '_QuisionerLogic._quisioner');
+
+  @override
+  ObservableList<QuisionerAnswerModel> get _quisioner {
+    _$_quisionerAtom.reportRead();
+    return super._quisioner;
+  }
+
+  @override
+  set _quisioner(ObservableList<QuisionerAnswerModel> value) {
+    _$_quisionerAtom.reportWrite(value, super._quisioner, () {
+      super._quisioner = value;
+    });
+  }
+
   final _$_QuisionerLogicActionController =
       ActionController(name: '_QuisionerLogic');
 
