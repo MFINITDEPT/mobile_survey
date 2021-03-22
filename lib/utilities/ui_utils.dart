@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mobilesurvey/utilities/translation.dart';
 
-class UIUtils{
+class UIUtils {
   static Future<int> browseFile(BuildContext context) async {
     var result = await showCupertinoModalPopup(
       context: context,

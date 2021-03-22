@@ -139,7 +139,8 @@ abstract class _NewClientBase with Store {
     _state.process(() async {
       var res = await APIRequest.checkDuplicateName(name.text);
       if (res.toString() != "Success") {
-        await Fluttertoast.showToast(msg: res.toString(), toastLength: Toast.LENGTH_LONG);
+        await Fluttertoast.showToast(
+            msg: res.toString(), toastLength: Toast.LENGTH_LONG);
         return;
       }
 
@@ -167,7 +168,8 @@ abstract class _NewClientBase with Store {
           phoneNo: phoneNo.text,
           fax: fax.text,
           handphoneNo: handphoneNo.text);
-      Fluttertoast.showToast(msg: finalRes.toString(),toastLength: Toast.LENGTH_LONG);
+      Fluttertoast.showToast(
+          msg: finalRes.toString(), toastLength: Toast.LENGTH_LONG);
       if (finalRes.toString() == "Success") Navigator.pop(_context);
     });
   }

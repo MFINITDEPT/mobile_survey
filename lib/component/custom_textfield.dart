@@ -8,12 +8,13 @@ class CustomTextField extends StatefulWidget {
   final bool enabled;
   final bool obsecureText;
 
-  CustomTextField({Key key,
-    this.padding,
-    @required this.title,
-    @required this.controller,
-    this.enabled = true,
-    this.obsecureText = false})
+  CustomTextField(
+      {Key key,
+      this.padding,
+      @required this.title,
+      @required this.controller,
+      this.enabled = true,
+      this.obsecureText = false})
       : super(key: key);
 
   @override

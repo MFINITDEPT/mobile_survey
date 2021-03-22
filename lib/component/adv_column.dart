@@ -38,7 +38,8 @@ class AdvColumn extends StatelessWidget {
       }
     }
 
-    if (newChildren.length > 0 && divider != null) newChildren.removeAt(newChildren.length - 1);
+    if (newChildren.length > 0 && divider != null)
+      newChildren.removeAt(newChildren.length - 1);
 
     return Container(
         padding: padding,

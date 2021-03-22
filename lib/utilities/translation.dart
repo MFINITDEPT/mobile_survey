@@ -47,7 +47,8 @@ class Translation {
 
     //Load string from json assets
 
-    assetsLocalizationJson = currentLanguage == 'id' ? Assets.langId : Assets.langEn;
+    assetsLocalizationJson =
+        currentLanguage == 'id' ? Assets.langId : Assets.langEn;
 
     String _jsonContent = await rootBundle.loadString(assetsLocalizationJson);
 
@@ -55,7 +56,8 @@ class Translation {
 
     if (_onLocaleChangedCallback != null) {
       _onLocaleChangedCallback();
-    };
+    }
+    ;
   }
 
   set onLocalChangedCallback(VoidCallback callback) =>
@@ -73,13 +75,13 @@ class Translation {
 
 Translation translation = new Translation();
 
-
-
-class FallbackLocalizationDelegate extends LocalizationsDelegate<MaterialLocalizations> {
+class FallbackLocalizationDelegate
+    extends LocalizationsDelegate<MaterialLocalizations> {
   @override
   bool isSupported(Locale locale) => true;
   @override
-  Future<MaterialLocalizations> load(Locale locale) async => DefaultMaterialLocalizations();
+  Future<MaterialLocalizations> load(Locale locale) async =>
+      DefaultMaterialLocalizations();
   @override
   bool shouldReload(_) => false;
 }

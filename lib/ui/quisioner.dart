@@ -34,16 +34,20 @@ class _QuisionerUIState extends NewState<QuisionerUI> {
       body: Observer(builder: (_) {
         if (_logic.quisioner.length != 0) {
           return Column(
-            children: [Expanded(child: ListView.separated(
-              padding: EdgeInsets.all(16.0),
-              itemBuilder: (_, int index) => _buildQuisioner(_logic.quisioner[index]),
-              itemCount: _logic.quisioner.length,
-              separatorBuilder: (_, __) => Container(
-                height: 2.0,
-                color: Palette.gold,
-                margin: EdgeInsets.symmetric(vertical: 4.0),
-              ),
-            )),],
+            children: [
+              Expanded(
+                  child: ListView.separated(
+                padding: EdgeInsets.all(16.0),
+                itemBuilder: (_, int index) =>
+                    _buildQuisioner(_logic.quisioner[index]),
+                itemCount: _logic.quisioner.length,
+                separatorBuilder: (_, __) => Container(
+                  height: 2.0,
+                  color: Palette.gold,
+                  margin: EdgeInsets.symmetric(vertical: 4.0),
+                ),
+              )),
+            ],
           );
         } else {
           return Container();
@@ -55,13 +59,18 @@ class _QuisionerUIState extends NewState<QuisionerUI> {
   Widget _buildQuisioner(QuisionerAnswerModel model) {
     Widget _child = Container();
     Widget _optionChoice = Container();
-    if(model.choice != null) {
+    if (model.choice != null) {
       _child = _buildDropDown(model.choice);
-      if(model.choice.value.contains(",")) {
-        _optionChoice = TextField(controller: model.controller,  decoration: InputDecoration(hintText: translation.getText('global_hint')),);
-      };
+      if (model.choice.value.contains(",")) {
+        _optionChoice = TextField(
+          controller: model.controller,
+          decoration:
+              InputDecoration(hintText: translation.getText('global_hint')),
+        );
+      }
+      ;
     } else {
-      _child = TextField(controller : model.controller);
+      _child = TextField(controller: model.controller);
     }
 
     return Container(
@@ -72,7 +81,7 @@ class _QuisionerUIState extends NewState<QuisionerUI> {
         children: [
           Text(model.question),
           _child,
-          if(_optionChoice is TextField) _optionChoice
+          if (_optionChoice is TextField) _optionChoice
         ],
       ),
     );

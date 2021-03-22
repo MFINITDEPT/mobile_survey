@@ -21,17 +21,17 @@ class APIRequest {
   static String _url = "https://ver-itrack.mncfinance.net/";
 //  static String _urldev = "https://ver-itrack.mncfinance.net/api/master/";
   static String _urldev = "https://10.1.80.83:45456/api/master/";
-
 //  static String _urldev = "http://172.31.9.104:9993/api/master/";
 
-  static Dio config(){
-      Dio _newDio = new Dio();
-      (_newDio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate = (HttpClient client) {
-        client.badCertificateCallback =
-            (X509Certificate cert, String host, int port) => true;
-      };
+  static Dio config() {
+    Dio _newDio = new Dio();
+    (_newDio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
+        (HttpClient client) {
+      client.badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
+    };
 
-      return _newDio;
+    return _newDio;
   }
 
   static Future<Options> _getDioOptions({contentType contentType}) async {
@@ -92,7 +92,7 @@ class APIRequest {
 
     var result =
         await _dio.get<dynamic>(url, options: options).catchError((error) {
-          print("$url Error");
+      print("$url Error");
       return null;
     });
 
@@ -134,12 +134,11 @@ class APIRequest {
   static Future<ConfigurationModel> getConfiguration() async {
     Options options = await _getDioOptions(contentType: contentType.json);
 
-
     String url = _urldev + "configuration";
 
     var result =
         await _dio.get<dynamic>(url, options: options).catchError((error) {
-          print("$url Error");
+      print("$url Error");
       return null;
     });
 
@@ -155,7 +154,7 @@ class APIRequest {
 
     var result =
         await _dio.get<dynamic>(url, options: options).catchError((error) {
-          print("$url Error");
+      print("$url Error");
       return null;
     });
 
@@ -172,8 +171,9 @@ class APIRequest {
 
     String url = _urldev + 'getFotoForm';
     Map<String, int> params = Map<String, int>()..putIfAbsent("id", () => id);
-    var result =
-    await _dio.get<dynamic>(url, options: options, queryParameters: params).catchError((error) {
+    var result = await _dio
+        .get<dynamic>(url, options: options, queryParameters: params)
+        .catchError((error) {
       print("$url Error");
       return null;
     });
@@ -191,7 +191,8 @@ class APIRequest {
     Options options = await _getDioOptions(contentType: contentType.json);
 
 //    String url = "https://ver-itrack.mncfinance.net/api/validate/" + "checkNameExisting";
-    String url = "https://ver-itrack.mncfinance.net/api/validate/" + "checkNameExisting";
+    String url =
+        "https://ver-itrack.mncfinance.net/api/validate/" + "checkNameExisting";
 
     Map<String, dynamic> param = {'Name': name};
 
@@ -204,8 +205,8 @@ class APIRequest {
     return result.data;
   }
 
-  static Future<dynamic> insertIntoMsix({
-      String prefixSalute,
+  static Future<dynamic> insertIntoMsix(
+      {String prefixSalute,
       String name,
       String suffixSalute,
       String identityNo,
@@ -230,7 +231,8 @@ class APIRequest {
       String fax}) async {
     Options options = await _getDioOptions(contentType: contentType.json);
 
-    String url = "https://ver-itrack.mncfinance.net/api/process/" + "insertclientintomsix";
+    String url = "https://ver-itrack.mncfinance.net/api/process/" +
+        "insertclientintomsix";
 
     Map<String, dynamic> param = {};
     param.putIfAbsent("c_code", () => "050");
@@ -247,8 +249,12 @@ class APIRequest {
     param.putIfAbsent("kelurahan", () => district);
     param.putIfAbsent("area_code", () => zipcode);
     param.putIfAbsent("phone", () => phoneNo);
-    param.putIfAbsent("fax", () => fax == ''?null:fax);
-    param.putIfAbsent("ao", () => MasterRepositories.ao.firstWhere((element) => element.descs == ao).code);
+    param.putIfAbsent("fax", () => fax == '' ? null : fax);
+    param.putIfAbsent(
+        "ao",
+        () => MasterRepositories.ao
+            .firstWhere((element) => element.descs == ao)
+            .code);
     param.putIfAbsent("wlist", () => "0");
     param.putIfAbsent("collateral", () => "0");
     param.putIfAbsent("cre_date", () => DateTime.now().toString());
@@ -278,6 +284,5 @@ class APIRequest {
     });
 
     return result.data;
-
   }
 }

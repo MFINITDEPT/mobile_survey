@@ -25,10 +25,7 @@ abstract class _SurveyLogic with Store {
   List<File> _domisiliPhotos = List<File>();
   List<File> _documentPhotos = List<File>();
 
-
-
   PageController _pageController = PageController();
-
 
   PageController get page => _pageController;
 
@@ -68,7 +65,8 @@ abstract class _SurveyLogic with Store {
   }
 
   @action
-  void navigateToQuisioner(){
-    Navigator.of(_context).push(MaterialPageRoute(builder: (_) => QuisionerUI()));
+  void navigateToQuisioner() {
+    Navigator.of(_context)
+        .push(MaterialPageRoute(builder: (_) => QuisionerUI()));
   }
 }

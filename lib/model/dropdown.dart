@@ -12,14 +12,17 @@ class SearchModel {
   @HiveField(2)
   String value;
 
-  SearchModel({this.title, this.itemList, this.value,});
+  SearchModel({
+    this.title,
+    this.itemList,
+    this.value,
+  });
 
   factory SearchModel.fromJson(Map json) {
     return SearchModel(
         title: ParseUtils.castString(json["title"]),
         itemList: ParseUtils.castList(json["itemList"]),
-        value: ParseUtils.castString(json["value"])
-    );
+        value: ParseUtils.castString(json["value"]));
   }
 
   @override

@@ -51,7 +51,7 @@ abstract class _DocumentLogic with Store {
 
   @observable
   ObservableList<PhotoResult> _results =
-  ObservableList.of(MasterRepositories.docFormResult);
+      ObservableList.of(MasterRepositories.docFormResult);
 
   @computed
   ObservableList<PhotoResult> get results => _results;
@@ -107,8 +107,8 @@ abstract class _DocumentLogic with Store {
             if (file.lengthSync() < kMaxSizeUpload)
               _state.setState(() {
                 _files[_files.indexOf(null)] = file;
-                HiveUtils.saveFilePathToBox(
-                    kLastSavedClient, file.path, form, docPaths.indexOf(item), "dokumen");
+                HiveUtils.saveFilePathToBox(kLastSavedClient, file.path, form,
+                    docPaths.indexOf(item), "dokumen");
               });
             else if (file.lengthSync() > kMaxSizeUpload)
               Fluttertoast.showToast(
@@ -124,8 +124,8 @@ abstract class _DocumentLogic with Store {
             if (file.lengthSync() < kMaxSizeUpload)
               _state.setState(() {
                 _files[_files.indexOf(null)] = file;
-                HiveUtils.saveFilePathToBox(
-                    kLastSavedClient, file.path, form, docPaths.indexOf(item), "dokumen");
+                HiveUtils.saveFilePathToBox(kLastSavedClient, file.path, form,
+                    docPaths.indexOf(item), "dokumen");
               });
             else if (file.lengthSync() > kMaxSizeUpload)
               Fluttertoast.showToast(
@@ -151,7 +151,8 @@ abstract class _DocumentLogic with Store {
   void removePhoto(PhotoResult photo, int index) {
     _state.setState(() {
       photo.result[index] = null;
-      HiveUtils.deleteFilePathFromBox(kLastSavedClient, photo.form, index, "dokumen");
+      HiveUtils.deleteFilePathFromBox(
+          kLastSavedClient, photo.form, index, "dokumen");
     });
   }
 

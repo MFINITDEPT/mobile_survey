@@ -18,7 +18,7 @@ class _LoginUIState extends NewState<LoginUI> {
 
   @override
   void initState() {
-    _logic = LoginBase(this);
+    _logic = LoginBase();
     super.initState();
   }
 
@@ -53,7 +53,7 @@ class _LoginUIState extends NewState<LoginUI> {
                               alignment: Alignment.center,
                               child: CustomButton(
                                 "sign_in",
-                                onpress: _logic.signIn,
+                                onpress: () => _logic.signIn(process, context),
                                 buttonWidth: kDeviceWidth(context) * 0.6,
                               ),
                             ),
@@ -107,7 +107,7 @@ class _LoginUIState extends NewState<LoginUI> {
       padding: const EdgeInsets.all(32.0),
       child: Column(children: <Widget>[
         CustomTextField(padding: 16.0, title: translation.getText("nik")),
-        CustomTextField(padding: 16.0, title: translation.getText("email")),
+//        CustomTextField(padding: 16.0, title: translation.getText("email")),
         CustomTextField(
             padding: 16.0,
             title: translation.getText("password"),

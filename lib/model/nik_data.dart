@@ -34,57 +34,94 @@ class NikDataModel {
 
   NikDataModel(
       {this.tanggalKawin,
-        this.pendidikanAkhir,
-        this.namaLengkap,
-        this.statusHubunganKeluarga,
-        this.jenisPekerjaan,
-        this.tempatLahir,
-        this.statusKawin,
-        this.golonganDarah,
-        this.nikIbu,
-        this.nomorAktaKawin,
-        this.jenisKelamin,
-        this.tanggalCerai,
-        this.nomorKK,
-        this.nik,
-        this.kabupatenName,
-        this.namaLengkapAyah,
-        this.nomorRw,
-        this.kecamatanName,
-        this.nomorRt,
-        this.nomorKelurahan,
-        this.nomorKecamatan,
-        this.alamat,
-        this.nikAyah,
-        this.nomorProvinsi,
-        this.namaLengkapIbu,
-        this.nomorAktaCerai,
-        this.provinsiName,
-        this.nomorKabupaten,
-        this.tanggalLahir,
-        this.kelurahanName});
+      this.pendidikanAkhir,
+      this.namaLengkap,
+      this.statusHubunganKeluarga,
+      this.jenisPekerjaan,
+      this.tempatLahir,
+      this.statusKawin,
+      this.golonganDarah,
+      this.nikIbu,
+      this.nomorAktaKawin,
+      this.jenisKelamin,
+      this.tanggalCerai,
+      this.nomorKK,
+      this.nik,
+      this.kabupatenName,
+      this.namaLengkapAyah,
+      this.nomorRw,
+      this.kecamatanName,
+      this.nomorRt,
+      this.nomorKelurahan,
+      this.nomorKecamatan,
+      this.alamat,
+      this.nikAyah,
+      this.nomorProvinsi,
+      this.namaLengkapIbu,
+      this.nomorAktaCerai,
+      this.provinsiName,
+      this.nomorKabupaten,
+      this.tanggalLahir,
+      this.kelurahanName});
 
   factory NikDataModel.fromJson(Map<String, dynamic> json) {
     return NikDataModel(
-        namaLengkap: json.containsKey('NAMA_LGKP') ? ParseUtils.castString(json['NAMA_LGKP']) : null,
-        statusHubunganKeluarga: json.containsKey('STAT_HBKEL') ? ParseUtils.castString(json['STAT_HBKEL']) : null,
-        jenisPekerjaan: json.containsKey('JENIS_PKRJN') ? ParseUtils.castString(json['JENIS_PKRJN']): null,
-        pendidikanAkhir: json.containsKey('PDDK_AKH') ? ParseUtils.castString(json['PDDK_AKH']) : null,
-        tempatLahir: json.containsKey('TMPT_LHR') ? ParseUtils.castString(json['TMPT_LHR']) : null,
-        statusKawin: json.containsKey('STATUS_KAWIN') ? ParseUtils.castString(json['STATUS_KAWIN']) : null,
-        golonganDarah: json.containsKey('GOL_DARAH') ? ParseUtils.castString(json["GOL_DARAH"]) : null,
-        nikIbu: json.containsKey('NIK_IBU') ? ParseUtils.castString(json['NIK_IBU']): null,
-        tanggalKawin: json.containsKey('TGL_KWN') ? ParseUtils.castString(json['TGL_KWN']) : null,
-        nomorAktaKawin: json.containsKey('NO_AKTA_KWN') ? ParseUtils.castString(json["NO_AKTA_KWN"]): null,
-        jenisKelamin: json.containsKey('JENIS_KLMIN') ? ParseUtils.castString(json['JENIS_KLMIN']) : null,
-        tanggalCerai: json.containsKey('TGL_CRAI') ? ParseUtils.castString( json['TGL_CRAI']) : null,
-        nomorKK: json.containsKey('NO_KK')  ? ParseUtils.castString(json['NO_KK']) : null,
-        nik: json.containsKey('NIK') ? ParseUtils.castString(json['NIK']) : null,
-        kabupatenName: json.containsKey('KAB_NAME') ? ParseUtils.castString(json['KAB_NAME']) : null,
-        namaLengkapAyah: json.containsKey('NAMA_LGKP_AYAH') ? ParseUtils.castString( json['NAMA_LGKP_AYAH']) : null,
-        nomorRw: json.containsKey('NO_RW') ? ParseUtils.castString(json['NO_RW']) :null,
-        kecamatanName: json.containsKey('KEC_NAME') ? ParseUtils.castString(json['KEC_NAME']):null,
-        nomorRt: json.containsKey('NO_RT') ? ParseUtils.castString(json['NO_RT']) : null,
+        namaLengkap: json.containsKey('NAMA_LGKP')
+            ? ParseUtils.castString(json['NAMA_LGKP'])
+            : null,
+        statusHubunganKeluarga: json.containsKey('STAT_HBKEL')
+            ? ParseUtils.castString(json['STAT_HBKEL'])
+            : null,
+        jenisPekerjaan: json.containsKey('JENIS_PKRJN')
+            ? ParseUtils.castString(json['JENIS_PKRJN'])
+            : null,
+        pendidikanAkhir: json.containsKey('PDDK_AKH')
+            ? ParseUtils.castString(json['PDDK_AKH'])
+            : null,
+        tempatLahir: json.containsKey('TMPT_LHR')
+            ? ParseUtils.castString(json['TMPT_LHR'])
+            : null,
+        statusKawin: json.containsKey('STATUS_KAWIN')
+            ? ParseUtils.castString(json['STATUS_KAWIN'])
+            : null,
+        golonganDarah: json.containsKey('GOL_DARAH')
+            ? ParseUtils.castString(json["GOL_DARAH"])
+            : null,
+        nikIbu: json.containsKey('NIK_IBU')
+            ? ParseUtils.castString(json['NIK_IBU'])
+            : null,
+        tanggalKawin: json.containsKey('TGL_KWN')
+            ? ParseUtils.castString(json['TGL_KWN'])
+            : null,
+        nomorAktaKawin: json.containsKey('NO_AKTA_KWN')
+            ? ParseUtils.castString(json["NO_AKTA_KWN"])
+            : null,
+        jenisKelamin: json.containsKey('JENIS_KLMIN')
+            ? ParseUtils.castString(json['JENIS_KLMIN'])
+            : null,
+        tanggalCerai: json.containsKey('TGL_CRAI')
+            ? ParseUtils.castString(json['TGL_CRAI'])
+            : null,
+        nomorKK: json.containsKey('NO_KK')
+            ? ParseUtils.castString(json['NO_KK'])
+            : null,
+        nik:
+            json.containsKey('NIK') ? ParseUtils.castString(json['NIK']) : null,
+        kabupatenName: json.containsKey('KAB_NAME')
+            ? ParseUtils.castString(json['KAB_NAME'])
+            : null,
+        namaLengkapAyah: json.containsKey('NAMA_LGKP_AYAH')
+            ? ParseUtils.castString(json['NAMA_LGKP_AYAH'])
+            : null,
+        nomorRw: json.containsKey('NO_RW')
+            ? ParseUtils.castString(json['NO_RW'])
+            : null,
+        kecamatanName: json.containsKey('KEC_NAME')
+            ? ParseUtils.castString(json['KEC_NAME'])
+            : null,
+        nomorRt: json.containsKey('NO_RT')
+            ? ParseUtils.castString(json['NO_RT'])
+            : null,
         nomorKelurahan: json['NO_KEL'],
         nomorKecamatan: json['NO_KEC'],
         alamat: json['ALAMAT'],

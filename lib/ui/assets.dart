@@ -52,6 +52,7 @@ class _AssetsUIState extends NewState<AssetsUI> {
       ),
     );
   }
+
   Widget _buildBox(PhotoResult photo, int index) {
     return Stack(
       overflow: Overflow.visible,
@@ -66,9 +67,9 @@ class _AssetsUIState extends NewState<AssetsUI> {
               child: Container(
                   child: _logic.image(photo.form, index) != null
                       ? MimeUtils.isImage(_logic.image(photo.form, index).path)
-                      ? Image.file(_logic.image(photo.form, index),
-                      fit: BoxFit.cover)
-                      : Icon(Icons.description)
+                          ? Image.file(_logic.image(photo.form, index),
+                              fit: BoxFit.cover)
+                          : Icon(Icons.description)
                       : Icon(Icons.add),
                   color: Palette.black26,
                   height: 100,

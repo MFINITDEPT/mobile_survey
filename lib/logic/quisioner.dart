@@ -32,19 +32,6 @@ abstract class _QuisionerLogic with Store {
             element.question, "quisioner");
       }
       newQuisioner.add(_quisioner);
-
-      /*  QuisionerAnswerModel _photoResult = QuisionerAnswerModel();
-      _photoResult.form = element.form;
-      List<File> files = List<File>(element.result.length);
-      for (int i = 0; i < element.result.length; i++) {
-        var result = HiveUtils.readFilePathFromBox(
-            kLastSavedClient, _photoResult.form, i, "foto");
-        if (result != null) {
-          files[i] = File(result);
-        }
-      }
-      _photoResult.result = files;
-      newQuisioner.add(_photoResult);*/
     });
 
     MasterRepositories.saveQuisioner(newQuisioner);

@@ -76,7 +76,7 @@ class _SetupState extends State<Setup> with WidgetsBindingObserver {
           return Consumer<TranslationApp>(
             builder: (_, model, child) {
               model.setOnLocaleChange();
-             return NHome(uiBuilder);
+              return NHome(uiBuilder);
             },
           );
         }),

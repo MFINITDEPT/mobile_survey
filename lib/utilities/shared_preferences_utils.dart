@@ -14,7 +14,9 @@ class PreferenceUtils {
   }
 
   static String getString(String key, [String defValue]) {
-    return _prefsInstance.getString(key) == null ? null : crypt.Ridjnael.computeDecrypt(_prefsInstance.getString(key));
+    return _prefsInstance.getString(key) == null
+        ? null
+        : crypt.Ridjnael.computeDecrypt(_prefsInstance.getString(key));
   }
 
   static Future<bool> setString(String key, String value) async {

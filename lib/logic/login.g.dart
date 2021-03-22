@@ -12,11 +12,11 @@ mixin _$LoginBase on _LoginLogic, Store {
   final _$_LoginLogicActionController = ActionController(name: '_LoginLogic');
 
   @override
-  void signIn() {
+  void signIn(Function fn, BuildContext context) {
     final _$actionInfo =
         _$_LoginLogicActionController.startAction(name: '_LoginLogic.signIn');
     try {
-      return super.signIn();
+      return super.signIn(fn, context);
     } finally {
       _$_LoginLogicActionController.endAction(_$actionInfo);
     }
