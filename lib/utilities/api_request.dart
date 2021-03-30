@@ -20,6 +20,8 @@ class APIRequest {
   static Dio _dio = config();
   static String _url = "https://ver-itrack.mncfinance.net/";
 //  static String _urldev = "https://ver-itrack.mncfinance.net/api/master/";
+ // static String _urldev = "https://10.1.80.83:45456/api/master/";
+ // static String _urldev = "https://siapi.mncfinance.net/";
   static String _urldev = "https://10.1.80.83:45456/api/master/";
 //  static String _urldev = "http://172.31.9.104:9993/api/master/";
 
@@ -49,10 +51,17 @@ class APIRequest {
   static Future<String> _getBearerToken() async {
     Options options = Options();
 
-    Map<String, dynamic> param = {
+   /* Map<String, dynamic> param = {
       'grant_type': 'client_credentials',
       'client_id': 4,
       'client_secret': 'OaKIwQydNdp5VSqvMGsK5tlLCQrqx5UArdae8NX0',
+      'scope': '*'
+    };*/
+
+    Map<String, dynamic> param = {
+      'grant_type': 'client_credentials',
+      'client_id': 7,
+      'client_secret': 'nYB9WGbL93ziYKiCT8cq4Wk2FlmAFya1KzxR5fdK',
       'scope': '*'
     };
 
@@ -67,6 +76,28 @@ class APIRequest {
 
     return result == null ? _getBearerToken() : result?.data["access_token"];
   }
+
+/*  static Future<dynamic> testPlat() async {
+    Options options = await _getDioOptions(contentType: contentType.html);
+
+   // var param = Ridjnael.computeEncrypt('{"nik":"$nik"}');
+
+    String url = _urldev + "master/plat";
+
+    var result = await _dio
+        .get<dynamic>(url, options: options)
+        .catchError((error) {
+      return null;
+    });
+
+    Ridjnael.setKey = "V;PpdgX!3i57C%~xix32NAJr`cltV#<Q-A%ORIWzr6/EK8.tg<H}t6/cTB0RxRn";
+    Ridjnael.setIv = "*%Tz.4y/<p@tT^?qG@jItEi<;8yrMf50_d,!+K:C:!rS*DX?SdqRUI6EsJo!wW;";
+
+    var we = Ridjnael.computeDecrypt(result.data);
+    print(we);
+    var res = result != null ? NikDataModel.fromJson(result.data['ct']) : null;
+    return we;
+  }*/
 
   static Future<NikDataModel> getNikEncrypt(String nik) async {
     Options options = await _getDioOptions(contentType: contentType.html);
