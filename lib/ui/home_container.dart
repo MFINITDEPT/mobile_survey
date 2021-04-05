@@ -1,32 +1,27 @@
+
 import 'package:flutter/material.dart';
-import 'package:mobilesurvey/boilerplate/new_state.dart';
-import 'package:mobilesurvey/logic/home_container.dart';
-import 'package:mobilesurvey/model/nik_data.dart';
-import 'package:mobilesurvey/ui/assets.dart';
-import 'package:mobilesurvey/ui/client.dart';
-import 'package:mobilesurvey/ui/document.dart';
-import 'package:mobilesurvey/ui/quisioner.dart';
-import 'package:mobilesurvey/utilities/assets.dart';
-import 'package:mobilesurvey/utilities/palette.dart';
-import 'package:mobilesurvey/component/custom_circular_tab_indicator.dart';
-import 'package:mobilesurvey/utilities/translation.dart';
 
+import '../boilerplate/new_state.dart';
+import '../component/custom_circular_tab_indicator.dart';
+import '../ui/history.dart';
+import '../ui/home.dart';
+import '../utilities/assets.dart';
+import '../utilities/palette.dart';
+import '../utilities/translation.dart';
+
+// ignore: public_member_api_docs
 class HomeContainerUI extends StatefulWidget {
-  final int index;
-  final String id;
-
-  const HomeContainerUI({Key key, this.index, this.id}) : super(key: key);
-
   @override
-  _HomeContainerUIState createState() => _HomeContainerUIState();
+  _NewHomeContainerUiState createState() => _NewHomeContainerUiState();
 }
 
-class _HomeContainerUIState extends NewState<HomeContainerUI> {
-  HomeContainerBase _logic;
+class _NewHomeContainerUiState extends NewState<HomeContainerUI>
+    with SingleTickerProviderStateMixin {
+  TabController _controller;
 
   @override
   void initState() {
-//    _logic = HomeContainerBase(this, widget.id);
+    _controller = TabController(length: 2, vsync: this);
     super.initState();
   }
 
@@ -36,55 +31,43 @@ class _HomeContainerUIState extends NewState<HomeContainerUI> {
   }
 
   Widget _buildTabSegment() {
-    return DefaultTabController(
-      length: 4,
-      initialIndex: widget.index ?? 0,
-      child: Scaffold(
-        appBar: AppBar(
-          elevation: 0.0,
-          bottom: TabBar(
-            labelColor: Palette.gold,
-            labelPadding: EdgeInsets.symmetric(horizontal: 8.0),
-            unselectedLabelColor: Palette.prime,
-            labelStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-            indicator: CircleTabIndicator(color: Palette.gold, radius: 3),
-            tabs: [
-              Tab(
-                  child: Text(translation.getText('client'),
-                      maxLines: 1, style: TextStyle(fontSize: 12.0))),
-              Tab(
-                  child: Text(translation.getText('quisioner'),
-                      maxLines: 1, style: TextStyle(fontSize: 12.0))),
-              Tab(
-                  child: Text(translation.getText('assets'),
-                      maxLines: 1, style: TextStyle(fontSize: 12.0))),
-              Tab(
-                  child: Text(translation.getText('document'),
-                      maxLines: 1, style: TextStyle(fontSize: 12.0))),
-            ],
-          ),
-          backgroundColor: Palette.white,
-          actions: <Widget>[
-            Padding(
-                padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 4.0),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(30),
-                  child: Container(
-                    color: Palette.gold,
-                    child: Image.asset(Assets.logo,
-                        height: 50, width: 50, fit: BoxFit.cover),
-                  ),
-                )),
+    return Scaffold(
+      appBar: AppBar(
+        elevation: 0.0,
+        bottom: TabBar(
+          controller: _controller,
+          labelColor: Palette.gold,
+          labelPadding: EdgeInsets.symmetric(horizontal: 8.0),
+          unselectedLabelColor: Palette.navy,
+          labelStyle: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+          indicator: CircleTabIndicator(color: Palette.gold, radius: 3),
+          tabs: [
+            Tab(
+                child: Text(translation.getText('home'),
+                    maxLines: 1, style: TextStyle(fontSize: 14.0))),
+            Tab(
+                child: Text(translation.getText('history'),
+                    maxLines: 1, style: TextStyle(fontSize: 14.0))),
           ],
         ),
-        body: TabBarView(
-          children: [
-            ClientUI(id: widget.id),
-            QuisionerUI(),
-            AssetsUI(),
-            DocumentUI(),
-          ],
-        ),
+        backgroundColor: Palette.white,
+        actions: <Widget>[
+          Padding(
+              padding: EdgeInsets.symmetric(horizontal: 24.0, vertical: 4.0),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(30),
+                child: Container(
+                  color: Palette.gold,
+                  child: Image.asset(Assets.camera,
+                      height: 50, width: 50, fit: BoxFit.cover),
+                ),
+              )),
+        ],
+      ),
+      body: TabBarView(
+        controller: _controller,
+        physics: NeverScrollableScrollPhysics(),
+        children: [HomeUI(), HistoryUI()],
       ),
     );
   }

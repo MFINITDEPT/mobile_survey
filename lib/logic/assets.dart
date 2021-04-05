@@ -138,11 +138,13 @@ abstract class _AssetsLogic with Store {
     } else if (form.type.toLowerCase() == "foto") {
       List<File> files = await AdvImagePicker.pickImagesToFile(_context,
           usingGallery: false, useCustomView: false);
-      _state.setState(() {
-        _getFileFromResult(form)[index] = files.first;
-        HiveUtils.saveFilePathToBox(
-            kLastSavedClient, files.first.path, form, index);
-      });
+     if(files.isNotEmpty) {
+       _state.setState(() {
+         _getFileFromResult(form)[index] = files.first;
+         HiveUtils.saveFilePathToBox(
+             kLastSavedClient, files.first.path, form, index);
+       });
+     }
     }
   }
 

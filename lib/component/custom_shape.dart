@@ -19,7 +19,11 @@ class CurvePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     var paint = Paint();
-    paint.color = Palette.blue;
+    paint.shader = LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.center,
+            colors: [Palette.navy, Palette.darkerBlue])
+        .createShader(Offset.zero & (size * 0.4));
     paint.style = PaintingStyle.fill;
 
     var path = Path();

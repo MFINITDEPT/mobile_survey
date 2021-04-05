@@ -1,17 +1,20 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:mobilesurvey/logic/translation_app.dart';
 import 'package:provider/provider.dart';
 
-typedef Future<void> Fetcher();
-typedef Future<void> OnInit(BuildContext context);
+import '../logic/translation_app.dart';
 
+typedef Fetcher = Future<void> Function();
+typedef OnInit = Future<void> Function(BuildContext context);
+
+// ignore: public_member_api_docs
 enum Status { failed, success, processing, showDialog }
 
-typedef Widget UiBuilder(
+typedef UiBuilder = Widget Function(
     BuildContext context, double processing, String description, Status type);
 
+// ignore: public_member_api_docs
 class Setup extends StatefulWidget {
   final List<NavigatorObserver> observer;
   final ThemeData theme;
@@ -21,6 +24,7 @@ class Setup extends StatefulWidget {
   final UiBuilder uiBuilder;
   final int totalApiRequest;
 
+  // ignore: public_member_api_docs
   const Setup(
       {this.observer = const [],
       this.theme,
@@ -115,17 +119,20 @@ class _SetupState extends State<Setup> with WidgetsBindingObserver {
         });
       }
     } else {
-      if (statusNow != Status.processing)
+      if (statusNow != Status.processing){
         setState(() {
           statusNow = Status.processing;
         });
+      }
     }
   }
 }
 
+// ignore: public_member_api_docs
 class NHome extends StatefulWidget {
   final Widget child;
 
+  // ignore: public_member_api_docs
   NHome(this.child);
 
   @override
@@ -141,6 +148,7 @@ class _NHomeState extends State<NHome> {
   }
 }
 
+// ignore: public_member_api_docs
 class SetupController extends ValueNotifier<SetupEditingValue> {
   double get progress => value.progress;
 
@@ -165,30 +173,34 @@ class SetupController extends ValueNotifier<SetupEditingValue> {
     setupState.setState(() => setupState.statusNow = Status.showDialog);
   }
 
-  void updateProgress(String description, bool isGetDataSuccess) {
+  void updateProgress(String description, {bool isGetDataSuccess = false}) {
     _apiResult.add(isGetDataSuccess);
-    double progress = _apiResult.length / _totalApiRequest;
+    var progress = _apiResult.length / _totalApiRequest;
     value = value.copyWith(
         description: description,
         progress: progress,
         isError: !isGetDataSuccess);
   }
 
+  // ignore: public_member_api_docs
   bool checkDataIsNotValid() {
     return _apiResult.contains(false);
   }
 
+  // ignore: public_member_api_docs
   SetupController({double progress, String description, bool isError})
       : super(progress == null && description == null && isError == null
             ? SetupEditingValue.empty
-            : new SetupEditingValue(
+            : SetupEditingValue(
                 progress: progress,
                 description: description,
                 isError: isError));
 
+  // ignore: public_member_api_docs
   SetupController.fromValue(SetupEditingValue value)
       : super(value ?? SetupEditingValue.empty);
 
+  // ignore: public_member_api_docs
   void clear() {
     value = SetupEditingValue.empty;
   }
@@ -196,6 +208,7 @@ class SetupController extends ValueNotifier<SetupEditingValue> {
 
 @immutable
 class SetupEditingValue {
+  // ignore: public_member_api_docs
   const SetupEditingValue(
       {this.progress = 0.0,
       this.description = "",
@@ -207,7 +220,8 @@ class SetupEditingValue {
   final bool isError;
   final _SetupState setupState;
 
-  static const SetupEditingValue empty = const SetupEditingValue();
+  // ignore: public_member_api_docs
+  static const SetupEditingValue empty =  SetupEditingValue();
 
   SetupEditingValue copyWith(
       {double progress,
@@ -215,13 +229,14 @@ class SetupEditingValue {
       bool isError,
       _SetupState setupState,
       List<bool> apiResultList}) {
-    return new SetupEditingValue(
+    return SetupEditingValue(
         progress: progress,
         description: description,
         isError: isError,
         setupState: setupState);
   }
 
+  // ignore: public_member_api_docs
   SetupEditingValue.fromValue(SetupEditingValue copy)
       : this.progress = copy.progress,
         this.description = copy.description,
@@ -230,7 +245,9 @@ class SetupEditingValue {
 
   @override
   String toString() =>
-      '$runtimeType(progress: \u2524$progress\u251C, description: \u2524$description\u251C, isError: \u2524$isError\u251C)';
+      '$runtimeType(progress: \u2524$progress\u251C,'
+          ' description: \u2524$description\u251C, '
+          'isError: \u2524$isError\u251C)';
 
   @override
   bool operator ==(dynamic other) {

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
+/// Class UI for Splash screen
 class SplashScreenUI extends StatefulWidget {
   final AssetImage assetImage;
 
+  /// const constructor for Splash screen UI
   const SplashScreenUI({Key key, this.assetImage}) : super(key: key);
 
   @override

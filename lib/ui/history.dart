@@ -1,23 +1,21 @@
 import 'package:flutter/material.dart';
-
-import '../boilerplate/new_state.dart';
-import '../component/adv_column.dart';
-import '../logic/home.dart';
-import '../utilities/assets.dart';
-import '../utilities/palette.dart';
-import '../utilities/translation.dart';
+import 'package:mobilesurvey/component/adv_column.dart';
+import 'package:mobilesurvey/logic/history.dart';
+import 'package:mobilesurvey/utilities/assets.dart';
+import 'package:mobilesurvey/utilities/palette.dart';
+import 'package:mobilesurvey/utilities/translation.dart';
 
 // ignore: public_member_api_docs
-class HomeUI extends StatefulWidget {
+class HistoryUI extends StatefulWidget {
   @override
-  _HomeUIState createState() => _HomeUIState();
+  _HistoryUIState createState() => _HistoryUIState();
 }
 
-class _HomeUIState extends NewState<HomeUI> {
-  final HomeBase _logic = HomeBase();
+class _HistoryUIState extends State<HistoryUI> {
+  final HistoryBase _logic = HistoryBase();
 
   @override
-  Widget buildView(BuildContext context) {
+  Widget build(BuildContext context) {
     return Scaffold(
       body: AdvColumn(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -25,7 +23,7 @@ class _HomeUIState extends NewState<HomeUI> {
           Padding(
             padding: const EdgeInsets.all(32.0),
             child: Text(
-              "${translation.getText('welcome')}, TEST",
+              translation.getText('completed_task'),
               style: TextStyle(
                   fontSize: 16.0,
                   fontWeight: FontWeight.bold,
@@ -34,7 +32,7 @@ class _HomeUIState extends NewState<HomeUI> {
           ),
           Flexible(
               child: ListView.separated(
-                  itemBuilder: (context, index) => _buildItem(index, context),
+                  itemBuilder: (context, index) => _buildItem(index),
                   separatorBuilder: (context, index) => _buildSeparator(),
                   itemCount: 10))
         ],
@@ -42,20 +40,24 @@ class _HomeUIState extends NewState<HomeUI> {
     );
   }
 
-  Widget _buildItem(int index, BuildContext context) {
+  Widget _buildItem(int index) {
     return ListTile(
       contentPadding: EdgeInsets.symmetric(horizontal: 32.0, vertical: 4.0),
-      onTap: () => _logic.onSelectedItem(index.toString(), context),
+      onTap: _logic.onSelectedItem,
       title: Text(
         "Nanang Hermawan",
         style: TextStyle(
             color: Palette.gold, fontSize: 12.0, fontWeight: FontWeight.w500),
       ),
-      subtitle: Text("B 1234 CA",
-          style: TextStyle(
-              color: Palette.navy,
-              fontSize: 12.0,
-              fontWeight: FontWeight.w500)),
+      isThreeLine: true,
+      subtitle: Text.rich(TextSpan(children: [
+        TextSpan(
+            text: "B 1234 CA\n",
+            style: TextStyle(color: Palette.navy, fontWeight: FontWeight.w500)),
+        TextSpan(
+            text: DateTime.now().toString(),
+            style: TextStyle(color: Palette.grey))
+      ], style: TextStyle(fontSize: 12.0))),
       trailing: InkWell(
         onTap: _logic.onMapPress,
         child: Padding(

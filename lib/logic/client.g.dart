@@ -9,33 +9,20 @@ part of 'client.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$ClientBase on _ClientLogic, Store {
-  Computed<SearchModel> _$aoComputed;
-
-  @override
-  SearchModel get ao => (_$aoComputed ??=
-          Computed<SearchModel>(() => super.ao, name: '_ClientLogic.ao'))
-      .value;
-
-  final _$_aoAtom = Atom(name: '_ClientLogic._ao');
-
-  @override
-  SearchModel get _ao {
-    _$_aoAtom.reportRead();
-    return super._ao;
-  }
-
-  @override
-  set _ao(SearchModel value) {
-    _$_aoAtom.reportWrite(value, super._ao, () {
-      super._ao = value;
-    });
-  }
-
   final _$datePickerAsyncAction = AsyncAction('_ClientLogic.datePicker');
 
   @override
-  Future<void> datePicker() {
-    return _$datePickerAsyncAction.run(() => super.datePicker());
+  Future<void> datePicker(BuildContext context) {
+    return _$datePickerAsyncAction.run(() => super.datePicker(context));
+  }
+
+  final _$yearPickerAsyncAction = AsyncAction('_ClientLogic.yearPicker');
+
+  @override
+  Future<void> yearPicker(
+      BuildContext context, TextEditingController controller) {
+    return _$yearPickerAsyncAction
+        .run(() => super.yearPicker(context, controller));
   }
 
   final _$_ClientLogicActionController = ActionController(name: '_ClientLogic');
@@ -65,7 +52,7 @@ mixin _$ClientBase on _ClientLogic, Store {
   @override
   String toString() {
     return '''
-ao: ${ao}
+
     ''';
   }
 }

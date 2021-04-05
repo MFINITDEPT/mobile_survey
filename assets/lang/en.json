@@ -120,5 +120,13 @@
   "cancel" : "Cancel",
   "gallery" : "Gallery",
   "camera" : "Camera",
-  "file_manager" : "File Manager"
+  "file_manager" : "File Manager",
+  "task" : "Task",
+  "completed_task" : "Completed Task",
+  "upload_photo" : "Upload Photo",
+  "take_picture" : "Take Picture",
+  "select_file" : "Select File",
+  "take_gallery" : "Take Gallery",
+  "process" : "Process",
+  "welcome" : "Welcome"
 }

@@ -93,7 +93,7 @@ class _ClientUIState extends NewState<NewClientUI> {
             padding: const EdgeInsets.all(8.0),
             child: CustomButton(
               "submit",
-              onpress: _logic.submit,
+              onPress: _logic.submit,
             ),
           ),
         ],

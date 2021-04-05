@@ -28,7 +28,7 @@ abstract class _DocumentLogic with Store {
 
   BuildContext get _context => _state.context;
 
-  var _dispose = autorun((_) {
+  final _dispose = autorun((_) {
     List<PhotoResult> newDocResult = List<PhotoResult>();
     MasterRepositories.docFormResult.forEach((element) {
       PhotoResult _photoResult = PhotoResult();
@@ -67,7 +67,7 @@ abstract class _DocumentLogic with Store {
     List<File> _files = _getFileFromResult(form);
 
     if (form.type.toLowerCase() == "dokumen") {
-      int result = await UIUtils.browseFile(_context);
+      int result = await UIUtils.popupMenu(_context);
 
       int _fileCount = _files.where((element) => element != null).length;
 

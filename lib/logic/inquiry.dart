@@ -6,7 +6,7 @@ import 'package:mobilesurvey/model/dropdown.dart';
 import 'package:mobilesurvey/model/photo_result.dart';
 import 'package:mobilesurvey/model/quisioner_answer.dart';
 import 'package:mobilesurvey/repositories/master.dart';
-import 'package:mobilesurvey/ui/home_container.dart';
+import 'package:mobilesurvey/ui/task.dart';
 import 'package:mobilesurvey/utilities/constant.dart';
 import 'package:mobilesurvey/utilities/enum.dart';
 import 'package:mobilesurvey/utilities/hive_utils.dart';
@@ -78,12 +78,12 @@ abstract class _InquiryLogic with Store {
 
     MasterRepositories.savePhotoFormResult(_resultPhoto, master.pic);
     MasterRepositories.savePhotoFormResult(_resultDoc, master.doc);
-    MasterRepositories.saveQuisioner(_quisioner);
+    MasterRepositories.saveQuisioner = _quisioner;
 
     Navigator.push(
         _context,
         MaterialPageRoute(
             builder: (BuildContext context) =>
-                HomeContainerUI(id: index.toString())));
+                TaskUI(id: index.toString())));
   }
 }

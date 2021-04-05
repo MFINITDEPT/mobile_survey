@@ -8,6 +8,7 @@ import 'package:mobilesurvey/utilities/translation.dart';
 import 'package:mobilesurvey/component/custom_textfield.dart';
 import 'package:mobilesurvey/component/custom_button.dart';
 
+/// UI class for Login
 class LoginUI extends StatefulWidget {
   @override
   _LoginUIState createState() => _LoginUIState();
@@ -27,8 +28,7 @@ class _LoginUIState extends NewState<LoginUI> {
     return Scaffold(
       body: Padding(
         padding: EdgeInsets.only(top: kDeviceTopPadding(context)),
-        child: LayoutBuilder(builder:
-            (BuildContext context, BoxConstraints viewportConstraints) {
+        child: LayoutBuilder(builder: (context, viewportConstraints) {
           return SingleChildScrollView(
             child: ConstrainedBox(
               constraints: BoxConstraints(
@@ -47,13 +47,20 @@ class _LoginUIState extends NewState<LoginUI> {
                           //kamuflase biar form di tengah
                           Container(height: kDeviceHeight(context) * 0.15),
                           _loginSegment(),
+                          InkWell(
+                              onTap: null,
+                              child: Text(
+                                translation.getText("forgot_password_mark"),
+                                style: TextStyle(
+                                    fontSize: 14.0, color: Palette.gold),
+                              )),
                           Padding(
                             padding: const EdgeInsets.only(bottom: 32.0),
                             child: Align(
                               alignment: Alignment.center,
                               child: CustomButton(
                                 "sign_in",
-                                onpress: () => _logic.signIn(process, context),
+                                onPress: () => _logic.signIn(process, context),
                                 buttonWidth: kDeviceWidth(context) * 0.6,
                               ),
                             ),
@@ -86,12 +93,11 @@ class _LoginUIState extends NewState<LoginUI> {
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
                   Text(translation.getText('login_greeting1'),
-                      style: TextStyle(
-                          fontSize: 22.0, fontWeight: FontWeight.bold)),
+                      style: TextStyle(color: Palette.white, fontSize: 22.0)),
                   Padding(
                     padding: EdgeInsets.symmetric(vertical: 8.0),
                     child: Text(translation.getText('login_greeting2'),
-                        style: TextStyle(fontSize: 14.0)),
+                        style: TextStyle(color: Palette.white, fontSize: 14.0)),
                   ),
                 ],
               ),
@@ -104,26 +110,16 @@ class _LoginUIState extends NewState<LoginUI> {
 
   Widget _loginSegment() {
     return Padding(
-      padding: const EdgeInsets.all(32.0),
+      padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 8.0),
       child: Column(children: <Widget>[
-        CustomTextField(padding: 16.0, title: translation.getText("nik")),
-//        CustomTextField(padding: 16.0, title: translation.getText("email")),
         CustomTextField(
-            padding: 16.0,
-            title: translation.getText("password"),
-            obsecureText: true),
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 32.0),
-          child: Align(
-            alignment: Alignment.center,
-            child: InkWell(
-                onTap: null,
-                child: Text(
-                  translation.getText("forgot_password_mark"),
-                  style: TextStyle(fontSize: 14.0, color: Palette.prime),
-                )),
-          ),
-        )
+            padding: 16.0, controller: null, title: translation.getText("nik")),
+        CustomTextField(
+          padding: 16.0,
+          title: translation.getText("password"),
+          obsecureText: true,
+          controller: null,
+        ),
       ]),
     );
   }

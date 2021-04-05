@@ -1,10 +1,11 @@
 import 'dart:io';
 
-import 'package:mobilesurvey/model/photo_form.dart';
+import '../model/photo_form.dart';
 
 class PhotoResult {
   PhotoForm form;
   List<File> result;
 
+  // ignore: public_member_api_docs
   PhotoResult({this.form, this.result});
 }

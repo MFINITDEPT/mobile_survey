@@ -43,12 +43,12 @@ double kDeviceWidth(BuildContext context) => MediaQuery.of(context).size.width;
 
 //constant
 ThemeData kTheme = ThemeData(
-    cursorColor: Palette.gold,
+    cursorColor: Palette.black,
     primaryTextTheme: TextTheme(title: TextStyle(color: Palette.white)),
-    primaryIconTheme: IconThemeData(color: Palette.white),
+    primaryIconTheme: IconThemeData(color: Palette.gold),
     brightness: Brightness.light,
     primarySwatch: Palette.blue,
-    primaryColor: Palette.gold,
+    primaryColor: Palette.white,
     primaryColorBrightness: Brightness.light,
     accentColor: Palette.blue,
     scaffoldBackgroundColor: Palette.white,

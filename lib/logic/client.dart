@@ -17,16 +17,10 @@ import '../utilities/translation.dart';
 
 part 'client.g.dart';
 
+// ignore: public_member_api_docs
 class ClientBase = _ClientLogic with _$ClientBase;
 
 abstract class _ClientLogic with Store {
-  final NewState _state;
-  final String _id;
-
-  _ClientLogic(this._state, this._id);
-
-  BuildContext get _context => _state.context;
-
   static TextEditingController _nameCtrl = TextEditingController();
   static TextEditingController _birthLocationCtrl = TextEditingController();
   static TextEditingController _nikCtrl = TextEditingController();
@@ -80,7 +74,7 @@ abstract class _ClientLogic with Store {
   TextEditingController get fax => _faxCtrl;
 
   var dispose = autorun((_) {
-    List<TextEditingController> controllers = [
+    var controllers = <TextEditingController>[
       _nameCtrl,
       _birthLocationCtrl,
       _birthDateCtrl,
@@ -99,7 +93,7 @@ abstract class _ClientLogic with Store {
       _phoneNoCtrl,
       _faxCtrl
     ];
-    List<String> controllerNames = [
+    var controllerNames = <String>[
       "nama",
       "tempatLahir",
       "tglLahir",
@@ -127,20 +121,20 @@ abstract class _ClientLogic with Store {
             controllerNames[controllers.indexOf(element)], "Client")));
   });
 
-  @observable
+  /*@observable
   SearchModel _ao = SearchModel(
       title: translation.getText('ao'),
       itemList: MasterRepositories.aoList.take(10).toList(),
       value: MasterRepositories.aoList.take(10).toList().first);
 
   @computed
-  SearchModel get ao => _ao;
+  SearchModel get ao => _ao;*/
 
   @action
-  Future<void> datePicker() async {
-    FocusScope.of(_context).unfocus();
+  Future<void> datePicker(BuildContext context) async {
+    FocusScope.of(context).unfocus();
     var finalResult = await DatePicker.showSimpleDatePicker(
-      _context,
+      context,
       initialDate: DateTime.now(),
       firstDate: DateTime(1940),
       lastDate: DateTime.now(),
@@ -152,6 +146,25 @@ abstract class _ClientLogic with Store {
     _birthDateCtrl.text = finalResult != null
         ? StringUtils.formatDate(finalResult)
         : _birthDateCtrl.text;
+  }
+
+  @action
+  Future<void> yearPicker(
+      BuildContext context, TextEditingController controller) async {
+    FocusScope.of(context).unfocus();
+    var finalResult = await DatePicker.showSimpleDatePicker(
+      context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1940),
+      lastDate: DateTime.now(),
+      dateFormat: "yyyy",
+      locale: DateTimePickerLocale.en_us,
+      looping: true,
+    );
+
+    controller.text = finalResult != null
+        ? StringUtils.formatDate(finalResult, format: 'yyyy')
+        : controller.text;
   }
 
   @action

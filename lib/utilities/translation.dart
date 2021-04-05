@@ -50,31 +50,35 @@ class Translation {
     assetsLocalizationJson =
         currentLanguage == 'id' ? Assets.langId : Assets.langEn;
 
-    String _jsonContent = await rootBundle.loadString(assetsLocalizationJson);
+    var _jsonContent = await rootBundle.loadString(assetsLocalizationJson);
 
     _localizedValues = jsonDecode(_jsonContent);
 
     if (_onLocaleChangedCallback != null) {
       _onLocaleChangedCallback();
     }
-    ;
   }
 
+  // ignore: public_member_api_docs, avoid_setters_without_getters
   set onLocalChangedCallback(VoidCallback callback) =>
       _onLocaleChangedCallback = callback;
 
+  // ignore: public_member_api_docs, type_annotate_public_apis
   get onLocalChanged => _onLocaleChangedCallback;
 
   // singleton factory
   static final Translation _translations = Translation._internal();
 
+  // ignore: public_member_api_docs
   factory Translation() => _translations;
 
   Translation._internal();
 }
 
-Translation translation = new Translation();
+// ignore: public_member_api_docs
+Translation translation = Translation();
 
+// ignore: public_member_api_docs
 class FallbackLocalizationDelegate
     extends LocalizationsDelegate<MaterialLocalizations> {
   @override

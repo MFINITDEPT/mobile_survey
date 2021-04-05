@@ -2,7 +2,9 @@ import 'package:intl/intl.dart';
 
 import 'enum.dart';
 
+// ignore: public_member_api_docs
 class StringUtils {
+  // ignore: public_member_api_docs, missing_return
   static String getContentType(contentType type) {
     switch (type) {
       case contentType.json:
@@ -16,9 +18,10 @@ class StringUtils {
     }
   }
 
+  // ignore: public_member_api_docs
   static String simpleNumber(num number) {
-    String string = number.toInt().toString();
-    String result = '';
+    var string = number.toInt().toString();
+    var result = '';
 
     if (string.length <= 3) result = string;
 
@@ -28,7 +31,9 @@ class StringUtils {
         result = '${string.substring(0, (string.length - 3))}K';
       } else {
         result =
-            '${string.substring(0, (string.length - 3))},${newString.endsWith('0') ? newString.replaceAll('0', '') : newString}K';
+            '${string.substring(0, (string.length - 3))}'
+                ',${newString.endsWith('0')
+                ? newString.replaceAll('0', '') : newString}K';
       }
     }
 
@@ -38,7 +43,9 @@ class StringUtils {
         result = '${string.substring(0, (string.length - 6))}M';
       } else {
         result =
-            '${string.substring(0, (string.length - 6))},${newString.endsWith('0') ? newString.replaceAll('0', '') : newString}M';
+            '${string.substring(0, (string.length - 6))},'
+                '${newString.endsWith('0')
+                ? newString.replaceAll('0', '') : newString}M';
       }
     }
 
@@ -49,7 +56,9 @@ class StringUtils {
           result = '${string.substring(0, (string.length - 9))}B';
         } else {
           result =
-              '${string.substring(0, (string.length - 9))},${newString.endsWith('0') ? newString.replaceAll('0', '') : newString}B';
+              '${string.substring(0, (string.length - 9))}'
+                  ',${newString.endsWith('0')
+                  ? newString.replaceAll('0', '') : newString}B';
         }
       } else {
         var newString = _getSimpleNumber(string, 9);
@@ -57,7 +66,9 @@ class StringUtils {
           result = '${string.substring(0, (string.length - 9))}B';
         } else {
           result =
-              '${string.substring(0, (string.length - 9))},${newString.endsWith('0') ? newString.replaceAll('0', '') : newString}B';
+              '${string.substring(0, (string.length - 9))},'
+                  '${newString.endsWith('0')
+                  ? newString.replaceAll('0', '') : newString}B';
         }
       }
     }
@@ -70,20 +81,22 @@ class StringUtils {
       : string.substring(string.length - ((start - 3) + 1) - 2,
           string.length - ((start - 3) + 1));
 
+  // ignore: public_member_api_docs
   static String formatNumber(num number) {
     try {
-      NumberFormat _nf = NumberFormat('#,###', 'id');
+      var _nf = NumberFormat('#,###', 'id');
       return _nf.format(number);
-    } catch (Exception) {
+    } on Exception catch (e) {
       return 'error';
     }
   }
 
+  // ignore: public_member_api_docs
   static String formatDate(DateTime date, {String format = 'dd/MM/yyyy'}) {
     try {
-      DateFormat _df = DateFormat(format);
+      var _df = DateFormat(format);
       return _df.format(date);
-    } catch (Exception) {
+    } on Exception catch (e) {
       return 'error';
     }
   }

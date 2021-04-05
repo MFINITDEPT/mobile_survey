@@ -2,16 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:mobilesurvey/utilities/translation.dart';
 import 'package:mobilesurvey/utilities/palette.dart';
 
+/// a component for Custom Button
+// ignore: must_be_immutable
 class CustomButton extends StatefulWidget {
+  ///title for custom button
   String title;
-  void Function() onpress;
+  /// onPress void function for custom button
+  void Function() onPress;
+  /// button color for custom button
   Color buttonColor;
+  /// text color for custom button
   Color textColor;
+  ///button width for custom button
   double buttonWidth;
 
+  /// constructor for CustomButton
   CustomButton(this.title,
       {Key key,
-      this.onpress,
+      this.onPress,
       this.textColor,
       this.buttonColor,
       this.buttonWidth})
@@ -33,11 +41,11 @@ class _CustomButtonState extends State<CustomButton> {
         alignment: Alignment.center,
         child: Text(translation.getText(widget.title)),
       ),
-      onPressed: widget.onpress,
+      onPressed: widget.onPress,
       textColor: widget.textColor ?? Palette.white,
-      color: widget.buttonColor ?? Palette.prime,
+      color: widget.buttonColor ?? Palette.navy,
       shape: RoundedRectangleBorder(
-          side: BorderSide(color: widget.textColor ?? Palette.prime),
+          side: BorderSide(color: widget.textColor ?? Palette.navy),
           borderRadius: BorderRadius.circular(10)),
     );
   }

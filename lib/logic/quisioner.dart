@@ -1,13 +1,14 @@
-import 'package:mobilesurvey/boilerplate/new_state.dart';
-import 'package:mobilesurvey/model/dropdown.dart';
-import 'package:mobilesurvey/model/quisioner_answer.dart';
-import 'package:mobilesurvey/repositories/master.dart';
-import 'package:mobilesurvey/utilities/constant.dart';
-import 'package:mobilesurvey/utilities/hive_utils.dart';
+import '../boilerplate/new_state.dart';
+import '../model/dropdown.dart';
+import '../model/quisioner_answer.dart';
+import '../repositories/master.dart';
+import '../utilities/constant.dart';
+import '../utilities/hive_utils.dart';
 import 'package:mobx/mobx.dart';
 
 part 'quisioner.g.dart';
 
+// ignore: public_member_api_docs
 class QuisionerBase = _QuisionerLogic with _$QuisionerBase;
 
 abstract class _QuisionerLogic with Store {
@@ -15,16 +16,18 @@ abstract class _QuisionerLogic with Store {
 
   _QuisionerLogic(this._state);
 
-  var _dispose = autorun((_) {
-    List<QuisionerAnswerModel> newQuisioner = List<QuisionerAnswerModel>();
-    MasterRepositories.quisionerList.forEach((element) {
-      QuisionerAnswerModel _quisioner = QuisionerAnswerModel();
+  final _dispose = autorun((_) {
+    var newQuisioner = [];
+    for (var element in MasterRepositories.quisionerList) {
+      var _quisioner = QuisionerAnswerModel();
       _quisioner.question = element.question;
       var newChoice;
-      if (element.choice != null)
+      if (element.choice != null) {
         newChoice = HiveUtils.readChoiceFromHive(
             kLastSavedClient, element.choice,
             type: "quisioner");
+      }
+
       _quisioner.choice = newChoice ?? element.choice;
       _quisioner.controller = element.controller;
       if (element.controller != null) {
@@ -32,9 +35,9 @@ abstract class _QuisionerLogic with Store {
             element.question, "quisioner");
       }
       newQuisioner.add(_quisioner);
-    });
+    }
 
-    MasterRepositories.saveQuisioner(newQuisioner);
+    MasterRepositories.saveQuisioner = newQuisioner;
   });
 
   @observable
@@ -52,7 +55,8 @@ abstract class _QuisionerLogic with Store {
 
   @action
   void testSubmit() => _quisioner.forEach((element) {
-        print(
-            "${_quisioner.indexOf(element)} : ${element.question} : ${element.choice?.value}: ${element.controller?.text}");
+        print("${_quisioner.indexOf(element)} : "
+            "${element.question} : ${element.choice?.value}: "
+            "${element.controller?.text}");
       });
 }

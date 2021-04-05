@@ -31,5 +31,5 @@ class QuisionerModelAdapter extends TypeAdapter<QuisionerModel> {
 
   @override
   // TODO: implement typeId
-  int get typeId => 1;
+  int get typeId => 3;
 }

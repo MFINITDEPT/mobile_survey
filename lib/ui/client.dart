@@ -2,38 +2,30 @@ import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:mobilesurvey/component/adv_column.dart';
-import 'package:mobilesurvey/component/adv_dropdown.dart';
-import 'package:mobilesurvey/logic/client.dart';
-import 'package:mobilesurvey/model/dropdown.dart';
-import 'package:mobilesurvey/model/zipcode.dart';
-import 'package:mobilesurvey/repositories/master.dart';
-import 'package:mobilesurvey/utilities/enum.dart';
+import '../component/adv_column.dart';
+import '../component/adv_dropdown.dart';
+import '../logic/client.dart';
+import '../model/dropdown.dart';
+import '../model/zipcode.dart';
+import '../repositories/master.dart';
+import '../utilities/enum.dart';
 
 import '../boilerplate/new_state.dart';
 import '../component/adv_row.dart';
-import '../model/nik_data.dart';
 import '../utilities/palette.dart';
 import '../utilities/translation.dart';
 
+// ignore: public_member_api_docs
 class ClientUI extends StatefulWidget {
-  final String id;
-
-  const ClientUI({Key key, this.id}) : super(key: key);
+  ///Client UI
+  const ClientUI({Key key}) : super(key: key);
 
   @override
   _ClientUIState createState() => _ClientUIState();
 }
 
 class _ClientUIState extends NewState<ClientUI> {
-  ClientBase _logic;
-
-  @override
-  void initState() {
-    _logic = ClientBase(this, widget.id);
-    super.initState();
-  }
+  final ClientBase _logic = ClientBase();
 
   @override
   Widget buildView(BuildContext context) {
@@ -45,16 +37,17 @@ class _ClientUIState extends NewState<ClientUI> {
           children: [
             Expanded(
                 child: _buildTextField('effective_of', _logic.effectiveOf,
-                    type: inputType.year)),
+                    disable: true, type: inputType.year, context: context)),
             Expanded(
-                child: _buildTextField('to', _logic.to, type: inputType.year)),
+                child: _buildTextField('to', _logic.to,
+                    disable: true, type: inputType.year, context: context)),
           ],
         ),
         _buildTextField('identity_city', _logic.identityCity),
-        Observer(builder: (_) => _buildDropDown(_logic.ao)),
+       /* Observer(builder: (_) => _buildDropDown(_logic.ao)),*/
         _buildTextField('birth_location', _logic.birthLocation),
         _buildTextField('birth_date', _logic.birthDate,
-            type: inputType.date, disable: true),
+            type: inputType.date, disable: true, context: context),
         _buildTextField('address', _logic.address),
         _buildTextField('mother_name', _logic.motherName),
         _buildTextField('rt', _logic.rt, type: inputType.numeric),
@@ -73,7 +66,9 @@ class _ClientUIState extends NewState<ClientUI> {
   }
 
   Widget _buildTextField(String title, TextEditingController controller,
-      {inputType type = inputType.none, bool disable = false}) {
+      {inputType type = inputType.none,
+      bool disable = false,
+      BuildContext context}) {
     TextInputType keyboardType;
     int length;
 
@@ -107,25 +102,27 @@ class _ClientUIState extends NewState<ClientUI> {
                 decoration: InputDecoration(
                     enabled: false,
                     hintText: translation.getText(title),
-                    hintStyle: TextStyle(color: Palette.blue),
+                    hintStyle: TextStyle(color: Palette.navy),
                     disabledBorder: UnderlineInputBorder(
-                        borderSide: BorderSide(color: Palette.prime))))),
+                        borderSide: BorderSide(color: Palette.gold))))),
         Expanded(
             flex: 2,
             child: InkWell(
-              onTap: type == inputType.date ? () => _logic.datePicker() : null,
+              onTap: type == inputType.date || type == inputType.year
+                  ? () => type == inputType.year
+                      ? _logic.yearPicker(context, controller)
+                      : _logic.datePicker(context)
+                  : null,
               child: type == inputType.zipcode && !disable
                   ? _autoComplete()
                   : TextField(
                       controller: controller,
-                      style: TextStyle(color: Palette.prime, fontSize: 14.0),
+                      style: TextStyle(color: Palette.black, fontSize: 12.0),
                       maxLength: length,
                       enabled: !(disable),
                       keyboardType: keyboardType,
-                      buildCounter: (BuildContext context,
-                              {int currentLength,
-                              int maxLength,
-                              bool isFocused}) =>
+                      buildCounter: (context,
+                              {currentLength, maxLength, isFocused}) =>
                           null,
                       inputFormatters: [
                         if (keyboardType == TextInputType.number ||
@@ -134,11 +131,11 @@ class _ClientUIState extends NewState<ClientUI> {
                       ],
                       decoration: InputDecoration(
                           focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Palette.prime)),
+                              borderSide: BorderSide(color: Palette.gold)),
                           disabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Palette.prime)),
+                              borderSide: BorderSide(color: Palette.gold)),
                           enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Palette.prime))),
+                              borderSide: BorderSide(color: Palette.gold))),
                     ),
             )),
       ],
@@ -155,13 +152,12 @@ class _ClientUIState extends NewState<ClientUI> {
         inputFormatters: [FilteringTextInputFormatter.digitsOnly],
         clearOnSubmit: false,
         submitOnSuggestionTap: true,
-        itemBuilder: (BuildContext context, ZipCodeModel item) => Padding(
+        itemBuilder: (context, item) => Padding(
               padding: const EdgeInsets.all(8.0),
               child:
                   Text("${item.kodePos} ${item.kelurahan} ${item.kecamatan}"),
             ),
-        itemSorter: (ZipCodeModel item, ZipCodeModel compare) =>
-            item.kodePos.compareTo(compare.kodePos),
+        itemSorter: (item, compare) => item.kodePos.compareTo(compare.kodePos),
         itemFilter: _logic.actionFilter);
   }
 
@@ -170,12 +166,15 @@ class _ClientUIState extends NewState<ClientUI> {
       padding: EdgeInsets.symmetric(horizontal: 16.0),
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(model.title),
+        Text(
+          model.title,
+          style: TextStyle(fontSize: 14.0, color: Palette.navy),
+        ),
         AdvDropdownButton(
             value: model.value,
             icon: Padding(
                 padding: EdgeInsets.symmetric(horizontal: 8.0),
-                child: Icon(Icons.keyboard_arrow_down)),
+                child: Icon(Icons.arrow_drop_down)),
             isExpanded: true,
             outerActions: AdvDropdownAction(),
             items: List.generate(

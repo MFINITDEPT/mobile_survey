@@ -1,0 +1,8 @@
+-- To generate *.g.dart file using this command
+flutter packages pub run build_runner watch --delete-conflicting-outputs
+
+-- To change package name
+using change_app_package_name: ^0.1.2 in dev_dependencies and using this command below
+flutter pub run change_app_package_name:main finance.mnc.mobile_dashboard
+
+

@@ -1,12 +1,11 @@
-import 'package:mobilesurvey/boilerplate/new_state.dart';
-import 'package:mobilesurvey/model/nik_data.dart';
 import 'package:mobx/mobx.dart';
 
-part 'home_container.g.dart';
+part 'task.g.dart';
 
-class HomeContainerBase = _HomeContainerLogic with _$HomeContainerBase;
+// ignore: public_member_api_docs
+class TaskBase = _TaskLogic with _$TaskBase;
 
-abstract class _HomeContainerLogic with Store {
+abstract class _TaskLogic with Store {
 //  final NewState _state;
 //  final NikDataModel _model;
 //  final String _nik;

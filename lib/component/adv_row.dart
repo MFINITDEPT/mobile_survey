@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// ignore: public_member_api_docs
 class AdvRow extends StatelessWidget {
   final Key key;
   final MainAxisAlignment mainAxisAlignment;
@@ -13,6 +14,7 @@ class AdvRow extends StatelessWidget {
   final EdgeInsetsGeometry margin;
   final Widget divider;
 
+  // ignore: public_member_api_docs
   AdvRow({
     this.key,
     this.mainAxisAlignment = MainAxisAlignment.start,
@@ -29,17 +31,18 @@ class AdvRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> newChildren = [];
+    var newChildren = [];
 
-    for (Widget child in children) {
+    for (var child in children) {
       if (child != null) {
         newChildren.add(child);
         if (divider != null) newChildren.add(divider);
       }
     }
 
-    if (newChildren.length > 0 && divider != null)
+    if (newChildren.isNotEmpty && divider != null) {
       newChildren.removeAt(newChildren.length - 1);
+    }
 
     return Container(
         padding: padding,
@@ -52,15 +55,17 @@ class AdvRow extends StatelessWidget {
           textDirection: textDirection,
           verticalDirection: verticalDirection,
           textBaseline: textBaseline,
-          children: newChildren,
+          children: List<Widget>.from(newChildren),
         ));
   }
 }
 
+// ignore: public_member_api_docs
 class RowDivider extends StatelessWidget {
   final double size;
   final Color color;
 
+  // ignore: public_member_api_docs
   RowDivider(double size, {Color color})
       : this.size = size ?? 0.0,
         this.color = color ?? Colors.transparent;

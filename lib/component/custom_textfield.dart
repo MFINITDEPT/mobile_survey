@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobilesurvey/utilities/palette.dart';
 
+// ignore: public_member_api_docs
 class CustomTextField extends StatefulWidget {
   final double padding;
   final String title;
@@ -8,6 +9,7 @@ class CustomTextField extends StatefulWidget {
   final bool enabled;
   final bool obsecureText;
 
+  // ignore: public_member_api_docs
   CustomTextField(
       {Key key,
       this.padding,
@@ -30,15 +32,20 @@ class _CustomTextFieldState extends State<CustomTextField> {
           obscureText: widget.obsecureText,
           enabled: widget.enabled,
           controller: widget.controller,
+          style:
+              TextStyle(color: Palette.black.withOpacity(0.9), fontSize: 12.0),
           decoration: InputDecoration(
               hintText: widget.title ?? "",
-              hintStyle: TextStyle(color: Palette.blue, fontSize: 12.0),
+              contentPadding: EdgeInsets.all(widget.padding ?? 12.0),
+              hintStyle: TextStyle(
+                  color: Palette.black.withOpacity(0.9), fontSize: 12.0),
               focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Palette.prime)),
+                  borderSide: BorderSide(color: Palette.gold.withOpacity(0.3))),
               enabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Palette.prime)),
+                  borderSide: BorderSide(color: Palette.gold.withOpacity(0.3))),
               disabledBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: Palette.prime)))),
+                  borderSide:
+                      BorderSide(color: Palette.gold.withOpacity(0.3))))),
     );
   }
 }

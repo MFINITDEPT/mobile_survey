@@ -4,72 +4,90 @@ import 'dart:convert';
 import 'package:crypto/crypto.dart' as crypt;
 import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
-import 'package:mobilesurvey/model/ao.dart';
-import 'package:mobilesurvey/model/configuration.dart';
-import 'package:mobilesurvey/model/photo_form.dart';
-import 'package:mobilesurvey/model/photo_result.dart';
-import 'package:mobilesurvey/model/quisioner.dart';
-import 'package:mobilesurvey/model/quisioner_answer.dart';
-import 'package:mobilesurvey/model/zipcode.dart';
-import 'package:mobilesurvey/utilities/constant.dart';
-import 'package:mobilesurvey/utilities/enum.dart';
-import 'package:mobilesurvey/utilities/shared_preferences_utils.dart';
+import '../model/ao.dart';
+import '../model/configuration.dart';
+import '../model/photo_form.dart';
+import '../model/photo_result.dart';
+import '../model/quisioner.dart';
+import '../model/quisioner_answer.dart';
+import '../model/zipcode.dart';
+import '../utilities/constant.dart';
+import '../utilities/enum.dart';
+import '../utilities/shared_preferences_utils.dart';
 
+// ignore: public_member_api_docs
 Future<void> heavyTaskWriteZipCode(Map<String, dynamic> map) async {
-  HiveInterface hive = Hive..init(map['path']);
-  if (!hive.isAdapterRegistered(ZipCodeModelAdapter().typeId))
+  var hive = Hive..init(map['path']);
+
+  if (!hive.isAdapterRegistered(ZipCodeModelAdapter().typeId)) {
     hive..registerAdapter(ZipCodeModelAdapter());
+  }
+
   var box = await Hive.openBox<ZipCodeModel>(kHiveKeys_3,
       encryptionCipher: map['chiper']);
+
   await box.deleteAll(box.keys);
-  List<ZipCodeModel> values = List<ZipCodeModel>.from(map['value']);
+  var values = List<ZipCodeModel>.from(map['value']);
   await box.addAll(values);
 }
 
+// ignore: public_member_api_docs
 Future<void> heavyTaskWriteAo(Map<String, dynamic> map) async {
-  HiveInterface hive = Hive..init(map['path']);
-  if (!hive.isAdapterRegistered(AoModelAdapter().typeId))
+  var hive = Hive..init(map['path']);
+  if (!hive.isAdapterRegistered(AoModelAdapter().typeId)) {
     hive..registerAdapter(AoModelAdapter());
+  }
+
   var box =
       await Hive.openBox<AoModel>(kHiveKeys_1, encryptionCipher: map['chiper']);
   await box.deleteAll(box.keys);
-  List<AoModel> values = List<AoModel>.from(map['value']);
+  var values = List<AoModel>.from(map['value']);
   await box.addAll(values);
 }
 
+// ignore: public_member_api_docs
 Future<void> heavyTaskWriteQuestion(Map<String, dynamic> map) async {
-  HiveInterface hive = Hive..init(map['path']);
-  if (!hive.isAdapterRegistered(QuisionerModelAdapter().typeId))
+  var hive = Hive..init(map['path']);
+  if (!hive.isAdapterRegistered(QuisionerModelAdapter().typeId)) {
     hive..registerAdapter(QuisionerModelAdapter());
+  }
+
   var box = await Hive.openBox<QuisionerModel>(kHiveKeys_2,
       encryptionCipher: map['chiper']);
   await box.deleteAll(box.keys);
-  List<QuisionerModel> values = List<QuisionerModel>.from(map['value']);
+  var values = List<QuisionerModel>.from(map['value']);
   await box.addAll(values);
 }
 
+// ignore: public_member_api_docs
 Future<void> heavyTaskWritePhotoForm(Map<String, dynamic> map) async {
-  HiveInterface hive = Hive..init(map['path']);
-  if (!hive.isAdapterRegistered(PhotoFormAdapter().typeId))
+  var hive = Hive..init(map['path']);
+  if (!hive.isAdapterRegistered(PhotoFormAdapter().typeId)) {
     hive..registerAdapter(PhotoFormAdapter());
+  }
+
   var box = await Hive.openBox<PhotoForm>(kHiveKeys_4,
       encryptionCipher: map['chiper']);
   await box.deleteAll(box.keys);
-  List<PhotoForm> values = List<PhotoForm>.from(map['value']);
+  var values = List<PhotoForm>.from(map['value']);
   await box.addAll(values);
 }
 
+// ignore: public_member_api_docs
 Future<void> heavyTaskWriteDocForm(Map<String, dynamic> map) async {
-  HiveInterface hive = Hive..init(map['path']);
-  if (!hive.isAdapterRegistered(PhotoFormAdapter().typeId))
+  var hive = Hive..init(map['path']);
+  if (!hive.isAdapterRegistered(PhotoFormAdapter().typeId)) {
     hive..registerAdapter(PhotoFormAdapter());
+  }
+
   var box = await Hive.openBox<PhotoForm>(kHiveKeys_5,
       encryptionCipher: map['chiper']);
   await box.deleteAll(box.keys);
-  List<PhotoForm> values = List<PhotoForm>.from(map['value']);
+  var values = List<PhotoForm>.from(map['value']);
   await box.addAll(values);
 }
 
+// ignore: avoid_classes_with_only_static_members, public_member_api_docs
 class MasterRepositories {
   static List<ZipCodeModel> _zipcodes;
 
@@ -108,9 +126,11 @@ class MasterRepositories {
 
   static String hivePath;
 
-  static void saveQuisioner(List<QuisionerAnswerModel> value) =>
+  // ignore: public_member_api_docs, avoid_setters_without_getters
+  static set saveQuisioner(List<QuisionerAnswerModel> value) =>
       _quisioner = value;
 
+  // ignore: public_member_api_docs
   static void clearSavedPhotoFormResult(master type) {
     switch (type) {
       case master.doc:
@@ -124,6 +144,7 @@ class MasterRepositories {
     }
   }
 
+  // ignore: public_member_api_docs
   static void savePhotoFormResult(List<PhotoResult> value, master type) {
     switch (type) {
       case master.doc:
@@ -137,6 +158,7 @@ class MasterRepositories {
     }
   }
 
+  // ignore: public_member_api_docs
   static void savePhotoForm(List<PhotoForm> value, master type) async {
     //type 1 = foto; 0 = dokumen
     switch (type) {
@@ -153,22 +175,26 @@ class MasterRepositories {
     }
   }
 
+  // ignore: public_member_api_docs
   static void saveZipCodes(List<ZipCodeModel> value) async {
     await _saveToHive(value, master.zipcode);
     _zipcodes = value;
     _zipcodes.sort((a, b) => a.kota.compareTo(b.kota));
   }
 
+  // ignore: public_member_api_docs
   static void saveQuestion(List<QuisionerModel> value) async {
     await _saveToHive(value, master.question);
     _quisioners = value;
   }
 
+  // ignore: public_member_api_docs
   static void saveAO(List<AoModel> value) async {
     await _saveToHive(value, master.ao);
     _ao = value;
   }
 
+  // ignore: public_member_api_docs
   static void saveConfiguration(ConfigurationModel value) {
     PreferenceUtils.setString(kLastUpdateQuestion, value.lastUpdateQuestion);
     PreferenceUtils.setString(kLastUpdateZipCode, value.lastUpdateZipCode);
@@ -178,39 +204,39 @@ class MasterRepositories {
 
   static Future<void> _saveToHive(
       List<dynamic> value, master masterType) async {
-    HiveAesCipher _chiper = _key();
+    var _chiper = _key();
     try {
       switch (masterType) {
         case master.zipcode:
-          Map<String, dynamic> map = Map<String, dynamic>();
+          var map = <String,dynamic>{};
           map.putIfAbsent('chiper', () => _chiper);
           map.putIfAbsent('value', () => value);
           map.putIfAbsent('path', () => hivePath);
           await compute(heavyTaskWriteZipCode, map);
           break;
         case master.ao:
-          Map<String, dynamic> map = Map<String, dynamic>();
+          var map = <String,dynamic>{};
           map.putIfAbsent('chiper', () => _chiper);
           map.putIfAbsent('value', () => value);
           map.putIfAbsent('path', () => hivePath);
           await compute(heavyTaskWriteAo, map);
           break;
         case master.question:
-          Map<String, dynamic> map = Map<String, dynamic>();
+          var map = <String,dynamic>{};
           map.putIfAbsent('chiper', () => _chiper);
           map.putIfAbsent('value', () => value);
           map.putIfAbsent('path', () => hivePath);
           await compute(heavyTaskWriteQuestion, map);
           break;
         case master.pic:
-          Map<String, dynamic> map = Map<String, dynamic>();
+          var map = <String,dynamic>{};
           map.putIfAbsent('chiper', () => _chiper);
           map.putIfAbsent('value', () => value);
           map.putIfAbsent('path', () => hivePath);
           await compute(heavyTaskWritePhotoForm, map);
           break;
         case master.doc:
-          Map<String, dynamic> map = Map<String, dynamic>();
+          var map = <String,dynamic>{};
           map.putIfAbsent('chiper', () => _chiper);
           map.putIfAbsent('value', () => value);
           map.putIfAbsent('path', () => hivePath);
@@ -219,17 +245,18 @@ class MasterRepositories {
         default:
           break;
       }
-    } catch (Exception) {
-      print(Exception.toString());
+    } on Exception catch (e) {
+      print(e.toString());
     }
   }
 
+  // ignore: public_member_api_docs
   static Future<bool> readFromHive(master masterType) async {
-    HiveAesCipher _chiper = _key();
+    var _chiper = _key();
     try {
       switch (masterType) {
         case master.question:
-          bool _boxExists = await Hive.boxExists(kHiveKeys_2);
+          var _boxExists = await Hive.boxExists(kHiveKeys_2);
           if (_boxExists) {
             var box = await Hive.openBox<QuisionerModel>(kHiveKeys_2,
                 encryptionCipher: _chiper);
@@ -237,7 +264,7 @@ class MasterRepositories {
           }
           return Future.value(true);
         case master.zipcode:
-          bool _boxExists = await Hive.boxExists(kHiveKeys_3);
+          var _boxExists = await Hive.boxExists(kHiveKeys_3);
           if (_boxExists) {
             var box = await Hive.openBox<ZipCodeModel>(kHiveKeys_3,
                 encryptionCipher: _chiper);
@@ -245,7 +272,7 @@ class MasterRepositories {
           }
           return Future.value(true);
         case master.ao:
-          bool _boxExists = await Hive.boxExists(kHiveKeys_1);
+          var _boxExists = await Hive.boxExists(kHiveKeys_1);
           if (_boxExists) {
             var box = await Hive.openBox<AoModel>(kHiveKeys_1,
                 encryptionCipher: _chiper);
@@ -253,7 +280,7 @@ class MasterRepositories {
           }
           return Future.value(true);
         case master.pic:
-          bool _boxExists = await Hive.boxExists(kHiveKeys_4);
+          var _boxExists = await Hive.boxExists(kHiveKeys_4);
           if (_boxExists) {
             var box = await Hive.openBox<PhotoForm>(kHiveKeys_4,
                 encryptionCipher: _chiper);
@@ -261,7 +288,7 @@ class MasterRepositories {
           }
           return Future.value(true);
         case master.doc:
-          bool _boxExists = await Hive.boxExists(kHiveKeys_5);
+          var _boxExists = await Hive.boxExists(kHiveKeys_5);
           if (_boxExists) {
             var box = await Hive.openBox<PhotoForm>(kHiveKeys_5,
                 encryptionCipher: _chiper);
@@ -271,8 +298,8 @@ class MasterRepositories {
         default:
           return Future.value(false);
       }
-    } catch (Exception) {
-      print(Exception.toString());
+    } on Exception catch (e) {
+      print(e.toString());
       return Future.value(false);
     }
   }

@@ -3,6 +3,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mobilesurvey/boilerplate/new_state.dart';
 import 'package:mobilesurvey/component/adv_column.dart';
 import 'package:mobilesurvey/component/adv_dropdown.dart';
+import 'package:mobilesurvey/component/custom_textfield.dart';
 import 'package:mobilesurvey/logic/quisioner.dart';
 import 'package:mobilesurvey/model/dropdown.dart';
 import 'package:mobilesurvey/model/quisioner.dart';
@@ -36,17 +37,13 @@ class _QuisionerUIState extends NewState<QuisionerUI> {
           return Column(
             children: [
               Expanded(
-                  child: ListView.separated(
-                padding: EdgeInsets.all(16.0),
-                itemBuilder: (_, int index) =>
-                    _buildQuisioner(_logic.quisioner[index]),
-                itemCount: _logic.quisioner.length,
-                separatorBuilder: (_, __) => Container(
-                  height: 2.0,
-                  color: Palette.gold,
-                  margin: EdgeInsets.symmetric(vertical: 4.0),
-                ),
-              )),
+                  child: ListView.builder(
+                      padding: EdgeInsets.all(16.0),
+                      itemBuilder: (_, int index) => Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 8.0),
+                            child: _buildQuisioner(_logic.quisioner[index]),
+                          ),
+                      itemCount: _logic.quisioner.length)),
             ],
           );
         } else {
@@ -62,28 +59,25 @@ class _QuisionerUIState extends NewState<QuisionerUI> {
     if (model.choice != null) {
       _child = _buildDropDown(model.choice);
       if (model.choice.value.contains(",")) {
-        _optionChoice = TextField(
-          controller: model.controller,
-          decoration:
-              InputDecoration(hintText: translation.getText('global_hint')),
-        );
+        _optionChoice = CustomTextField(
+            controller: model.controller,
+            title: translation.getText('global_hint'));
       }
-      ;
     } else {
-      _child = TextField(controller: model.controller);
+      _child = CustomTextField(
+          padding: 0.0,
+          controller: model.controller,
+          title: translation.getText('global_hint'));
     }
 
-    return Container(
-      color: Palette.grey,
-      child: AdvColumn(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(model.question),
-          _child,
-          if (_optionChoice is TextField) _optionChoice
-        ],
-      ),
+    return AdvColumn(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(model.question, style: TextStyle(color: Palette.navy)),
+        _child,
+        if (_optionChoice is CustomTextField) _optionChoice
+      ],
     );
   }
 
@@ -92,7 +86,7 @@ class _QuisionerUIState extends NewState<QuisionerUI> {
         value: model.value,
         icon: Padding(
             padding: EdgeInsets.symmetric(horizontal: 8.0),
-            child: Icon(Icons.keyboard_arrow_down)),
+            child: Icon(Icons.arrow_drop_down, color: Palette.gold)),
         isExpanded: true,
         outerActions: AdvDropdownAction(),
         items: List.generate(
