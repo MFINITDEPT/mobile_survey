@@ -36,11 +36,11 @@ mixin _$QuisionerBase on _QuisionerLogic, Store {
       ActionController(name: '_QuisionerLogic');
 
   @override
-  void onSelectedValue(String s, SearchModel model) {
+  void onSelectedValue(Function func, String s, SearchModel model) {
     final _$actionInfo = _$_QuisionerLogicActionController.startAction(
         name: '_QuisionerLogic.onSelectedValue');
     try {
-      return super.onSelectedValue(s, model);
+      return super.onSelectedValue(func, s, model);
     } finally {
       _$_QuisionerLogicActionController.endAction(_$actionInfo);
     }

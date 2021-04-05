@@ -128,5 +128,7 @@
   "select_file" : "Select File",
   "take_gallery" : "Take Gallery",
   "process" : "Process",
-  "welcome" : "Welcome"
+  "welcome" : "Welcome",
+  "date" : "Date",
+  "time" : "Time"
 }

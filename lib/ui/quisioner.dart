@@ -11,9 +11,11 @@ import 'package:mobilesurvey/model/quisioner_answer.dart';
 import 'package:mobilesurvey/utilities/palette.dart';
 import 'package:mobilesurvey/utilities/translation.dart';
 
+// ignore: public_member_api_docs
 class QuisionerUI extends StatefulWidget {
   final List<QuisionerModel> model;
 
+  // ignore: public_member_api_docs
   const QuisionerUI({Key key, this.model}) : super(key: key);
 
   @override
@@ -21,25 +23,19 @@ class QuisionerUI extends StatefulWidget {
 }
 
 class _QuisionerUIState extends NewState<QuisionerUI> {
-  QuisionerBase _logic;
-
-  @override
-  void initState() {
-    _logic = QuisionerBase(this);
-    super.initState();
-  }
+  final QuisionerBase _logic = QuisionerBase();
 
   @override
   Widget buildView(BuildContext context) {
     return Scaffold(
       body: Observer(builder: (_) {
-        if (_logic.quisioner.length != 0) {
+        if (_logic.quisioner.isNotEmpty) {
           return Column(
             children: [
               Expanded(
                   child: ListView.builder(
                       padding: EdgeInsets.all(16.0),
-                      itemBuilder: (_, int index) => Padding(
+                      itemBuilder: (_, index) => Padding(
                             padding: const EdgeInsets.symmetric(vertical: 8.0),
                             child: _buildQuisioner(_logic.quisioner[index]),
                           ),
@@ -98,6 +94,6 @@ class _QuisionerUIState extends NewState<QuisionerUI> {
                   child: Text(model.itemList[index],
                       style: TextStyle(fontSize: 12.0)),
                 ))),
-        onChanged: (c) => _logic.onSelectedValue(c, model));
+        onChanged: (c) => _logic.onSelectedValue(setState,c, model));
   }
 }

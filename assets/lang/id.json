@@ -127,6 +127,8 @@
   "take_picture": "Ambil Gambar",
   "select_file": "Pilih File",
   "take_gallery": "Ambil Galeri",
-  "process" : "Proses",
-  "welcome" : "Selamat Datang"
+  "process": "Proses",
+  "welcome": "Selamat Datang",
+  "date": "Tanggal",
+  "time": "Waktu"
 }

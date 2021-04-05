@@ -12,10 +12,6 @@ part 'quisioner.g.dart';
 class QuisionerBase = _QuisionerLogic with _$QuisionerBase;
 
 abstract class _QuisionerLogic with Store {
-  final NewState _state;
-
-  _QuisionerLogic(this._state);
-
   final _dispose = autorun((_) {
     var newQuisioner = [];
     for (var element in MasterRepositories.quisionerList) {
@@ -48,10 +44,12 @@ abstract class _QuisionerLogic with Store {
   List<QuisionerAnswerModel> get quisioner => _quisioner;
 
   @action
-  void onSelectedValue(String s, SearchModel model) => _state.setState(() {
-        model.value = s;
-        HiveUtils.saveChoiceToHive(kLastSavedClient, model);
-      });
+  void onSelectedValue(Function func, String s, SearchModel model) {
+    func(() {
+      model.value = s;
+      HiveUtils.saveChoiceToHive(kLastSavedClient, model);
+    });
+  }
 
   @action
   void testSubmit() => _quisioner.forEach((element) {
