@@ -35,19 +35,21 @@ mixin _$DocumentBase on _DocumentLogic, Store {
   final _$browseFileAsyncAction = AsyncAction('_DocumentLogic.browseFile');
 
   @override
-  Future<void> browseFile(PhotoForm form, int index) {
-    return _$browseFileAsyncAction.run(() => super.browseFile(form, index));
+  Future<void> browseFile(
+      PhotoForm form, int index, Function fc, BuildContext context) {
+    return _$browseFileAsyncAction
+        .run(() => super.browseFile(form, index, fc, context));
   }
 
   final _$_DocumentLogicActionController =
       ActionController(name: '_DocumentLogic');
 
   @override
-  void removePhoto(PhotoResult photo, int index) {
+  void removePhoto(PhotoResult photo, int index, Function fc) {
     final _$actionInfo = _$_DocumentLogicActionController.startAction(
         name: '_DocumentLogic.removePhoto');
     try {
-      return super.removePhoto(photo, index);
+      return super.removePhoto(photo, index, fc);
     } finally {
       _$_DocumentLogicActionController.endAction(_$actionInfo);
     }

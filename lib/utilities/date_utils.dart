@@ -7,6 +7,7 @@ class DateUtils {
       {String format = 'dd/MM/yyyy'}) {
     try {
       var _df = DateFormat(format);
+      if (date == null) throw Exception("Date Null");
       return _df.parse(date);
     } on Exception catch (e) {
       return null;
@@ -18,6 +19,7 @@ class DateUtils {
       {String format = 'dd/MM/yyyy'}) {
     try {
       var _df = DateFormat(format);
+      if (dateTime == null) throw Exception("Date Null");
       return _df.format(dateTime);
     } on Exception catch (e) {
       return null;
@@ -29,6 +31,7 @@ class DateUtils {
       {String format = 'hh.mm'}) {
     try {
       var _df = DateFormat(format);
+      if (dateTime == null) throw Exception("Date Null");
       return _df.format(dateTime);
     } on Exception catch (e) {
       return null;

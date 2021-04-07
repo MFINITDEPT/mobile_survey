@@ -130,5 +130,6 @@
   "process": "Proses",
   "welcome": "Selamat Datang",
   "date": "Tanggal",
-  "time": "Waktu"
+  "time": "Waktu",
+  "filename": "Nama File"
 }

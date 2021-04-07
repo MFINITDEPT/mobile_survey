@@ -4,39 +4,38 @@ import 'package:flutter/cupertino.dart';
 import 'package:hive/hive.dart';
 import 'package:mobilesurvey/model/dropdown.dart';
 import 'package:mobilesurvey/model/photo_form.dart';
+import 'package:mobilesurvey/model/document_item.dart';
 
+// ignore: public_member_api_docs
 class HiveUtils {
   static void _saveTextFieldControllerToHive(
       String id, TextEditingController controller, String controllerName,
       [String type = 'Client', Box<dynamic> box]) {
-//    print("box saved : $controllerName$id$type");
-    box.put("$controllerName$id$type", controller.text);
+    box.put("${controllerName}_${id}_$type", controller.text);
   }
 
   static void _readTextFieldControllerFromHive(String id,
       TextEditingController controller, String controllerName, Box<dynamic> box,
       [String type = 'Client']) {
-//    print("hello ini kenapa ? $controllerName$id$type");
-//    print("hello ini isinya ? ${box.get("$controllerName$id$type")}");
-    if (box.get("$controllerName$id$type") == null) {
+    if (box.get("${controllerName}_${id}_$type") == null) {
       controller.value = TextEditingValue.empty;
     } else {
-      controller.text = box.get("$controllerName$id$type");
+      controller.text = box.get("${controllerName}_${id}_$type");
     }
   }
 
   static Future<void> readFromBox(String id,
       List<TextEditingController> controllers, List<String> controllerNames,
       [String type = "Client"]) async {
-    String boxName = "$type$id";
+    var boxName = "${type}_$id";
     if (Hive.isBoxOpen(boxName)) {
-      Box<dynamic> box = Hive.box(boxName);
+      var box = Hive.box(boxName);
       for (var value in controllers) {
         _readTextFieldControllerFromHive(
             id, value, controllerNames[controllers.indexOf(value)], box, type);
       }
     } else {
-      Box<dynamic> box = await Hive.openBox(boxName);
+      var box = await Hive.openBox(boxName);
       for (var value in controllers) {
         _readTextFieldControllerFromHive(
             id, value, controllerNames[controllers.indexOf(value)], box, type);
@@ -47,17 +46,17 @@ class HiveUtils {
   static Future<void> addListenner(
       String id, TextEditingController controller, String controllerName,
       [String type = "Client"]) async {
-    String boxName = "$type$id";
+    var boxName = "${type}_$id";
     if (Hive.isBoxOpen(boxName)) {
-      Box<dynamic> box = Hive.box(boxName);
+      var box = Hive.box(boxName);
       _saveTextFieldControllerToHive(id, controller, controllerName, type, box);
     } else {
-      Box<dynamic> box = await Hive.openBox(boxName);
+      var box = await Hive.openBox(boxName);
       _saveTextFieldControllerToHive(id, controller, controllerName, type, box);
     }
   }
 
-  static Future<void> saveFilePathToBox(
+/*  static Future<void> saveFilePathToBox(
       String id, String filePath, PhotoForm form, int index,
       [String type = "foto"]) async {
     String boxName = "$type$id";
@@ -94,29 +93,68 @@ class HiveUtils {
         return value.get("${form.kelengkapan}$id$type$index");
       });
     }
+  }*/
+
+  static Future<void> savePhotoItemToBox(
+      String id, DocumentItem item, PhotoForm form, int index,
+      [String type = "foto"]) async {
+    var boxName = "${type}_$id";
+    if (Hive.isBoxOpen(boxName)) {
+      var box = Hive.box<DocumentItem>(boxName);
+      box.put("${form.id}_${id}_${type}_$index", item);
+    } else {
+      var box = await Hive.openBox<DocumentItem>(boxName);
+      box.put("${form.id}_${id}_${type}_$index", item);
+    }
+  }
+
+  static Future<void> deletePhotoItemFromBox(
+      String id, PhotoForm form, int index,
+      [String type = "foto"]) async {
+    var boxName = "${type}_$id";
+    if (Hive.isBoxOpen(boxName)) {
+      var box = Hive.box<DocumentItem>(boxName);
+      box.delete("${form.id}_${id}_${type}_$index");
+    } else {
+      var box = await Hive.openBox<DocumentItem>(boxName);
+      box.delete("${form.id}_${id}_${type}_$index");
+    }
+  }
+
+  static DocumentItem readPhotoItemFromBox(String id, PhotoForm form, int index,
+      [String type = "foto"]) {
+    var boxName = "${type}_$id";
+    if (Hive.isBoxOpen(boxName)) {
+      var box = Hive.box<DocumentItem>(boxName);
+      return (box.get("${form.id}_${id}_${type}_$index"));
+    } else {
+      Hive.openBox<DocumentItem>(boxName).then((value) {
+        return value.get("${form.id}_${id}_${type}_$index");
+      });
+    }
   }
 
   static Future<void> saveChoiceToHive(String id, SearchModel model,
       {String type = "quisioner"}) async {
-    String boxName = "choice$type$id";
+    var boxName = "choice_${type}_$id";
     if (Hive.isBoxOpen(boxName)) {
-      Box<SearchModel> box = Hive.box<SearchModel>(boxName);
-      box.put("${model.title}$id$type", model);
+      var box = Hive.box<SearchModel>(boxName);
+      box.put("${model.title}_${id}_$type", model);
     } else {
-      Box<SearchModel> box = await Hive.openBox<SearchModel>(boxName);
-      box.put("${model.title}$id$type", model);
+      var box = await Hive.openBox<SearchModel>(boxName);
+      box.put("${model.title}_${id}_$type", model);
     }
   }
 
   static SearchModel readChoiceFromHive(String id, SearchModel model,
       {String type}) {
-    String boxName = "choice$type$id";
+    var boxName = "choice_${type}_$id";
     if (Hive.isBoxOpen(boxName)) {
-      Box<SearchModel> box = Hive.box<SearchModel>(boxName);
-      return (box.get("${model.title}$id$type"));
+      var box = Hive.box<SearchModel>(boxName);
+      return (box.get("${model.title}_${id}_$type"));
     } else {
       Hive.openBox<SearchModel>(boxName).then((value) {
-        return value.get("${model.title}$id$type");
+        return value.get("${model.title}_${id}_$type");
       });
     }
   }
@@ -124,14 +162,13 @@ class HiveUtils {
   static Future<void> readControllerFromHive(
       String id, TextEditingController controller, String controllerName,
       [String type = "Client"]) async {
-    String boxName = "$type$id";
-//    print("ini read boxname : $boxName");
+    var boxName = "${type}_$id";
     if (Hive.isBoxOpen(boxName)) {
-      Box<dynamic> box = Hive.box(boxName);
+      var box = Hive.box(boxName);
       _readTextFieldControllerFromHive(
           id, controller, controllerName, box, type);
     } else {
-      Box<dynamic> box = await Hive.openBox(boxName);
+      var box = await Hive.openBox(boxName);
       _readTextFieldControllerFromHive(
           id, controller, controllerName, box, type);
     }

@@ -9,11 +9,11 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:hive/hive.dart';
 import 'package:mobilesurvey/model/dropdown.dart';
 import 'package:mobilesurvey/model/photo_form.dart';
+import 'package:mobilesurvey/model/document_item.dart';
 import 'package:mobilesurvey/model/quisioner.dart';
 import 'package:mobilesurvey/model/zipcode.dart';
 import 'package:mobilesurvey/model/ao.dart';
 import 'package:mobilesurvey/repositories/master.dart';
-import 'package:mobilesurvey/ui/home.dart';
 import 'package:mobilesurvey/ui/login.dart';
 import 'package:mobilesurvey/ui/home_container.dart';
 import 'package:mobilesurvey/ui/splashscreen.dart';
@@ -47,7 +47,10 @@ void main() {
         ..registerAdapter(AoModelAdapter())
         ..registerAdapter(ZipCodeModelAdapter())
         ..registerAdapter(PhotoFormAdapter())
-        ..registerAdapter(SearchModelAdapter());
+        ..registerAdapter(SearchModelAdapter())
+        ..registerAdapter(DocumentItemAdapter());
+
+      print(Hive.isAdapterRegistered(DocumentItemAdapter().typeId));
 
       MasterRepositories.hivePath = value.path;
     });

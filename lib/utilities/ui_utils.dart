@@ -1,10 +1,16 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mobilesurvey/component/adv_column.dart';
 import 'package:mobilesurvey/component/adv_row.dart';
+import 'package:mobilesurvey/model/document_item.dart';
 import 'package:mobilesurvey/utilities/assets.dart';
+import 'package:mobilesurvey/utilities/file_utils.dart';
 import 'package:mobilesurvey/utilities/palette.dart';
 import 'package:mobilesurvey/utilities/translation.dart';
+
+import 'mime_utils.dart';
 
 class UIUtils {
   /// static function to return actionBottomSheet
@@ -36,6 +42,7 @@ class UIUtils {
     );
     return result;
   }
+
   /// static function to return popup Menu
   static Future<int> popupMenu(BuildContext context) async {
     var result = await showDialog(
@@ -106,5 +113,19 @@ class UIUtils {
   static Widget assetsIcon({bool isDocument = false}) {
     return Image.asset(isDocument ? Assets.file : Assets.camera,
         height: 24, width: 24);
+  }
+
+  static Widget documentIcon(DocumentItem item, {bool isDocument = false}) {
+    return InkWell(
+      onTap: item?.path != null ? () => FileUtils.openFile(item.path) : null,
+      child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: item != null
+              ? (MimeUtils.isImage(item.path)
+                  ? Image.file(File(item.path),
+                      height: 40, width: 40, fit: BoxFit.cover)
+                  : Icon(Icons.insert_drive_file, size: 40))
+              : Container(height: 40, width: 40, color: Palette.navy)),
+    );
   }
 }

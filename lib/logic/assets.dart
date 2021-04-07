@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mobilesurvey/boilerplate/new_state.dart';
 import 'package:mobilesurvey/model/photo_form.dart';
+import 'package:mobilesurvey/model/document_item.dart';
 import 'package:mobilesurvey/model/photo_result.dart';
 import 'package:mobilesurvey/repositories/master.dart';
 import 'package:mobilesurvey/utilities/constant.dart';
@@ -22,28 +23,26 @@ part 'assets.g.dart';
 class AssetsBase = _AssetsLogic with _$AssetsBase;
 
 abstract class _AssetsLogic with Store {
-  NewState _state;
+  final _dispose = autorun((_) {
+    var newPhotoResult = <PhotoResult>[];
 
-  _AssetsLogic(this._state);
-
-  BuildContext get _context => _state.context;
-
-  var _dispose = autorun((_) {
-    List<PhotoResult> newPhotoResult = List<PhotoResult>();
-    MasterRepositories.photoFormResult.forEach((element) {
-      PhotoResult _photoResult = PhotoResult();
+    for (var element in MasterRepositories.photoFormResult) {
+      var _photoResult = PhotoResult();
       _photoResult.form = element.form;
-      List<File> files = List<File>(element.result.length);
-      for (int i = 0; i < element.result.length; i++) {
-        var result = HiveUtils.readFilePathFromBox(
+
+      var item = List<DocumentItem>(element.result.length);
+      for (var i = 0; i < element.result.length; i++) {
+        var result = HiveUtils.readPhotoItemFromBox(
             kLastSavedClient, _photoResult.form, i, "foto");
         if (result != null) {
-          files[i] = File(result);
+          item[i] = result;
         }
       }
-      _photoResult.result = files;
+
+      _photoResult.result = item;
       newPhotoResult.add(_photoResult);
-    });
+    }
+
     MasterRepositories.clearSavedPhotoFormResult(master.pic);
     MasterRepositories.savePhotoFormResult(newPhotoResult, master.pic);
   });
@@ -56,19 +55,33 @@ abstract class _AssetsLogic with Store {
   ObservableList<PhotoResult> get results => _results;
 
   @action
-  Future<void> browseFile(PhotoForm form, int index) async {
-    if (_getFileFromResult(form) == null) {
+  Future<void> browseFile(
+      PhotoForm form, int index, Function fc, BuildContext context) async {
+    var tampungan = _getPhotoItemFromResult(form);
+
+    if (tampungan == null) {
       Fluttertoast.showToast(
           msg: "something error", toastLength: Toast.LENGTH_LONG);
       return;
     }
 
-    List<File> _files = _getFileFromResult(form);
+    if (form.type.toLowerCase() == "foto") {
+      var files = await AdvImagePicker.pickImagesToFile(context,
+          usingGallery: false, useCustomView: false);
+      if (files.isNotEmpty) {
+        fc(() {
+          tampungan[index] = DocumentItem();
+          tampungan[index].path = files.first.path;
+          tampungan[index].dateTime = DateTime.now();
 
-    if (form.type.toLowerCase() == "dokumen") {
-      int result = await UIUtils.browseFile(_context);
+          HiveUtils.savePhotoItemToBox(
+              kLastSavedClient, tampungan[index], form, index);
+        });
+      }
+    } else if (form.type.toLowerCase() == "dokumen") {
+      var result = await UIUtils.popupMenu(context);
 
-      int _fileCount = _files.where((element) => element != null).length;
+      var _fileCount = tampungan.where((element) => element != null).length;
 
       if (_fileCount >= form.count) {
         Fluttertoast.showToast(
@@ -83,88 +96,93 @@ abstract class _AssetsLogic with Store {
 
       switch (result) {
         case 1:
-          List<File> file = await AdvImagePicker.pickImagesToFile(_context,
+          var file = await AdvImagePicker.pickImagesToFile(context,
               usingCamera: true, useCustomView: false, usingGallery: false);
           if (file.isNotEmpty) {
-            if (file.first.lengthSync() < kMaxSizeUpload)
-              _state.setState(() {
-                _files[index] = file.first;
-                HiveUtils.saveFilePathToBox(
-                    kLastSavedClient, file.first.path, form, index);
+            if (file.first.lengthSync() < kMaxSizeUpload) {
+              fc(() {
+                tampungan[index] = DocumentItem();
+                tampungan[index].path = file.first.path;
+                tampungan[index].dateTime = DateTime.now();
+
+                HiveUtils.savePhotoItemToBox(
+                    kLastSavedClient, tampungan[index], form, index);
               });
-            else if (file.first.lengthSync() > kMaxSizeUpload)
+            } else if (file.first.lengthSync() > kMaxSizeUpload) {
               Fluttertoast.showToast(
                   msg: translation.getText('maximum_file_length_exceed'),
                   toastLength: Toast.LENGTH_LONG);
+            }
           }
           break;
         case 2:
-          List<String> docPaths =
-              await DocumentsPicker.pickImages(maxCount: maxCount);
+          var docPaths = await DocumentsPicker.pickImages(maxCount: maxCount);
           for (var item in docPaths) {
-            File file = File(item);
-            if (file.lengthSync() < kMaxSizeUpload)
-              _state.setState(() {
-                _files[_files.indexOf(null)] = file;
-                HiveUtils.saveFilePathToBox(
-                    kLastSavedClient, file.path, form, docPaths.indexOf(item));
+            var file = File(item);
+            if (file.lengthSync() < kMaxSizeUpload) {
+              fc(() {
+                var result = DocumentItem();
+                result.path = file.path;
+                result.dateTime = DateTime.now();
+
+                tampungan[tampungan.indexOf(null)] = result;
+
+                HiveUtils.savePhotoItemToBox(
+                    kLastSavedClient, result, form, index);
               });
-            else if (file.lengthSync() > kMaxSizeUpload)
+            } else if (file.lengthSync() > kMaxSizeUpload) {
               Fluttertoast.showToast(
                   msg: translation.getText('maximum_file_length_exceed'),
                   toastLength: Toast.LENGTH_LONG);
+            }
           }
           break;
         case 3:
-          List<String> docPaths =
+          var docPaths =
               await DocumentsPicker.pickDocuments(maxCount: maxCount);
           for (var item in docPaths) {
-            File file = File(item);
-            if (file.lengthSync() < kMaxSizeUpload)
-              _state.setState(() {
-                _files[_files.indexOf(null)] = file;
-                HiveUtils.saveFilePathToBox(
-                    kLastSavedClient, file.path, form, docPaths.indexOf(item));
+            var file = File(item);
+            if (file.lengthSync() < kMaxSizeUpload) {
+              fc(() {
+                var result = DocumentItem();
+                result.path = file.path;
+                result.dateTime = DateTime.now();
+
+                tampungan[tampungan.indexOf(null)] = result;
+
+                HiveUtils.savePhotoItemToBox(
+                    kLastSavedClient, result, form, index);
               });
-            else if (file.lengthSync() > kMaxSizeUpload)
+            } else if (file.lengthSync() > kMaxSizeUpload) {
               Fluttertoast.showToast(
                   msg: translation.getText('maximum_file_length_exceed'),
                   toastLength: Toast.LENGTH_LONG);
+            }
           }
           break;
         default:
           return;
       }
-    } else if (form.type.toLowerCase() == "foto") {
-      List<File> files = await AdvImagePicker.pickImagesToFile(_context,
-          usingGallery: false, useCustomView: false);
-     if(files.isNotEmpty) {
-       _state.setState(() {
-         _getFileFromResult(form)[index] = files.first;
-         HiveUtils.saveFilePathToBox(
-             kLastSavedClient, files.first.path, form, index);
-       });
-     }
     }
   }
 
   @action
-  void removePhoto(PhotoResult photo, int index) {
-    _state.setState(() {
+  void removePhoto(PhotoResult photo, int index, Function fc) {
+    fc(() {
       photo.result[index] = null;
-      HiveUtils.deleteFilePathFromBox(kLastSavedClient, photo.form, index);
+      HiveUtils.deletePhotoItemFromBox(kLastSavedClient, photo.form, index);
     });
   }
 
-  List<File> _getFileFromResult(PhotoForm form) {
+  List<DocumentItem> _getPhotoItemFromResult(PhotoForm form) {
     return _results
         ?.firstWhere((element) => form == element.form, orElse: null)
         ?.result;
   }
 
-  File image(PhotoForm form, int index) {
-    if (_getFileFromResult(form) == null) return null;
-    return _getFileFromResult(form)[index];
+  DocumentItem document(PhotoForm form, int index) {
+    if (_getPhotoItemFromResult(form) == null) return null;
+    return _getPhotoItemFromResult(form)[index];
   }
 
   @action

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:mobilesurvey/model/document_item.dart';
 import 'package:mobx/mobx.dart';
 
 import '../model/dropdown.dart';
@@ -29,7 +30,7 @@ abstract class _HomeLogic with Store {
       var _item = PhotoResult();
       _item.form =
           MasterRepositories.photoForm.firstWhere((item) => element == item);
-      _item.result = List<File>(element.count);
+      _item.result = List<DocumentItem>(element.count);
 
       _resultPhoto.add(_item);
     }
@@ -38,7 +39,7 @@ abstract class _HomeLogic with Store {
       var _item = PhotoResult();
       _item.form =
           MasterRepositories.docPhoto.firstWhere((item) => element == item);
-      _item.result = List<File>(element.count);
+      _item.result = List<DocumentItem>(element.count);
 
       _resultDoc.add(_item);
     }

@@ -21,7 +21,7 @@ class APIRequest {
 //  static String _urldev = "https://ver-itrack.mncfinance.net/api/master/";
  // static String _urldev = "https://10.1.80.83:45456/api/master/";
  // static String _urldev = "https://siapi.mncfinance.net/";
-  static String _urldev = "https://10.1.80.83:45456/api/master/";
+  static String _urldev = "https://10.1.80.83:45455/api/master/";
 //  static String _urldev = "http://172.31.9.104:9993/api/master/";
 
   static Dio config() {

@@ -35,18 +35,20 @@ mixin _$AssetsBase on _AssetsLogic, Store {
   final _$browseFileAsyncAction = AsyncAction('_AssetsLogic.browseFile');
 
   @override
-  Future<void> browseFile(PhotoForm form, int index) {
-    return _$browseFileAsyncAction.run(() => super.browseFile(form, index));
+  Future<void> browseFile(
+      PhotoForm form, int index, Function fc, BuildContext context) {
+    return _$browseFileAsyncAction
+        .run(() => super.browseFile(form, index, fc, context));
   }
 
   final _$_AssetsLogicActionController = ActionController(name: '_AssetsLogic');
 
   @override
-  void removePhoto(PhotoResult photo, int index) {
+  void removePhoto(PhotoResult photo, int index, Function fc) {
     final _$actionInfo = _$_AssetsLogicActionController.startAction(
         name: '_AssetsLogic.removePhoto');
     try {
-      return super.removePhoto(photo, index);
+      return super.removePhoto(photo, index, fc);
     } finally {
       _$_AssetsLogicActionController.endAction(_$actionInfo);
     }

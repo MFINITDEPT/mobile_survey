@@ -130,5 +130,6 @@
   "process" : "Process",
   "welcome" : "Welcome",
   "date" : "Date",
-  "time" : "Time"
+  "time" : "Time",
+  "filename" : "File Name"
 }
