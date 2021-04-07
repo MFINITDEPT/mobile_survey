@@ -1,5 +1,5 @@
 import 'package:hive/hive.dart';
-import 'package:mobilesurvey/utilities/parse_utils.dart';
+import '../utilities/parse_utils.dart';
 
 part 'dropdown.g.dart';
 

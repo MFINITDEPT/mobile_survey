@@ -1,19 +1,12 @@
-import 'package:adv_image_picker/components/toast.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_holo_date_picker/date_picker.dart';
 import 'package:flutter_holo_date_picker/i18n/date_picker_i18n.dart';
-import 'package:mobilesurvey/model/dropdown.dart';
-import 'package:mobilesurvey/model/zipcode.dart';
-import 'package:mobilesurvey/repositories/master.dart';
-import 'package:mobilesurvey/utilities/constant.dart';
-import 'package:mobilesurvey/utilities/hive_utils.dart';
-import 'package:mobilesurvey/utilities/string_utils.dart';
 import 'package:mobx/mobx.dart';
-
-import '../boilerplate/new_state.dart';
-import '../model/nik_data.dart';
-import '../utilities/translation.dart';
+import '../model/zipcode.dart';
+import '../utilities/constant.dart';
+import '../utilities/hive_utils.dart';
+import '../utilities/string_utils.dart';
 
 part 'client.g.dart';
 

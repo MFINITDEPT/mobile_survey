@@ -2,29 +2,24 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:mobilesurvey/boilerplate/new_state.dart';
-import 'package:mobilesurvey/component/adv_column.dart';
-import 'package:mobilesurvey/component/adv_row.dart';
-import 'package:mobilesurvey/logic/document.dart';
-import 'package:mobilesurvey/model/photo_result.dart';
-import 'package:mobilesurvey/utilities/date_utils.dart';
-import 'package:mobilesurvey/utilities/palette.dart';
-import 'package:mobilesurvey/utilities/translation.dart';
-import 'package:mobilesurvey/utilities/ui_utils.dart';
+import '../boilerplate/new_state.dart';
+import '../component/adv_column.dart';
+import '../component/adv_row.dart';
+import '../logic/document.dart';
+import '../model/photo_result.dart';
+import '../utilities/date_utils.dart';
+import '../utilities/palette.dart';
+import '../utilities/translation.dart';
+import '../utilities/ui_utils.dart';
 
+// ignore: public_member_api_docs
 class DocumentUI extends StatefulWidget {
   @override
   _DocumentUIState createState() => _DocumentUIState();
 }
 
 class _DocumentUIState extends NewState<DocumentUI> {
-  DocumentBase _logic;
-
-  @override
-  void initState() {
-    _logic = DocumentBase(this);
-    super.initState();
-  }
+  final DocumentBase _logic = DocumentBase();
 
   @override
   Widget buildView(BuildContext context) {

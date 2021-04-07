@@ -2,6 +2,7 @@ import 'package:hive/hive.dart';
 part 'ao.g.dart';
 
 @HiveType(typeId: 0)
+// ignore: public_member_api_docs
 class AoModel {
   @HiveField(0)
   final String code;
@@ -18,6 +19,7 @@ class AoModel {
   @HiveField(6)
   final String modDate;
 
+  // ignore: public_member_api_docs
   AoModel(
       {this.code,
       this.cCode,
@@ -27,6 +29,7 @@ class AoModel {
       this.currentLoad,
       this.modDate});
 
+  // ignore: public_member_api_docs
   factory AoModel.fromJson(Map<String, dynamic> json) {
     return AoModel(
         code: json['code'] ?? "",
@@ -38,6 +41,7 @@ class AoModel {
         modDate: json["modDate"] ?? "");
   }
 
+  // ignore: public_member_api_docs
   Map<String, dynamic> toJson() {
     return {
       "code": this.code,

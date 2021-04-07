@@ -1,17 +1,20 @@
 import 'package:mobilesurvey/utilities/parse_utils.dart';
 
+// ignore: public_member_api_docs
 class ConfigurationModel {
   final String lastUpdateQuestion;
   final String lastUpdateZipCode;
   final String lastUpdateAo;
   final String lastUpdateForm;
 
+  // ignore: public_member_api_docs
   ConfigurationModel(
       {this.lastUpdateQuestion,
       this.lastUpdateZipCode,
       this.lastUpdateAo,
       this.lastUpdateForm});
 
+  // ignore: public_member_api_docs
   factory ConfigurationModel.fromJson(Map<String, dynamic> json) {
     return ConfigurationModel(
         lastUpdateQuestion: json.containsKey('lastModDateQuestion')

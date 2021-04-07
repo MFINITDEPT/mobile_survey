@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:mobilesurvey/utilities/constant.dart';
-import 'package:mobilesurvey/utilities/palette.dart';
+import '../utilities/constant.dart';
+import '../utilities/palette.dart';
 
+// ignore: public_member_api_docs
 class BottomShape extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -15,6 +16,7 @@ class BottomShape extends StatelessWidget {
   }
 }
 
+// ignore: public_member_api_docs
 class CurvePainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
@@ -44,6 +46,7 @@ class CurvePainter extends CustomPainter {
   }
 }
 
+// ignore: public_member_api_docs
 class DetailShape extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -57,6 +60,7 @@ class DetailShape extends StatelessWidget {
   }
 }
 
+// ignore: public_member_api_docs
 class BottomDetailPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:mobilesurvey/utilities/palette.dart';
+import '../utilities/palette.dart';
 
 // ignore: public_member_api_docs
 class CustomTextField extends StatefulWidget {

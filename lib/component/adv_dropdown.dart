@@ -18,10 +18,12 @@ const EdgeInsets _kAlignedMenuMargin = EdgeInsets.zero;
 const EdgeInsetsGeometry _kUnalignedMenuMargin =
     EdgeInsetsDirectional.only(start: 16.0, end: 24.0);
 
+// ignore: public_member_api_docs
 class AdvDropdownAction {
   VoidCallback forceTap;
   VoidCallback onTap;
 
+  // ignore: public_member_api_docs
   AdvDropdownAction({this.onTap});
 }
 

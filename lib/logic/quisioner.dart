@@ -1,10 +1,10 @@
-import '../boilerplate/new_state.dart';
+import 'package:mobx/mobx.dart';
+
 import '../model/dropdown.dart';
 import '../model/quisioner_answer.dart';
 import '../repositories/master.dart';
 import '../utilities/constant.dart';
 import '../utilities/hive_utils.dart';
-import 'package:mobx/mobx.dart';
 
 part 'quisioner.g.dart';
 

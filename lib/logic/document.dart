@@ -4,33 +4,27 @@ import 'package:adv_image_picker/adv_image_picker.dart';
 import 'package:documents_picker/documents_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:mobilesurvey/boilerplate/new_state.dart';
-import 'package:mobilesurvey/model/photo_form.dart';
-import 'package:mobilesurvey/model/document_item.dart';
-import 'package:mobilesurvey/model/photo_result.dart';
-import 'package:mobilesurvey/repositories/master.dart';
-import 'package:mobilesurvey/utilities/constant.dart';
-import 'package:mobilesurvey/utilities/enum.dart';
-import 'package:mobilesurvey/utilities/hive_utils.dart';
-import 'package:mobilesurvey/utilities/translation.dart';
-import 'package:mobilesurvey/utilities/ui_utils.dart';
 import 'package:mobx/mobx.dart';
 import 'package:open_file/open_file.dart';
 import 'package:pit_permission/pit_permission.dart';
+import '../model/document_item.dart';
+import '../model/photo_form.dart';
+import '../model/photo_result.dart';
+import '../repositories/master.dart';
+import '../utilities/constant.dart';
+import '../utilities/enum.dart';
+import '../utilities/hive_utils.dart';
+import '../utilities/translation.dart';
+import '../utilities/ui_utils.dart';
 
 part 'document.g.dart';
 
+// ignore: public_member_api_docs
 class DocumentBase = _DocumentLogic with _$DocumentBase;
 
 abstract class _DocumentLogic with Store {
-  NewState _state;
-
-  _DocumentLogic(this._state);
-
-  BuildContext get _context => _state.context;
-
   final _dispose = autorun((_) {
-    var newDocResult = List<PhotoResult>();
+    var newDocResult = <PhotoResult>[];
 
     for (var element in MasterRepositories.docFormResult) {
       var _photoResult = PhotoResult();
@@ -71,7 +65,8 @@ abstract class _DocumentLogic with Store {
 
     if (form.type.toLowerCase() == "foto") {
       var files = await AdvImagePicker.pickImagesToFile(context,
-          usingGallery: false, useCustomView: false);
+              usingGallery: false, useCustomView: false) ??
+          <File>[];
       if (files.isNotEmpty) {
         fc(() {
           tampungan[index] = DocumentItem();
@@ -101,7 +96,10 @@ abstract class _DocumentLogic with Store {
       switch (result) {
         case 1:
           var file = await AdvImagePicker.pickImagesToFile(context,
-              usingCamera: true, useCustomView: false, usingGallery: false);
+                  usingCamera: true,
+                  useCustomView: false,
+                  usingGallery: false) ??
+              <File>[];
           if (file.isNotEmpty) {
             if (file.first.lengthSync() < kMaxSizeUpload) {
               fc(() {

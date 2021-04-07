@@ -1,33 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:mobilesurvey/boilerplate/new_state.dart';
-import 'package:mobilesurvey/logic/task.dart';
-import 'package:mobilesurvey/ui/assets.dart';
-import 'package:mobilesurvey/ui/client.dart';
-import 'package:mobilesurvey/ui/document.dart';
-import 'package:mobilesurvey/ui/process.dart';
-import 'package:mobilesurvey/ui/quisioner.dart';
-import 'package:mobilesurvey/utilities/assets.dart';
-import 'package:mobilesurvey/utilities/palette.dart';
-import 'package:mobilesurvey/component/custom_circular_tab_indicator.dart';
-import 'package:mobilesurvey/utilities/translation.dart';
+import '../boilerplate/new_state.dart';
+import '../component/custom_circular_tab_indicator.dart';
+import '../logic/task.dart';
+import '../ui/assets.dart';
+import '../ui/client.dart';
+import '../ui/document.dart';
+import '../ui/process.dart';
+import '../ui/quisioner.dart';
+import '../utilities/assets.dart';
+import '../utilities/palette.dart';
+import '../utilities/translation.dart';
 
+// ignore: public_member_api_docs
 class TaskUI extends StatefulWidget {
-  final int index;
   final String id;
 
-  const TaskUI({Key key, this.index, this.id}) : super(key: key);
+  // ignore: public_member_api_docs
+  const TaskUI({Key key, this.id}) : super(key: key);
 
   @override
   _TaskUIState createState() => _TaskUIState();
 }
 
 class _TaskUIState extends NewState<TaskUI> {
-  TaskBase _logic;
-
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget buildView(BuildContext context) {
@@ -37,7 +32,7 @@ class _TaskUIState extends NewState<TaskUI> {
   Widget _buildTabSegment() {
     return DefaultTabController(
       length: 5,
-      initialIndex: widget.index ?? 0,
+      initialIndex:  0,
       child: Scaffold(
         appBar: AppBar(
           title: Text(translation.getText('task'),
