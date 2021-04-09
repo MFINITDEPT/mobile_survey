@@ -4,19 +4,18 @@ import 'package:adv_image_picker/adv_image_picker.dart';
 import 'package:documents_picker/documents_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:mobilesurvey/model/document_item.dart';
+import 'package:mobilesurvey/model/photo_form.dart';
+import 'package:mobilesurvey/model/photo_result.dart';
+import 'package:mobilesurvey/repositories/master.dart';
+import 'package:mobilesurvey/utilities/constant.dart';
+import 'package:mobilesurvey/utilities/hive_utils.dart';
+import 'package:mobilesurvey/utilities/translation.dart';
+import 'package:mobilesurvey/utilities/ui_utils.dart';
 import 'package:mobx/mobx.dart';
 import 'package:open_file/open_file.dart';
 import 'package:pit_permission/pit_permission.dart';
 
-import '../model/document_item.dart';
-import '../model/photo_form.dart';
-import '../model/photo_result.dart';
-import '../repositories/master.dart';
-import '../utilities/constant.dart';
-import '../utilities/enum.dart';
-import '../utilities/hive_utils.dart';
-import '../utilities/translation.dart';
-import '../utilities/ui_utils.dart';
 
 part 'assets.g.dart';
 

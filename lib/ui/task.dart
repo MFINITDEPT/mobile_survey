@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:mobilesurvey/logic/mobile_survey/task.dart';
 import '../boilerplate/new_state.dart';
 import '../component/custom_circular_tab_indicator.dart';
-import '../logic/task.dart';
 import '../ui/assets.dart';
 import '../ui/client.dart';
 import '../ui/document.dart';

@@ -1,7 +1,7 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
-import '../ui/home_container.dart';
+import '../../ui/home_container.dart';
 
 
 part 'login.g.dart';

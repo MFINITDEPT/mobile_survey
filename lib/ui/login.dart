@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobilesurvey/boilerplate/new_state.dart';
-import 'package:mobilesurvey/logic/login.dart';
+import 'package:mobilesurvey/logic/mobile_survey/login.dart';
 import 'package:mobilesurvey/utilities/constant.dart';
 import 'package:mobilesurvey/component/custom_shape.dart';
 import 'package:mobilesurvey/utilities/palette.dart';

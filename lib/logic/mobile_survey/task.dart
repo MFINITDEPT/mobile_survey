@@ -1,6 +1,5 @@
+import 'package:mobilesurvey/repositories/master.dart';
 import 'package:mobx/mobx.dart';
-
-import '../repositories/master.dart';
 
 part 'task.g.dart';
 

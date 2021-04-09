@@ -1,10 +1,10 @@
+import 'package:mobilesurvey/model/dropdown.dart';
+import 'package:mobilesurvey/model/quisioner_answer.dart';
+import 'package:mobilesurvey/repositories/master.dart';
+import 'package:mobilesurvey/utilities/constant.dart';
+import 'package:mobilesurvey/utilities/hive_utils.dart';
 import 'package:mobx/mobx.dart';
 
-import '../model/dropdown.dart';
-import '../model/quisioner_answer.dart';
-import '../repositories/master.dart';
-import '../utilities/constant.dart';
-import '../utilities/hive_utils.dart';
 
 part 'quisioner.g.dart';
 

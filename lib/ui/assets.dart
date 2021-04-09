@@ -5,7 +5,7 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mobilesurvey/boilerplate/new_state.dart';
 import 'package:mobilesurvey/component/adv_column.dart';
 import 'package:mobilesurvey/component/adv_row.dart';
-import 'package:mobilesurvey/logic/assets.dart';
+import 'package:mobilesurvey/logic/mobile_survey/assets.dart';
 import 'package:mobilesurvey/model/photo_result.dart';
 import 'package:mobilesurvey/utilities/date_utils.dart';
 import 'package:mobilesurvey/utilities/palette.dart';

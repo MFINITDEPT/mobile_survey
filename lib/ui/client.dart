@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../component/adv_column.dart';
 import '../component/adv_dropdown.dart';
-import '../logic/client.dart';
+import '../logic/mobile_survey/client.dart';
 import '../model/dropdown.dart';
 import '../model/zipcode.dart';
 import '../repositories/master.dart';

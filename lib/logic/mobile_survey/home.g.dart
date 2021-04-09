@@ -9,6 +9,13 @@ part of 'home.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$HomeBase on _HomeLogic, Store {
+  final _$onMapPressAsyncAction = AsyncAction('_HomeLogic.onMapPress');
+
+  @override
+  Future onMapPress() {
+    return _$onMapPressAsyncAction.run(() => super.onMapPress());
+  }
+
   final _$_HomeLogicActionController = ActionController(name: '_HomeLogic');
 
   @override
@@ -17,17 +24,6 @@ mixin _$HomeBase on _HomeLogic, Store {
         name: '_HomeLogic.onSelectedItem');
     try {
       return super.onSelectedItem(customerNumber, context);
-    } finally {
-      _$_HomeLogicActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void onMapPress() {
-    final _$actionInfo =
-        _$_HomeLogicActionController.startAction(name: '_HomeLogic.onMapPress');
-    try {
-      return super.onMapPress();
     } finally {
       _$_HomeLogicActionController.endAction(_$actionInfo);
     }

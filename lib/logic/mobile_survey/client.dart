@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_holo_date_picker/date_picker.dart';
 import 'package:flutter_holo_date_picker/i18n/date_picker_i18n.dart';
 import 'package:mobx/mobx.dart';
-import '../model/zipcode.dart';
-import '../utilities/constant.dart';
-import '../utilities/hive_utils.dart';
-import '../utilities/string_utils.dart';
+import '../../model/zipcode.dart';
+import '../../utilities/constant.dart';
+import '../../utilities/hive_utils.dart';
+import '../../utilities/string_utils.dart';
 
 part 'client.g.dart';
 

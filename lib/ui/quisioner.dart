@@ -4,7 +4,7 @@ import 'package:mobilesurvey/boilerplate/new_state.dart';
 import 'package:mobilesurvey/component/adv_column.dart';
 import 'package:mobilesurvey/component/adv_dropdown.dart';
 import 'package:mobilesurvey/component/custom_textfield.dart';
-import 'package:mobilesurvey/logic/quisioner.dart';
+import 'package:mobilesurvey/logic/mobile_survey/quisioner.dart';
 import 'package:mobilesurvey/model/dropdown.dart';
 import 'package:mobilesurvey/model/quisioner.dart';
 import 'package:mobilesurvey/model/quisioner_answer.dart';

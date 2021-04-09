@@ -2,15 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../model/document_item.dart';
-import '../model/dropdown.dart';
-import '../model/photo_result.dart';
-import '../model/quisioner_answer.dart';
-import '../repositories/master.dart';
-import '../ui/task.dart';
-import '../utilities/constant.dart';
-import '../utilities/enum.dart';
-import '../utilities/hive_utils.dart';
+import '../../model/document_item.dart';
+import '../../model/dropdown.dart';
+import '../../model/photo_result.dart';
+import '../../model/quisioner_answer.dart';
+import '../../repositories/master.dart';
+import '../../ui/task.dart';
+import '../../utilities/constant.dart';
+import '../../utilities/enum.dart';
+import '../../utilities/hive_utils.dart';
 
 part 'home.g.dart';
 

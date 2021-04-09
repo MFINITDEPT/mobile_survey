@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobilesurvey/component/adv_column.dart';
-import 'package:mobilesurvey/logic/history.dart';
+import 'package:mobilesurvey/logic/mobile_survey/history.dart';
 import 'package:mobilesurvey/utilities/assets.dart';
 import 'package:mobilesurvey/utilities/palette.dart';
 import 'package:mobilesurvey/utilities/translation.dart';

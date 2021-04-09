@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../boilerplate/new_state.dart';
 import '../component/adv_column.dart';
-import '../logic/home.dart';
+import '../logic/mobile_survey/home.dart';
 import '../utilities/assets.dart';
 import '../utilities/palette.dart';
 import '../utilities/translation.dart';
@@ -14,7 +14,7 @@ class HomeUI extends StatefulWidget {
 }
 
 class _HomeUIState extends NewState<HomeUI> {
-  final HomeBase _logic = HomeBase();
+   final HomeBase _logic = HomeBase();
 
   @override
   Widget buildView(BuildContext context) {
