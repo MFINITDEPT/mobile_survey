@@ -140,7 +140,7 @@ class _DocumentUIState extends NewState<DocumentUI> {
                       _logic.document(photo.form, index) != null
                           ? DateUtils.convertDateTimeToTimeString(
                               _logic.document(photo.form, index).dateTime)
-                          : translation.getText('date'),
+                          : translation.getText('time'),
                       style: TextStyle(
                           color: Palette.black.withOpacity(0.6),
                           fontSize: 12.0))),

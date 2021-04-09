@@ -23,6 +23,7 @@ class TaskUI extends StatefulWidget {
 }
 
 class _TaskUIState extends NewState<TaskUI> {
+  final TaskBase _logic = TaskBase();
 
   @override
   Widget buildView(BuildContext context) {

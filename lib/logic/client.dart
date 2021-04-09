@@ -150,13 +150,13 @@ abstract class _ClientLogic with Store {
       initialDate: DateTime.now(),
       firstDate: DateTime(1940),
       lastDate: DateTime.now(),
-      dateFormat: "yyyy",
+      dateFormat:  "dd-MMMM-yyyy",
       locale: DateTimePickerLocale.en_us,
       looping: true,
     );
 
     controller.text = finalResult != null
-        ? StringUtils.formatDate(finalResult, format: 'yyyy')
+        ? StringUtils.formatDate(finalResult)
         : controller.text;
   }
 

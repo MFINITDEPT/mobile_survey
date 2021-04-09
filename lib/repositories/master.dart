@@ -4,6 +4,8 @@ import 'dart:convert';
 import 'package:crypto/crypto.dart' as crypt;
 import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
+import 'package:mobilesurvey/model/document_item.dart';
+import 'package:mobilesurvey/utilities/hive_utils.dart';
 import '../model/ao.dart';
 import '../model/configuration.dart';
 import '../model/photo_form.dart';
@@ -302,6 +304,52 @@ class MasterRepositories {
       print(e.toString());
       return Future.value(false);
     }
+  }
+
+  static void getAssetsPhoto() {
+    var newPhotoResult = <PhotoResult>[];
+
+    for (var element in photoFormResult) {
+      var _photoResult = PhotoResult();
+      _photoResult.form = element.form;
+
+      var item = List<DocumentItem>(element.result.length);
+      for (var i = 0; i < element.result.length; i++) {
+        var result = HiveUtils.readPhotoItemFromBox(
+            kLastSavedClient, _photoResult.form, i, "foto");
+        if (result != null) {
+          item[i] = result;
+        }
+      }
+
+      _photoResult.result = item;
+      newPhotoResult.add(_photoResult);
+    }
+
+    clearSavedPhotoFormResult(master.pic);
+    savePhotoFormResult(newPhotoResult, master.pic);
+  }
+
+  static void getDocumentPhoto() {
+    var newDocResult = <PhotoResult>[];
+
+    for (var element in docFormResult) {
+      var _photoResult = PhotoResult();
+      _photoResult.form = element.form;
+      var item = List<DocumentItem>(element.result.length);
+      for (var i = 0; i < element.result.length; i++) {
+        var result = HiveUtils.readPhotoItemFromBox(
+            kLastSavedClient, _photoResult.form, i, "dokumen");
+        if (result != null) {
+          item[i] = result;
+        }
+      }
+      _photoResult.result = item;
+      newDocResult.add(_photoResult);
+    }
+
+    clearSavedPhotoFormResult(master.doc);
+    savePhotoFormResult(newDocResult, master.doc);
   }
 
   static HiveAesCipher _key() {

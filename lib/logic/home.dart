@@ -1,9 +1,8 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:mobilesurvey/model/document_item.dart';
 import 'package:mobx/mobx.dart';
+import 'package:url_launcher/url_launcher.dart';
 
+import '../model/document_item.dart';
 import '../model/dropdown.dart';
 import '../model/photo_result.dart';
 import '../model/quisioner_answer.dart';
@@ -84,7 +83,12 @@ abstract class _HomeLogic with Store {
   }
 
   @action
-  void onMapPress() {
-    print("hello");
+  void onMapPress() async {
+    final url = 'https://www.google.com/maps/search/?api=1&query=-6.173110,106.829361';
+    if (await canLaunch(url)) {
+    await launch(url);
+    } else {
+    throw 'Could not launch $url';
+    }
   }
 }

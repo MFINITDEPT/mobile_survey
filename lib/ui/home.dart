@@ -23,9 +23,21 @@ class _HomeUIState extends NewState<HomeUI> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.all(32.0),
+            padding:
+                const EdgeInsets.symmetric(horizontal: 32.0, vertical: 24.0),
             child: Text(
               "${translation.getText('welcome')}, TEST",
+              style: TextStyle(
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.bold,
+                  color: Palette.navy),
+            ),
+          ),
+          Padding(
+            padding:
+                const EdgeInsets.symmetric(vertical: 8.0, horizontal: 32.0),
+            child: Text(
+              translation.getText('task'),
               style: TextStyle(
                   fontSize: 16.0,
                   fontWeight: FontWeight.bold,
@@ -51,11 +63,22 @@ class _HomeUIState extends NewState<HomeUI> {
         style: TextStyle(
             color: Palette.gold, fontSize: 12.0, fontWeight: FontWeight.w500),
       ),
-      subtitle: Text("B 1234 CA",
-          style: TextStyle(
-              color: Palette.navy,
-              fontSize: 12.0,
-              fontWeight: FontWeight.w500)),
+      subtitle: AdvColumn(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        divider: ColumnDivider(4.0),
+        children: [
+          Text("B 1234 CA",
+              style: TextStyle(
+                  color: Palette.navy,
+                  fontSize: 12.0,
+                  fontWeight: FontWeight.w500)),
+          Text(DateTime.now().toString(),
+              style: TextStyle(
+                  color: Palette.grey,
+                  fontSize: 12.0,
+                  fontWeight: FontWeight.w500))
+        ],
+      ),
       trailing: InkWell(
         onTap: _logic.onMapPress,
         child: Padding(

@@ -12,7 +12,6 @@ import '../model/photo_form.dart';
 import '../model/photo_result.dart';
 import '../repositories/master.dart';
 import '../utilities/constant.dart';
-import '../utilities/enum.dart';
 import '../utilities/hive_utils.dart';
 import '../utilities/translation.dart';
 import '../utilities/ui_utils.dart';
@@ -23,26 +22,8 @@ part 'document.g.dart';
 class DocumentBase = _DocumentLogic with _$DocumentBase;
 
 abstract class _DocumentLogic with Store {
-  final _dispose = autorun((_) {
-    var newDocResult = <PhotoResult>[];
-
-    for (var element in MasterRepositories.docFormResult) {
-      var _photoResult = PhotoResult();
-      _photoResult.form = element.form;
-      var item = List<DocumentItem>(element.result.length);
-      for (var i = 0; i < element.result.length; i++) {
-        var result = HiveUtils.readPhotoItemFromBox(
-            kLastSavedClient, _photoResult.form, i, "dokumen");
-        if (result != null) {
-          item[i] = result;
-        }
-      }
-      _photoResult.result = item;
-      newDocResult.add(_photoResult);
-    }
-
-    MasterRepositories.clearSavedPhotoFormResult(master.doc);
-    MasterRepositories.savePhotoFormResult(newDocResult, master.doc);
+  final _dispose = autorun((_){
+    MasterRepositories.getDocumentPhoto();
   });
 
   @observable

@@ -24,27 +24,7 @@ class AssetsBase = _AssetsLogic with _$AssetsBase;
 
 abstract class _AssetsLogic with Store {
   final _dispose = autorun((_) {
-    var newPhotoResult = <PhotoResult>[];
-
-    for (var element in MasterRepositories.photoFormResult) {
-      var _photoResult = PhotoResult();
-      _photoResult.form = element.form;
-
-      var item = List<DocumentItem>(element.result.length);
-      for (var i = 0; i < element.result.length; i++) {
-        var result = HiveUtils.readPhotoItemFromBox(
-            kLastSavedClient, _photoResult.form, i, "foto");
-        if (result != null) {
-          item[i] = result;
-        }
-      }
-
-      _photoResult.result = item;
-      newPhotoResult.add(_photoResult);
-    }
-
-    MasterRepositories.clearSavedPhotoFormResult(master.pic);
-    MasterRepositories.savePhotoFormResult(newPhotoResult, master.pic);
+    MasterRepositories.getAssetsPhoto();
   });
 
   @observable

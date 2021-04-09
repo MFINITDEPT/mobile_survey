@@ -50,14 +50,22 @@ class _HistoryUIState extends State<HistoryUI> {
             color: Palette.gold, fontSize: 12.0, fontWeight: FontWeight.w500),
       ),
       isThreeLine: true,
-      subtitle: Text.rich(TextSpan(children: [
-        TextSpan(
-            text: "B 1234 CA\n",
-            style: TextStyle(color: Palette.navy, fontWeight: FontWeight.w500)),
-        TextSpan(
-            text: DateTime.now().toString(),
-            style: TextStyle(color: Palette.grey))
-      ], style: TextStyle(fontSize: 12.0))),
+      subtitle: AdvColumn(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        divider: ColumnDivider(4.0),
+        children: [
+          Text("B 1234 CA",
+              style: TextStyle(
+                  color: Palette.navy,
+                  fontSize: 12.0,
+                  fontWeight: FontWeight.w500)),
+          Text(DateTime.now().toString(),
+              style: TextStyle(
+                  color: Palette.grey,
+                  fontSize: 12.0,
+                  fontWeight: FontWeight.w500))
+        ],
+      ),
       trailing: InkWell(
         onTap: _logic.onMapPress,
         child: Padding(
