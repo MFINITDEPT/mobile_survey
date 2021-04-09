@@ -12,7 +12,7 @@ mixin _$HistoryBase on _HistoryLogic, Store {
   final _$onMapPressAsyncAction = AsyncAction('_HistoryLogic.onMapPress');
 
   @override
-  Future onMapPress() {
+  Future<void> onMapPress() {
     return _$onMapPressAsyncAction.run(() => super.onMapPress());
   }
 

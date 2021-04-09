@@ -2,15 +2,15 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import '../boilerplate/new_state.dart';
-import '../component/adv_column.dart';
-import '../component/adv_row.dart';
-import '../logic/mobile_survey/document.dart';
-import '../model/photo_result.dart';
-import '../utilities/date_utils.dart';
-import '../utilities/palette.dart';
-import '../utilities/translation.dart';
-import '../utilities/ui_utils.dart';
+import '../../boilerplate/new_state.dart';
+import '../../component/adv_column.dart';
+import '../../component/adv_row.dart';
+import '../../logic/mobile_survey/document.dart';
+import '../../model/photo_result.dart';
+import '../../utilities/date_utils.dart';
+import '../../utilities/palette.dart';
+import '../../utilities/translation.dart';
+import '../../utilities/ui_utils.dart';
 
 // ignore: public_member_api_docs
 class DocumentUI extends StatefulWidget {

@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-
-import '../boilerplate/new_state.dart';
-import '../component/adv_column.dart';
-import '../logic/mobile_survey/home.dart';
-import '../utilities/assets.dart';
-import '../utilities/palette.dart';
-import '../utilities/translation.dart';
+import 'package:mobilesurvey/boilerplate/new_state.dart';
+import 'package:mobilesurvey/component/adv_column.dart';
+import 'package:mobilesurvey/logic/mobile_survey/home.dart';
+import 'package:mobilesurvey/utilities/assets.dart';
+import 'package:mobilesurvey/utilities/palette.dart';
+import 'package:mobilesurvey/utilities/translation.dart';
 
 // ignore: public_member_api_docs
 class HomeUI extends StatefulWidget {

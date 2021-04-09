@@ -1,13 +1,13 @@
 
 import 'package:flutter/material.dart';
+import 'package:mobilesurvey/component/custom_circular_tab_indicator.dart';
+import 'package:mobilesurvey/ui/mobile_survey/history.dart';
+import 'package:mobilesurvey/ui/mobile_survey/home.dart';
+import 'package:mobilesurvey/utilities/assets.dart';
+import 'package:mobilesurvey/utilities/palette.dart';
+import 'package:mobilesurvey/utilities/translation.dart';
 
-import '../boilerplate/new_state.dart';
-import '../component/custom_circular_tab_indicator.dart';
-import '../ui/history.dart';
-import '../ui/home.dart';
-import '../utilities/assets.dart';
-import '../utilities/palette.dart';
-import '../utilities/translation.dart';
+import '../../boilerplate/new_state.dart';
 
 // ignore: public_member_api_docs
 class HomeContainerUI extends StatefulWidget {

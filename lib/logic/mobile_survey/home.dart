@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mobilesurvey/ui/mobile_survey/task.dart';
 import 'package:mobx/mobx.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -7,7 +8,6 @@ import '../../model/dropdown.dart';
 import '../../model/photo_result.dart';
 import '../../model/quisioner_answer.dart';
 import '../../repositories/master.dart';
-import '../../ui/task.dart';
 import '../../utilities/constant.dart';
 import '../../utilities/enum.dart';
 import '../../utilities/hive_utils.dart';
@@ -83,12 +83,13 @@ abstract class _HomeLogic with Store {
   }
 
   @action
-  void onMapPress() async {
-    final url = 'https://www.google.com/maps/search/?api=1&query=-6.173110,106.829361';
+  Future<void> onMapPress() async {
+    final url =
+        'https://www.google.com/maps/search/?api=1&query=-6.173110,106.829361';
     if (await canLaunch(url)) {
-    await launch(url);
+      await launch(url);
     } else {
-    throw 'Could not launch $url';
+      throw 'Could not launch $url';
     }
   }
 }

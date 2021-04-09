@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:mobilesurvey/boilerplate/new_state.dart';
+import 'package:mobilesurvey/component/custom_circular_tab_indicator.dart';
 import 'package:mobilesurvey/logic/mobile_survey/task.dart';
-import '../boilerplate/new_state.dart';
-import '../component/custom_circular_tab_indicator.dart';
-import '../ui/assets.dart';
-import '../ui/client.dart';
-import '../ui/document.dart';
-import '../ui/process.dart';
-import '../ui/quisioner.dart';
-import '../utilities/assets.dart';
-import '../utilities/palette.dart';
-import '../utilities/translation.dart';
+import 'package:mobilesurvey/utilities/assets.dart';
+import 'package:mobilesurvey/utilities/palette.dart';
+import 'package:mobilesurvey/utilities/translation.dart';
+
+import 'assets.dart';
+import 'client.dart';
+import 'document.dart';
+import 'process.dart';
+import 'quisioner.dart';
 
 // ignore: public_member_api_docs
 class TaskUI extends StatefulWidget {

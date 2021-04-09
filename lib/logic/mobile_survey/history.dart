@@ -13,7 +13,7 @@ abstract class _HistoryLogic with Store {
   }
 
   @action
-  void onMapPress() async {
+  Future<void> onMapPress() async {
       final url = 'https://www.google.com/maps/search/?api=1&query=-6.173110,106.829361';
       if (await canLaunch(url)) {
         await launch(url);

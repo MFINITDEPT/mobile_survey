@@ -2,18 +2,18 @@ import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '../component/adv_column.dart';
-import '../component/adv_dropdown.dart';
-import '../logic/mobile_survey/client.dart';
-import '../model/dropdown.dart';
-import '../model/zipcode.dart';
-import '../repositories/master.dart';
-import '../utilities/enum.dart';
+import 'package:mobilesurvey/boilerplate/new_state.dart';
+import 'package:mobilesurvey/component/adv_column.dart';
+import 'package:mobilesurvey/component/adv_dropdown.dart';
+import 'package:mobilesurvey/component/adv_row.dart';
+import 'package:mobilesurvey/logic/mobile_survey/client.dart';
+import 'package:mobilesurvey/model/dropdown.dart';
+import 'package:mobilesurvey/model/zipcode.dart';
+import 'package:mobilesurvey/repositories/master.dart';
+import 'package:mobilesurvey/utilities/palette.dart';
+import 'package:mobilesurvey/utilities/translation.dart';
 
-import '../boilerplate/new_state.dart';
-import '../component/adv_row.dart';
-import '../utilities/palette.dart';
-import '../utilities/translation.dart';
+import 'package:mobilesurvey/utilities/enum.dart';
 
 // ignore: public_member_api_docs
 class ClientUI extends StatefulWidget {

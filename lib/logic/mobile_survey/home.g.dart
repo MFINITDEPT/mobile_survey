@@ -12,7 +12,7 @@ mixin _$HomeBase on _HomeLogic, Store {
   final _$onMapPressAsyncAction = AsyncAction('_HomeLogic.onMapPress');
 
   @override
-  Future onMapPress() {
+  Future<void> onMapPress() {
     return _$onMapPressAsyncAction.run(() => super.onMapPress());
   }
 

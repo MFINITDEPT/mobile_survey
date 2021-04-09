@@ -14,8 +14,6 @@ import 'package:mobilesurvey/model/quisioner.dart';
 import 'package:mobilesurvey/model/zipcode.dart';
 import 'package:mobilesurvey/model/ao.dart';
 import 'package:mobilesurvey/repositories/master.dart';
-import 'package:mobilesurvey/ui/login.dart';
-import 'package:mobilesurvey/ui/home_container.dart';
 import 'package:mobilesurvey/ui/role.dart';
 import 'package:mobilesurvey/ui/splashscreen.dart';
 import 'package:mobilesurvey/utilities/api_request.dart';
@@ -29,6 +27,8 @@ import 'package:ridjnaelcrypt/ridjnaelcrypt.dart';
 import 'component/adv_column.dart';
 import 'component/custom_button.dart';
 import 'component/setup.dart';
+import 'ui/mobile_survey/home_container.dart';
+import 'ui/mobile_survey/login.dart';
 import 'utilities/assets.dart';
 import 'utilities/shared_preferences_utils.dart';
 
@@ -155,7 +155,7 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
         uiBuilder: _uiBuilder,
         fetcher: _fetcher,
         localizationsDelegates: [FallbackLocalizationDelegate()],
-        totalApiRequest: 1,
+        totalApiRequest: 6,
         theme: kTheme,
         controller: _controller);
   }
@@ -204,13 +204,12 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
   Future<void> _fetcher() async {
     await PreferenceUtils.init();
 
-    _widget = RoleUI();
+    _widget = /*RoleUI();
     Future.delayed(Duration(seconds: 3)).then((value) => _controller
-        .updateProgress("get_configuration_success", isGetDataSuccess: true));
-    /* PreferenceUtils.getString(kUserId) != null
+        .updateProgress("get_configuration_success", isGetDataSuccess: true));*/
+     PreferenceUtils.getString(kUserId) != null
         ? HomeContainerUI()
-        : LoginUI();*/
-/*
+        : LoginUI();
     APIRequest.getConfiguration().then((value) {
       if (value == null) {
         debugPrint("error config");
@@ -316,6 +315,6 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
 
         MasterRepositories.saveConfiguration(value);
       }
-    });*/
+    });
   }
 }
