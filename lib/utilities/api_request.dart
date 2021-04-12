@@ -149,7 +149,7 @@ class APIRequest {
     return res;
   }
 
-  static Future<dynamic> getFotoForm(int id) async {
+  static Future<List<PhotoForm>> getFotoForm(int id) async {
     var options = await _getDioOptions(contentType: contentType.json);
 
     var url = 'getFotoForm';

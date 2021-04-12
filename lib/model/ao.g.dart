@@ -43,7 +43,6 @@ class AoModelAdapter extends TypeAdapter<AoModel> {
       ..writeByte(6)
       ..write(obj.modDate);
   }
-
   @override
   // TODO: implement typeId
   int get typeId => 0;

@@ -28,7 +28,6 @@ class QuisionerModelAdapter extends TypeAdapter<QuisionerModel> {
       ..writeByte(1)
       ..write(obj.choice);
   }
-
   @override
   // TODO: implement typeId
   int get typeId => 3;

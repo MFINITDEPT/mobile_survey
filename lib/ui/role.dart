@@ -1,5 +1,7 @@
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
+import 'package:mobilesurvey/logic/role.dart';
+import 'package:mobilesurvey/model/menu.dart';
 import '../boilerplate/new_state.dart';
 import '../component/custom_shape.dart';
 import '../utilities/constant.dart';
@@ -12,6 +14,8 @@ class RoleUI extends StatefulWidget {
 }
 
 class _RoleUIState extends NewState<RoleUI> {
+  final RoleBase _logic = RoleBase();
+
   @override
   Widget buildView(BuildContext context) {
     var size = MediaQuery.of(context).size.width / 1.5;
@@ -24,7 +28,7 @@ class _RoleUIState extends NewState<RoleUI> {
             child: ConstrainedBox(
               constraints: BoxConstraints(
                 maxHeight:
-                kDeviceHeight(context) - (kDeviceTopPadding(context)),
+                    kDeviceHeight(context) - (kDeviceTopPadding(context)),
               ),
               child: Stack(
                 children: <Widget>[
@@ -41,11 +45,11 @@ class _RoleUIState extends NewState<RoleUI> {
                               child: Container(
                                 decoration: BoxDecoration(
                                     gradient: RadialGradient(
-                                      colors: [
-                                        Palette.white,
-                                        Palette.gold,
-                                      ],
-                                    )),
+                                  colors: [
+                                    Palette.white,
+                                    Palette.gold,
+                                  ],
+                                )),
                                 width: size,
                                 height: size,
                                 child: _roleMenu(context),
@@ -71,12 +75,13 @@ class _RoleUIState extends NewState<RoleUI> {
         physics: NeverScrollableScrollPhysics(),
         shrinkWrap: true,
         crossAxisSpacing: 16.0,
-        children: List.generate(4, (index) => _gridItem(context)),
+        children:
+            List.generate(4, (index) => _gridItem(context, _logic.menu[index])),
       ),
     );
   }
 
-  Widget _gridItem(BuildContext context) {
+  Widget _gridItem(BuildContext context, MenuModel item) {
     return Material(
       color: Palette.navy.withOpacity(0.7),
       borderRadius: BorderRadius.circular(20.0),
@@ -87,30 +92,30 @@ class _RoleUIState extends NewState<RoleUI> {
             borderRadius: BorderRadius.circular(20.0),
             child: Container(
                 child: Center(
-                  child: Transform.rotate(
-                    angle: -(math.pi / 4),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        Flexible(
-                          child: Icon(
-                            Icons.block,
-                            color: Palette.white,
-                            size: 44.0,
-                          ),
-                        ),
-                        Text(
-                          "title",
-                          style: TextStyle(
-                              fontSize: 20.0,
-                              fontWeight: FontWeight.w700,
-                              color: Palette.white),
-                        )
-                      ],
+              child: Transform.rotate(
+                angle: -(math.pi / 4),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Flexible(
+                      child: Icon(
+                        item.icons,
+                        color: Palette.white,
+                        size: 44.0,
+                      ),
                     ),
-                  ),
-                )),
-            onTap: () => print("selected")),
+                    Text(
+                      item.title,
+                      style: TextStyle(
+                          fontSize: 20.0,
+                          fontWeight: FontWeight.w700,
+                          color: Palette.white),
+                    )
+                  ],
+                ),
+              ),
+            )),
+            onTap: () => item.onSelectedMenu(context)),
       ),
     );
   }

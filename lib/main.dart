@@ -51,8 +51,6 @@ void main() {
         ..registerAdapter(SearchModelAdapter())
         ..registerAdapter(DocumentItemAdapter());
 
-      print(Hive.isAdapterRegistered(DocumentItemAdapter().typeId));
-
       MasterRepositories.hivePath = value.path;
     });
     runApp(App());
@@ -155,7 +153,7 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
         uiBuilder: _uiBuilder,
         fetcher: _fetcher,
         localizationsDelegates: [FallbackLocalizationDelegate()],
-        totalApiRequest: 6,
+        totalApiRequest: 1,
         theme: kTheme,
         controller: _controller);
   }
@@ -204,13 +202,13 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
   Future<void> _fetcher() async {
     await PreferenceUtils.init();
 
-    _widget = /*RoleUI();
+    _widget = RoleUI();
     Future.delayed(Duration(seconds: 3)).then((value) => _controller
-        .updateProgress("get_configuration_success", isGetDataSuccess: true));*/
-     PreferenceUtils.getString(kUserId) != null
+        .updateProgress("get_configuration_success", isGetDataSuccess: true));
+/*     PreferenceUtils.getString(kUserId) != null
         ? HomeContainerUI()
-        : LoginUI();
-    APIRequest.getConfiguration().then((value) {
+        : LoginUI();*/
+/*    APIRequest.getConfiguration().then((value) {
       if (value == null) {
         debugPrint("error config");
         _controller.updateProgress("get_configuration_error");
@@ -315,6 +313,6 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
 
         MasterRepositories.saveConfiguration(value);
       }
-    });
+    });*/
   }
 }

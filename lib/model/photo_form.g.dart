@@ -52,7 +52,6 @@ class PhotoFormAdapter extends TypeAdapter<PhotoForm> {
       ..writeByte(9)
       ..write(obj.modBy);
   }
-
   @override
   // TODO: implement typeId
   int get typeId => 2;
