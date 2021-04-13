@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobilesurvey/model/mobile_dashboard/collplay_menu.dart';
 import 'package:mobilesurvey/ui/mobile_dashboard/report_table.dart';
+import 'package:mobilesurvey/ui/mobile_dashboard/sales_report.dart';
 import 'package:mobilesurvey/ui/role.dart';
 import 'package:mobilesurvey/utilities/constant.dart';
 import 'package:mobilesurvey/utilities/shared_preferences_utils.dart';
@@ -19,7 +20,7 @@ abstract class _HomeLogic with Store {
     CollplayMenuModel(Icons.home, translation.getText('collection_report_kpr'),
         _gotoCollectionReportKPR),
     CollplayMenuModel(Icons.multiline_chart,
-        translation.getText('sales_report'), _gotoCollectionReportOto),
+        translation.getText('sales_report'), _gotoSalesReport),
     CollplayMenuModel(
         Icons.account_circle, translation.getText('signout'), signOut),
   ];
@@ -35,7 +36,7 @@ abstract class _HomeLogic with Store {
   }
 
   static void _gotoSalesReport(BuildContext context, {Function fc}) {
-    Navigator.push(context, MaterialPageRoute(builder: (_) => RoleUI()));
+    Navigator.push(context, MaterialPageRoute(builder: (_) => SalesReportUI()));
   }
 
   static void signOut(BuildContext context, {Function fc}) {

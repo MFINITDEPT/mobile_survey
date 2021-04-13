@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:mobilesurvey/logic/loading.dart';
 import 'package:mobilesurvey/model/mobile_dashboard/branch.dart';
+import 'package:mobilesurvey/model/mobile_dashboard/marketing.dart';
+import 'package:mobilesurvey/utilities/date_utils.dart';
 import 'package:mobilesurvey/utilities/palette.dart';
-
 
 //String Constant
 String kRijndaelKey = "mncbangkredit";
@@ -106,4 +107,144 @@ AppBar kITrackAppbar(String title, BuildContext context) {
             Navigator.of(context, rootNavigator: true).maybePop();
           },
           icon: Icon(Icons.arrow_back_ios)));
+}
+
+List<MarketingData> kgetMarketingUnit(
+    MarketingReportModel res, MarketingReportModel res2, DateTime date) {
+  var month =
+      int.tryParse(DateUtils.convertDateTimeToString(date, format: "MM"));
+
+  var current = res.current;
+  var _rawbefore = res2.before;
+  var before = res.before;
+  var combine = current;
+  var ress = <MarketingData>[];
+
+  if (before.isNotEmpty) {
+    for (var item in current) {
+      before.removeWhere((bfore) {
+        return bfore.productFacility == item.productFacility;
+      });
+    }
+
+    for (var item in before) {
+      combine.add(item);
+    }
+  }
+
+  for (var item in combine) {
+    var data = <MarketingUnit>[];
+
+    for (var i = 0; i < (month); i++) {
+      var s = (month - i) % 12;
+      var _unitPokokPercent = kgetMarketingData(
+          s,
+          current.firstWhere(
+              (crnt) => item.productFacility == crnt.productFacility,
+              orElse: () => null),
+          date.year);
+      data.add(_unitPokokPercent);
+    }
+
+    for (var i = 12; i > (month); i--) {
+      var s = (i) % 12;
+      var _unitPokokPercent = kgetMarketingData(
+          s,
+          _rawbefore.firstWhere(
+              (crnt) => item.productFacility == crnt.productFacility,
+              orElse: () => null),
+          date.year - 1);
+      data.add(_unitPokokPercent);
+    }
+
+    ress.add(MarketingData(
+        code: item.code,
+        module: item.module,
+        assetType: item.assetType,
+        productFacility: item.productFacility,
+        data: data));
+  }
+
+  return ress;
+}
+
+MarketingUnit kgetMarketingData(int s, MarketingDataObject object, int year) {
+  if (object != null) {
+    switch (s) {
+      case 1:
+        return MarketingUnit(
+            unit: object.unitJan,
+            amount: object.pokokJan,
+            percent: object.persenJan,
+            year: year);
+      case 2:
+        return MarketingUnit(
+            unit: object.unitFeb,
+            amount: object.pokokFeb,
+            percent: object.persenFeb,
+            year: year);
+      case 3:
+        return MarketingUnit(
+            unit: object.unitMar,
+            amount: object.pokokMar,
+            percent: object.persenMar,
+            year: year);
+      case 4:
+        return MarketingUnit(
+            unit: object.unitApr,
+            amount: object.pokokApr,
+            percent: object.persenApr,
+            year: year);
+      case 5:
+        return MarketingUnit(
+            unit: object.unitMei,
+            amount: object.pokokMei,
+            percent: object.persenMei,
+            year: year);
+      case 6:
+        return MarketingUnit(
+            unit: object.unitJul,
+            amount: object.pokokJun,
+            percent: object.persenJun,
+            year: year);
+      case 7:
+        return MarketingUnit(
+            unit: object.unitJul,
+            amount: object.pokokJul,
+            percent: object.persenJul,
+            year: year);
+      case 8:
+        return MarketingUnit(
+            unit: object.unitAug,
+            amount: object.pokokAug,
+            percent: object.persenAug,
+            year: year);
+      case 9:
+        return MarketingUnit(
+            unit: object.unitSep,
+            amount: object.pokokSep,
+            percent: object.persenSep,
+            year: year);
+      case 10:
+        return MarketingUnit(
+            unit: object.unitOct,
+            amount: object.pokokOct,
+            percent: object.persenOct,
+            year: year);
+      case 11:
+        return MarketingUnit(
+            unit: object.unitNov,
+            amount: object.pokokNov,
+            percent: object.persenNov,
+            year: year);
+      case 0:
+        return MarketingUnit(
+            unit: object.unitDec,
+            amount: object.pokokDec,
+            percent: object.persenDec,
+            year: year);
+    }
+  } else {
+    return MarketingUnit(unit: 0, amount: 0, percent: 0, year: year);
+  }
 }

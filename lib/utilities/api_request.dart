@@ -6,6 +6,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mobilesurvey/model/mobile_dashboard/branch.dart';
 import 'package:mobilesurvey/model/mobile_dashboard/collection.dart';
 import 'package:mobilesurvey/model/mobile_dashboard/login_response.dart';
+import 'package:mobilesurvey/model/mobile_dashboard/marketing.dart';
 import 'package:mobilesurvey/model/mobile_dashboard/report_chart.dart';
 import 'package:mobilesurvey/ui/interceptor.dart';
 import 'package:mobilesurvey/utilities/date_utils.dart';
@@ -400,7 +401,7 @@ class APIRequest {
       'isKPR': isKPR
     };
 
-    String url = "${_collplay}GetDataForDisplay";
+    var url = "${_collplay}GetDataForDisplay";
     var options = await _getDioOptions(contentType: contentType.json);
 
     var result = await config(appType)
@@ -411,5 +412,33 @@ class APIRequest {
         result != null ? CollectionModel.fromJson(result.data) : null;
 
     return finalresult;
+  }
+
+  static Future<List<MarketingReportModel>> getMarketingData(
+      DateTime date, String branch) async {
+    var param = <String, dynamic>{
+      'tahun':
+          int.tryParse(DateUtils.convertDateTimeToString(date, format: "yyyy")),
+      'bulan':
+          int.tryParse(DateUtils.convertDateTimeToString(date, format: "MM")),
+      'branch': branch == "" ? null : branch
+    };
+
+    var url = "${_marketing}getDataSales";
+    var options = await _getDioOptions(contentType: contentType.json);
+
+    var result = await config(appType)
+        .post<dynamic>(url, data: param, options: options)
+        .catchError((error) {});
+
+    var res =
+        result != null ? MarketingReportModel.fromJson(result.data) : null;
+
+    var res2 =
+        result != null ? MarketingReportModel.fromJson(result.data) : null;
+
+    var finalResult = result != null ? [res, res2] : null;
+
+    return finalResult;
   }
 }

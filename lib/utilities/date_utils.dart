@@ -60,4 +60,33 @@ class DateUtils {
   }
 
   static DateTime now() => DateTime.now();
+
+  static DateTime getMonth(int x) {
+    switch (x) {
+      case 0:
+        return DateTime(now().year, 12);
+      case 1:
+        return DateTime(now().year, 1);
+      case 2:
+        return DateTime(now().year, 2);
+      case 3:
+        return DateTime(now().year, 3);
+      case 4:
+        return DateTime(now().year, 4);
+      case 5:
+        return DateTime(now().year, 5);
+      case 6:
+        return DateTime(now().year, 6);
+      case 7:
+        return DateTime(now().year, 7);
+      case 8:
+        return DateTime(now().year, 8);
+      case 9:
+        return DateTime(now().year, 9);
+      case 10:
+        return DateTime(now().year, 10);
+      case 11:
+        return DateTime(now().year, 11);
+    }
+  }
 }

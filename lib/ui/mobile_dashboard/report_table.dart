@@ -79,7 +79,7 @@ class _ReportTableUIState extends State<ReportTableUI> {
                               builder: (_) => Text(
                                   DateUtils.convertDateTimeToString(
                                       _reportTable.date,
-                                      format: 'dd-MM-yyyy'),
+                                      format: 'dd-MMM-yyyy'),
                                   style: TextStyle(color: Palette.mnc))),
                           Icon(Icons.arrow_drop_down)
                         ],
@@ -188,7 +188,7 @@ class _ReportTableUIState extends State<ReportTableUI> {
     return DropdownButton(
       icon: Icon(
         Icons.arrow_drop_down,
-        color: Palette.mnc,
+        color: Palette.gold,
       ),
       iconSize: 20,
       elevation: 10,
