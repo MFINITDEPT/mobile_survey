@@ -9,6 +9,7 @@ class Assets {
   static const String gallery = "assets/images/png/ic_gallery.png";
   static const String location = "assets/images/png/ic_location.png";
   static const String showPassword = "assets/images/png/ic_show_password.png";
+  static const String mncLogo = "assets/images/png/mnc_logo.png";
 
   static const String langId = "assets/lang/id.json";
   static const String langEn = "assets/lang/en.json";

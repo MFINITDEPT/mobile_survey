@@ -28,6 +28,7 @@ class DocumentItemAdapter extends TypeAdapter<DocumentItem> {
       ..writeByte(1)
       ..write(obj.dateTime);
   }
+
   @override
   // TODO: implement typeId
   int get typeId => 5;

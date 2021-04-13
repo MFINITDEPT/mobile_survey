@@ -9,16 +9,19 @@ import 'package:mobilesurvey/model/quisioner.dart';
 import 'package:mobilesurvey/model/zipcode.dart';
 import 'package:mobilesurvey/repositories/master.dart';
 import 'package:mobilesurvey/ui/interceptor.dart';
+import 'package:mobilesurvey/ui/mobile_dashboard/login.dart';
 import 'package:mobilesurvey/ui/mobile_survey/login.dart';
 import 'package:mobilesurvey/utilities/constant.dart';
 import 'package:mobilesurvey/utilities/shared_preferences_utils.dart';
 import 'package:mobilesurvey/utilities/enum.dart';
 import 'package:mobilesurvey/utilities/translation.dart';
 
+import '../custom_button.dart';
+
 typedef configuration = Future<dynamic> Function();
 
 // ignore: public_member_api_docs
-enum Status { failed, success, loading }
+enum Status { failed, success, loading, dialog }
 
 // ignore: public_member_api_docs, must_be_immutable
 class NewSetup extends StatefulWidget {
@@ -52,16 +55,20 @@ class _NewSetupState extends State<NewSetup> with WidgetsBindingObserver {
   void initState() {
     _controller = widget.controller;
     _controller.addListener(_update);
-    _fetchData = widget.fetchData;
-    _controller._logic = _logic;
-    _controller._totalApiRequest = _fetchData.length;
+    if (widget.fetchData.isNotEmpty) {
+      _fetchData = widget.fetchData;
+      _controller._logic = _logic;
+      _controller._totalApiRequest = _fetchData.length;
 
-    if (widget.isHasConfiguration) {
-      _fetchData.insert(0, widget.config);
-      _controller._totalApiRequest += 1;
+      if (widget.isHasConfiguration) {
+        _fetchData.insert(0, widget.config);
+        _controller._totalApiRequest += 1;
+      }
+
+      data(_fetchData);
+    } else {
+      delayed();
     }
-
-    data(_fetchData);
 
     super.initState();
   }
@@ -72,7 +79,24 @@ class _NewSetupState extends State<NewSetup> with WidgetsBindingObserver {
       body: Builder(builder: (_) {
         return Observer(builder: (_) {
           if (_logic.status == Status.failed) {
-            return Center(child: Text(_logic.status?.toString()));
+            return Center(
+              child: AdvColumn(
+                divider: ColumnDivider(16.0),
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Text(translation.getText('failed_get_data'),
+                      textAlign: TextAlign.center),
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: CustomButton(
+                      'try_again',
+                      onPress: () => _retry(_fetchData),
+                      buttonWidth: double.infinity,
+                    ),
+                  )
+                ],
+              ),
+            );
           } else if (_logic.status == Status.loading) {
             return Center(
               child: AdvColumn(
@@ -86,7 +110,9 @@ class _NewSetupState extends State<NewSetup> with WidgetsBindingObserver {
               ),
             );
           } else if (_logic.status == Status.success) {
-            return LoginUI();
+            return _successWidget(widget.appType);
+          } else if (_logic.status == Status.dialog) {
+            return LoginDashboardUI();
           } else {
             return Center(child: Text("something Error"));
           }
@@ -95,15 +121,39 @@ class _NewSetupState extends State<NewSetup> with WidgetsBindingObserver {
     );
   }
 
+  Widget _successWidget(AppType appType) {
+    switch (widget.appType) {
+      case AppType.survey:
+        return LoginSurveyUI();
+      case AppType.collection:
+        // TODO: Handle this case.
+        break;
+      case AppType.dashboard:
+        return LoginDashboardUI();
+      case AppType.approval:
+        // TODO: Handle this case.
+        break;
+    }
+  }
+
   void _update() {
     if (_controller.progress == 1.0) {
       if (_controller.checkDataIsNotValid()) {
-        _logic.changeStatus = Status.failed;
+        _logic.changeStatus(Status.failed);
       } else {
-        _logic.changeStatus = Status.success;
+        _logic.changeStatus(Status.success);
       }
     } else {
-      _logic.changeStatus = Status.loading;
+      _logic.changeStatus(Status.loading);
+    }
+  }
+
+  void _retry(List<dynamic> list) {
+    _controller.retry();
+    if (list.isNotEmpty) {
+      data(list);
+    } else {
+      delayed();
     }
   }
 
@@ -116,12 +166,17 @@ class _NewSetupState extends State<NewSetup> with WidgetsBindingObserver {
         // TODO: Handle this case.
         break;
       case AppType.dashboard:
-        // TODO: Handle this case.
+        delayed();
         break;
       case AppType.approval:
         // TODO: Handle this case.
         break;
     }
+  }
+
+  void delayed() {
+    Future.delayed(Duration(seconds: 3))
+        .then((value) => _logic.changeStatus(Status.success));
   }
 
   void fetchDataMobileSurvey(List<dynamic> list) async {
@@ -259,11 +314,11 @@ class NewSetupController extends ValueNotifier<NewSetupEditingValue> {
   NewSetupBase _logic;
 
   void retry() {
-    _apiResult.clear();
-    _logic.changeStatus = Status.loading;
+    if (_totalApiRequest > 0) _apiResult.clear();
+    _logic.changeStatus(Status.loading);
   }
 
-  void showDialog() {}
+  void showDialog() => _logic.changeStatus(Status.dialog);
 
   void updateProgress(String description, {bool isGetDataSuccess = false}) {
     _apiResult.add(isGetDataSuccess);

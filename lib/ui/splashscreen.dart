@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:mobilesurvey/ui/role.dart';
+import 'package:mobilesurvey/utilities/constant.dart';
+import 'package:mobilesurvey/utilities/shared_preferences_utils.dart';
 
 /// Class UI for Splash screen
 class SplashScreenUI extends StatefulWidget {
@@ -12,6 +15,17 @@ class SplashScreenUI extends StatefulWidget {
 }
 
 class _SplashScreenUIState extends State<SplashScreenUI> {
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      Future.delayed(Duration(seconds: 3)).then((value) {
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (_) => RoleUI()));
+      });
+    });
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Material(

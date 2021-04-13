@@ -9,12 +9,12 @@ import 'package:mobilesurvey/component/custom_textfield.dart';
 import 'package:mobilesurvey/component/custom_button.dart';
 
 /// UI class for Login
-class LoginUI extends StatefulWidget {
+class LoginSurveyUI extends StatefulWidget {
   @override
-  _LoginUIState createState() => _LoginUIState();
+  _LoginSurveyUIState createState() => _LoginSurveyUIState();
 }
 
-class _LoginUIState extends NewState<LoginUI> {
+class _LoginSurveyUIState extends NewState<LoginSurveyUI> {
   LoginBase _logic;
 
   @override

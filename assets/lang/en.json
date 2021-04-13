@@ -129,7 +129,13 @@
   "take_gallery" : "Take Gallery",
   "process" : "Process",
   "welcome" : "Welcome",
-  "date" : "Date",
   "time" : "Time",
-  "filename" : "File Name"
+  "filename" : "File Name",
+  "app_name_1" :  "Mobile Dashboard",
+  "login" : "Login",
+  "select_role" : "Select Role",
+  "collection_report_oto": "Collection Report OTO",
+  "collection_report_kpr": "Collection Report KPR",
+  "sales_report": "Sales Report",
+  "signout": "Sign Out"
 }

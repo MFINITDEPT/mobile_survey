@@ -2,6 +2,7 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:mobilesurvey/logic/role.dart';
 import 'package:mobilesurvey/model/menu.dart';
+import 'package:mobilesurvey/utilities/shared_preferences_utils.dart';
 import '../boilerplate/new_state.dart';
 import '../component/custom_shape.dart';
 import '../utilities/constant.dart';
@@ -115,7 +116,7 @@ class _RoleUIState extends NewState<RoleUI> {
                 ),
               ),
             )),
-            onTap: () => item.onSelectedMenu(context)),
+            onTap: () => item.onSelectedMenu(context, item.appType)),
       ),
     );
   }

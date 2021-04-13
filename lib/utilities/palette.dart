@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+// ignore: avoid_classes_with_only_static_members
 class Palette {
   static const Color prime = Colors.green;
   static const Color white = Colors.white;
@@ -14,4 +15,14 @@ class Palette {
   static const Color grey = Color(0xFFdfdfdf);
   static const Color black26 = Colors.black26;
   static const Color transparent = Colors.transparent;
+  static List<Color> chartGradientColor = [
+    const Color(0xff23b6e6),
+    const Color(0xff02d39a),
+  ];
+  static Color dataCellChip = Color(0xff02d39a);
+  static Color portofolio = Colors.black26;
+  static Color green = Color(0xFF66BB6A);
+  static Color yellow = Color(0xFFFFEE58);
+  static Color chartGridColor = Color(0xff37434d);
+  static Color chartDropdown = Color(0xff23b6e6);
 }

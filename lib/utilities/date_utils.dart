@@ -1,3 +1,4 @@
+import 'package:date_utils/date_utils.dart';
 import 'package:intl/intl.dart';
 
 // ignore: public_member_api_docs
@@ -37,4 +38,26 @@ class DateUtils {
       return null;
     }
   }
+
+  static List<DateTime> getNowAndOneMonthBefore(DateTime now) {
+    var result = List<DateTime>(2);
+    DateTime lastMonth;
+    if (now.day == Utils.lastDayOfMonth(now).day) {
+      lastMonth = now.month == 1
+          ? DateTime(now.year - 1, 12)
+          : DateTime(now.year, now.month - 1);
+      result[0] = now;
+      result[1] = Utils.lastDayOfMonth(lastMonth);
+    } else {
+      lastMonth = now.month == 1
+          ? DateTime(now.year - 1, 12, now.day)
+          : DateTime(now.year, now.month - 1, now.day);
+      result[0] = (now);
+      result[1] = (lastMonth);
+    }
+
+    return result;
+  }
+
+  static DateTime now() => DateTime.now();
 }

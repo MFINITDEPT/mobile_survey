@@ -30,6 +30,7 @@ dependencies:
   autocomplete_textfield: ^1.6.4
   cupertino_icons: ^1.0.0
   crypto:
+  date_utils:
   dio:
   documents_picker:
     git:
@@ -43,6 +44,8 @@ dependencies:
   flutter_local_notifications: ^3.0.3
   flutter_mobx: ^1.1.0+2
   fluttertoast: ^7.1.5
+  flutter_spinkit:
+  fl_chart:
   firebase_messaging:
   firebase_ml_vision:
   open_file: ^3.0.3

@@ -52,10 +52,6 @@ class _InterceptorPageUIState extends State<InterceptorPageUI> {
         _apiRequest.add(APIRequest.masterQuisioner);
         break;
       case AppType.dashboard:
-        _config = APIRequest.getConfiguration;
-        _apiRequest.add(APIRequest.masterQuisioner);
-        _apiRequest.add(APIRequest.masterQuisioner);
-        _apiRequest.add(APIRequest.masterQuisioner);
         break;
       case AppType.approval:
         _config = APIRequest.getConfiguration;

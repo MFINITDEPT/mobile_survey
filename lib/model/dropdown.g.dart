@@ -31,6 +31,7 @@ class SearchModelAdapter extends TypeAdapter<SearchModel> {
       ..writeByte(2)
       ..write(obj.value);
   }
+
   @override
   // TODO: implement typeId
   int get typeId => 1;

@@ -129,7 +129,13 @@
   "take_gallery": "Ambil Galeri",
   "process": "Proses",
   "welcome": "Selamat Datang",
-  "date": "Tanggal",
   "time": "Waktu",
-  "filename": "Nama File"
+  "filename": "Nama File",
+  "app_name_1": "Mobile Dashboard",
+  "login": "Masuk",
+  "select_role": "Pilih Role",
+  "collection_report_oto": "Laporan Koleksion OTO",
+  "collection_report_kpr": "Laporan Koleksion KPR",
+  "sales_report": "Laporan Penjualan",
+  "signout": "Keluar"
 }

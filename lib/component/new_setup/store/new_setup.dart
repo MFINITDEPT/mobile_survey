@@ -12,7 +12,5 @@ abstract class _NewSetupLogic with Store {
 
   @action
   // ignore: avoid_setters_without_getters
-  set changeStatus(Status newStatus) {
-    status = newStatus;
-  }
+  Status changeStatus(Status newStatus) => status = newStatus;
 }

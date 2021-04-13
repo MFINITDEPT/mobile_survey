@@ -30,10 +30,8 @@ class StringUtils {
       if (newString == "00") {
         result = '${string.substring(0, (string.length - 3))}K';
       } else {
-        result =
-            '${string.substring(0, (string.length - 3))}'
-                ',${newString.endsWith('0')
-                ? newString.replaceAll('0', '') : newString}K';
+        result = '${string.substring(0, (string.length - 3))}'
+            ',${newString.endsWith('0') ? newString.replaceAll('0', '') : newString}K';
       }
     }
 
@@ -42,10 +40,8 @@ class StringUtils {
       if (newString == "00") {
         result = '${string.substring(0, (string.length - 6))}M';
       } else {
-        result =
-            '${string.substring(0, (string.length - 6))},'
-                '${newString.endsWith('0')
-                ? newString.replaceAll('0', '') : newString}M';
+        result = '${string.substring(0, (string.length - 6))},'
+            '${newString.endsWith('0') ? newString.replaceAll('0', '') : newString}M';
       }
     }
 
@@ -55,20 +51,16 @@ class StringUtils {
         if (newString == "00") {
           result = '${string.substring(0, (string.length - 9))}B';
         } else {
-          result =
-              '${string.substring(0, (string.length - 9))}'
-                  ',${newString.endsWith('0')
-                  ? newString.replaceAll('0', '') : newString}B';
+          result = '${string.substring(0, (string.length - 9))}'
+              ',${newString.endsWith('0') ? newString.replaceAll('0', '') : newString}B';
         }
       } else {
         var newString = _getSimpleNumber(string, 9);
         if (newString == "00") {
           result = '${string.substring(0, (string.length - 9))}B';
         } else {
-          result =
-              '${string.substring(0, (string.length - 9))},'
-                  '${newString.endsWith('0')
-                  ? newString.replaceAll('0', '') : newString}B';
+          result = '${string.substring(0, (string.length - 9))},'
+              '${newString.endsWith('0') ? newString.replaceAll('0', '') : newString}B';
         }
       }
     }
@@ -99,5 +91,11 @@ class StringUtils {
     } on Exception catch (e) {
       return 'error';
     }
+  }
+
+  static String parseString(num string, {bool isUnit}) {
+    var nf = NumberFormat('#,###.##');
+    if (isUnit == null || !isUnit) nf.minimumFractionDigits = 2;
+    return nf.format(string);
   }
 }

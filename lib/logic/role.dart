@@ -2,6 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mobilesurvey/model/menu.dart';
 import 'package:mobilesurvey/ui/interceptor.dart';
+import 'package:mobilesurvey/utilities/api_request.dart';
+import 'package:mobilesurvey/utilities/constant.dart';
+import 'package:mobilesurvey/utilities/shared_preferences_utils.dart';
 import 'package:mobx/mobx.dart';
 
 part 'role.g.dart';
@@ -12,37 +15,32 @@ class RoleBase = _RoleLogic with _$RoleBase;
 abstract class _RoleLogic with Store {
   var menu = <MenuModel>[
     MenuModel(
-        title: "Survey", icons: Icons.menu, onSelectedMenu: _goToMobileSurvey),
+        title: "Survey",
+        icons: Icons.menu,
+        appType: AppType.survey,
+        onSelectedMenu: _goToInterceptorPage),
     MenuModel(
         title: "Collection",
         icons: Icons.camera,
-        onSelectedMenu: _goToMobileCollection),
+        appType: AppType.collection,
+        onSelectedMenu: _goToInterceptorPage),
     MenuModel(
         title: "Dashboard",
         icons: Icons.cached,
-        onSelectedMenu: _goToMobileDashboard),
+        appType: AppType.dashboard,
+        onSelectedMenu: _goToInterceptorPage),
     MenuModel(
-        title: "IProve", icons: Icons.title, onSelectedMenu: _goToMobileSurvey),
+        title: "IProve",
+        icons: Icons.title,
+        appType: AppType.approval,
+        onSelectedMenu: _goToInterceptorPage),
   ];
 
-  static void _goToMobileSurvey(BuildContext context) {
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (_) => InterceptorPageUI(appType: AppType.survey)));
-  }
-
-  static void _goToMobileCollection(BuildContext context) {
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (_) => InterceptorPageUI(appType: AppType.collection)));
-  }
-
-  static void _goToMobileDashboard(BuildContext context) {
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (_) => InterceptorPageUI(appType: AppType.dashboard)));
+  static void _goToInterceptorPage(BuildContext context, AppType appType) {
+    print("apa ini ? $appType");
+    PreferenceUtils.setString(kAppType, appType.toString());
+    APIRequest.appType = appType;
+    Navigator.push(context,
+        MaterialPageRoute(builder: (_) => InterceptorPageUI(appType: appType)));
   }
 }

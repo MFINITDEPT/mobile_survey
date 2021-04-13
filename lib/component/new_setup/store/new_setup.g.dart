@@ -24,6 +24,20 @@ mixin _$NewSetupBase on _NewSetupLogic, Store {
     });
   }
 
+  final _$_NewSetupLogicActionController =
+      ActionController(name: '_NewSetupLogic');
+
+  @override
+  Status changeStatus(Status newStatus) {
+    final _$actionInfo = _$_NewSetupLogicActionController.startAction(
+        name: '_NewSetupLogic.changeStatus');
+    try {
+      return super.changeStatus(newStatus);
+    } finally {
+      _$_NewSetupLogicActionController.endAction(_$actionInfo);
+    }
+  }
+
   @override
   String toString() {
     return '''
