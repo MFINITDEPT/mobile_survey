@@ -53,7 +53,10 @@ class _ReportTableUIState extends State<ReportTableUI> {
         appBar: AppBar(
           title: Observer(
               builder: (_) => _reportTable.tableAttribute == null
-                  ? Text(translation.getText('loading'))
+                  ? Text(
+                      translation.getText('loading'),
+                      style: TextStyle(color: Palette.mnc),
+                    )
                   : InkWell(
                       onTap: () => _reportTable.goToChooser(context),
                       child: AdvRow(
@@ -77,7 +80,7 @@ class _ReportTableUIState extends State<ReportTableUI> {
                         children: <Widget>[
                           Observer(
                               builder: (_) => Text(
-                                  DateUtils.convertDateTimeToString(
+                                  DateUtilities.convertDateTimeToString(
                                       _reportTable.date,
                                       format: 'dd-MMM-yyyy'),
                                   style: TextStyle(color: Palette.mnc))),
@@ -94,7 +97,7 @@ class _ReportTableUIState extends State<ReportTableUI> {
                         children: <Widget>[
                           Observer(
                               builder: (_) => Text(
-                                  DateUtils.convertDateTimeToString(
+                                  DateUtilities.convertDateTimeToString(
                                       _reportTable.lastDate,
                                       format: 'dd-MMM-yyyy'),
                                   style: TextStyle(color: Palette.mnc))),

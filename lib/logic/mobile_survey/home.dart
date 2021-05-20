@@ -18,6 +18,7 @@ part 'home.g.dart';
 class HomeBase = _HomeLogic with _$HomeBase;
 
 abstract class _HomeLogic with Store {
+
   @action
   void onSelectedItem(String customerNumber, BuildContext context) {
     kLastSavedClient = customerNumber;

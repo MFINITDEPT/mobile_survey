@@ -10,6 +10,7 @@ import 'package:mobilesurvey/model/zipcode.dart';
 import 'package:mobilesurvey/repositories/master.dart';
 import 'package:mobilesurvey/ui/interceptor.dart';
 import 'package:mobilesurvey/ui/mobile_dashboard/login.dart';
+import 'package:mobilesurvey/ui/mobile_survey/home_container.dart';
 import 'package:mobilesurvey/ui/mobile_survey/login.dart';
 import 'package:mobilesurvey/utilities/constant.dart';
 import 'package:mobilesurvey/utilities/shared_preferences_utils.dart';
@@ -124,7 +125,10 @@ class _NewSetupState extends State<NewSetup> with WidgetsBindingObserver {
   Widget _successWidget(AppType appType) {
     switch (widget.appType) {
       case AppType.survey:
-        return LoginSurveyUI();
+        Widget page = PreferenceUtils.getString(kMobileSurveyUserId) != null
+            ? HomeContainerUI()
+            : LoginSurveyUI();
+        return page;
       case AppType.collection:
         // TODO: Handle this case.
         break;

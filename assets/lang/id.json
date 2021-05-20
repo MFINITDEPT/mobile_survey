@@ -98,7 +98,7 @@
   "identity_no": "NIK",
   "effective_of": "Berlaku",
   "to": "Hingga",
-  "mother_name": "Nama Ibu",
+  "mother_name": "Nama Ibu Kandung",
   "rt": "RT",
   "rw": "RW",
   "zip_code": "Kode Pos",
@@ -137,5 +137,8 @@
   "collection_report_oto": "Laporan Koleksion OTO",
   "collection_report_kpr": "Laporan Koleksion KPR",
   "sales_report": "Laporan Penjualan",
-  "signout": "Keluar"
+  "signout": "Keluar",
+  "empty_usernamepassword": "Username/NIK dan password kosong",
+  "empty_password": "Password Kosong",
+  "empty_username" : "Username/NIK Kosong"
 }

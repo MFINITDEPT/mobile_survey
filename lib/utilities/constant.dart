@@ -9,11 +9,12 @@ import 'package:mobilesurvey/utilities/palette.dart';
 String kRijndaelKey = "mncbangkredit";
 String kRijndaelIV = "mncsecurity";
 String kHiveKey = "MobileMNCFlutter";
-String kAppType;
+String kAppType = "AppType";
+String kLang = "language";
 
 //SharePreferences Key Mobile Survey
-String kLang = "language";
-String kUserId = "userid";
+String kMobileSurveyUserId = "MobileSurveyUserId";
+String kMobileSurveyUsername = "MobileSurveyUsername";
 String kLastUpdateZipCode = "lastUpdateZipcode";
 String kLastUpdateQuestion = "lastUpdateQuestion";
 String kLastUpdateAO = "lastUpdateAO";
@@ -26,7 +27,6 @@ String kHiveKeys_5 = "Doc";
 String kLastSavedClient;
 
 //SharePreferences Key Mobile Dashboard
-String kMobileDashboardFlag = 'MobileDashboardFlag';
 String kMobileDashboardUserId = 'MobileDashboardUserId';
 
 //int constant
@@ -112,7 +112,7 @@ AppBar kITrackAppbar(String title, BuildContext context) {
 List<MarketingData> kgetMarketingUnit(
     MarketingReportModel res, MarketingReportModel res2, DateTime date) {
   var month =
-      int.tryParse(DateUtils.convertDateTimeToString(date, format: "MM"));
+      int.tryParse(DateUtilities.convertDateTimeToString(date, format: "MM"));
 
   var current = res.current;
   var _rawbefore = res2.before;

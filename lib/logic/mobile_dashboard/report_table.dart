@@ -27,14 +27,13 @@ abstract class _ReportTable with Store {
   BranchModel _currentBranch;
   ReportChartAttribute _reportChartData;
   DateTime _oneDayBefore = DateTime(
-      DateUtils.now().year, DateUtils.now().month, DateUtils.now().day - 1);
+      DateUtilities.now().year, DateUtilities.now().month, DateUtilities.now().day - 1);
   var _dateCtrl =
-      AdvDatePickerController(maxDate: DateUtils.now(), date: DateUtils.now());
+      AdvDatePickerController(maxDate: DateUtilities.now(), date: DateUtilities.now());
   AdvDatePickerController _lastMonthCtrl = AdvDatePickerController(
       maxDate: DateTime(
-          DateUtils.now().year, DateUtils.now().month, DateUtils.now().day - 1),
-      date: DateUtils.getNowAndOneMonthBefore(DateUtils.now())[1]);
-
+          DateUtilities.now().year, DateUtilities.now().month, DateUtilities.now().day - 1),
+      date: DateUtilities.getNowAndOneMonthBefore(DateUtilities.now())[1]);
 
   var filterOptions = {
     "Current": chooserFilter.current,
@@ -59,14 +58,13 @@ abstract class _ReportTable with Store {
   chooserFilter chartFilter = chooserFilter.current;
 
   @observable
-  DateTime date = DateUtils.now();
+  DateTime date = DateUtilities.now();
 
   @observable
-  DateTime lastDate = DateUtils.getNowAndOneMonthBefore(DateUtils.now())[1];
+  DateTime lastDate = DateUtilities.getNowAndOneMonthBefore(DateUtilities.now())[1];
 
   @action
   Future<void> goToChooser(BuildContext context) async {
-    print(kBranches);
     var result = await Navigator.push(
         context,
         MaterialPageRoute(
@@ -157,7 +155,7 @@ abstract class _ReportTable with Store {
     if (_selectedDate.isNotEmpty) {
       date = _selectedDate[0];
       _dateCtrl.date = date;
-      lastDate = DateUtils.getNowAndOneMonthBefore(date)[1];
+      lastDate = DateUtilities.getNowAndOneMonthBefore(date)[1];
       _oneDayBefore = DateTime(date.year, date.month, date.day - 1);
       _lastMonthCtrl.date = lastDate;
       _reset();
@@ -181,8 +179,8 @@ abstract class _ReportTable with Store {
 
   void getChartData() async {
     if (kBranches.isEmpty) {
-      var _branches =
-          await APIRequest.getBranch(PreferenceUtils.getString(kUserId));
+      var _branches = await APIRequest.getBranch(
+          PreferenceUtils.getString(kMobileDashboardUserId));
       _branches.removeWhere((model) => model.cCode == "000");
 
       if (_branches != null) kBranches = _branches;
@@ -190,11 +188,8 @@ abstract class _ReportTable with Store {
 
     if (_currentBranch == null) _currentBranch = kBranches.first;
 
-    var result = await APIRequest.getReportChartData(
-        DateUtils.now(),
-        Utils.isLastDayOfMonth(DateUtils.now()),
-        _currentBranch.cCode,
-        isKPR);
+    var result = await APIRequest.getReportChartData(DateUtilities.now(),
+        Utils.isLastDayOfMonth(DateUtilities.now()), _currentBranch.cCode, isKPR);
 
     if (result == null) return;
 
@@ -338,7 +333,7 @@ abstract class _ReportTable with Store {
 
       _header = [
         ColumnTable(children: [
-          CellProperty(DateUtils.convertDateTimeToString(lastDate,
+          CellProperty(DateUtilities.convertDateTimeToString(lastDate,
               format: 'dd-MMM-yyyy')),
           RowTable(children: [
             CellProperty("Unit"),
@@ -348,7 +343,7 @@ abstract class _ReportTable with Store {
         ]),
         ColumnTable(children: [
           CellProperty(
-              DateUtils.convertDateTimeToString(date, format: 'dd-MMM-yyyy')),
+              DateUtilities.convertDateTimeToString(date, format: 'dd-MMM-yyyy')),
           RowTable(children: [
             CellProperty("Unit"),
             CellProperty("OS Pokok"),
@@ -357,9 +352,9 @@ abstract class _ReportTable with Store {
         ]),
         ColumnTable(children: [
           CellProperty(
-              "${DateUtils.convertDateTimeToString(lastDate, format: 'dd-MMM-yyyy')}"
+              "${DateUtilities.convertDateTimeToString(lastDate, format: 'dd-MMM-yyyy')}"
               " vs "
-              "${DateUtils.convertDateTimeToString(date, format: 'dd-MMM-yyyy')}"),
+              "${DateUtilities.convertDateTimeToString(date, format: 'dd-MMM-yyyy')}"),
           RowTable(children: [
             CellProperty("Unit"),
             CellProperty("OS Pokok"),

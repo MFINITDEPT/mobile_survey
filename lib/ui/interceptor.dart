@@ -36,9 +36,10 @@ class _InterceptorPageUIState extends State<InterceptorPageUI> {
   }
 
   void setUpFetcher() {
+    APIRequest.appType = widget.appType;
     switch (widget.appType) {
       case AppType.survey:
-        _config = APIRequest.getConfiguration;
+        _config = APIRequest.checkupdate();
         _apiRequest.add(APIRequest.masterQuisioner);
         _apiRequest.add(APIRequest.masterAo);
         _apiRequest.add(APIRequest.masterZipCode);
@@ -46,7 +47,7 @@ class _InterceptorPageUIState extends State<InterceptorPageUI> {
         _apiRequest.add(APIRequest.getFotoForm);
         break;
       case AppType.collection:
-        _config = APIRequest.getConfiguration;
+        _config = APIRequest.checkupdate();
         _apiRequest.add(APIRequest.masterQuisioner);
         _apiRequest.add(APIRequest.masterQuisioner);
         _apiRequest.add(APIRequest.masterQuisioner);
@@ -54,7 +55,7 @@ class _InterceptorPageUIState extends State<InterceptorPageUI> {
       case AppType.dashboard:
         break;
       case AppType.approval:
-        _config = APIRequest.getConfiguration;
+        _config = APIRequest.checkupdate();
         _apiRequest.add(APIRequest.masterQuisioner);
         _apiRequest.add(APIRequest.masterQuisioner);
         _apiRequest.add(APIRequest.masterQuisioner);

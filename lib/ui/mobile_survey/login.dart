@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mobilesurvey/boilerplate/new_state.dart';
 import 'package:mobilesurvey/logic/mobile_survey/login.dart';
 import 'package:mobilesurvey/utilities/constant.dart';
@@ -15,16 +16,12 @@ class LoginSurveyUI extends StatefulWidget {
 }
 
 class _LoginSurveyUIState extends NewState<LoginSurveyUI> {
-  LoginBase _logic;
-
-  @override
-  void initState() {
-    _logic = LoginBase();
-    super.initState();
-  }
+  final LoginBase _logic = LoginBase();
 
   @override
   Widget buildView(BuildContext context) {
+    var buildContext = context;
+
     return Scaffold(
       body: Padding(
         padding: EdgeInsets.only(top: kDeviceTopPadding(context)),
@@ -60,7 +57,8 @@ class _LoginSurveyUIState extends NewState<LoginSurveyUI> {
                               alignment: Alignment.center,
                               child: CustomButton(
                                 "sign_in",
-                                onPress: () => _logic.signIn(process, context),
+                                onPress: () =>
+                                    _logic.signIn(process, buildContext),
                                 buttonWidth: kDeviceWidth(context) * 0.6,
                               ),
                             ),
@@ -113,13 +111,22 @@ class _LoginSurveyUIState extends NewState<LoginSurveyUI> {
       padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 8.0),
       child: Column(children: <Widget>[
         CustomTextField(
-            padding: 16.0, controller: null, title: translation.getText("nik")),
+            padding: 16.0,
+            controller: _logic.username,
+            title: translation.getText("nik")),
         CustomTextField(
           padding: 16.0,
           title: translation.getText("password"),
           obsecureText: true,
-          controller: null,
+          controller: _logic.password,
         ),
+        Observer(
+            builder: (_) => _logic.errorResponse?.error == "error"
+                ? Align(
+                    child: Text(_logic.errorResponse.message,
+                        style: TextStyle(color: Palette.red)),
+                    alignment: Alignment.centerRight)
+                : Visibility(child: Container(), visible: false)),
       ]),
     );
   }

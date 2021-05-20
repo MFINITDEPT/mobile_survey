@@ -126,7 +126,7 @@ class _AssetsUIState extends NewState<AssetsUI> {
                   constraints: BoxConstraints(maxWidth: width),
                   child: Text(
                       _logic.document(photo.form, index) != null
-                          ? DateUtils.convertDateTimeToString(
+                          ? DateUtilities.convertDateTimeToString(
                               _logic.document(photo.form, index).dateTime)
                           : translation.getText('date'),
                       style: TextStyle(
@@ -137,7 +137,7 @@ class _AssetsUIState extends NewState<AssetsUI> {
                   constraints: BoxConstraints(maxWidth: width),
                   child: Text(
                       _logic.document(photo.form, index) != null
-                          ? DateUtils.convertDateTimeToTimeString(
+                          ? DateUtilities.convertDateTimeToTimeString(
                               _logic.document(photo.form, index).dateTime)
                           : translation.getText('time'),
                       style: TextStyle(

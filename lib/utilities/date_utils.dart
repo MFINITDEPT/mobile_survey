@@ -2,7 +2,7 @@ import 'package:date_utils/date_utils.dart';
 import 'package:intl/intl.dart';
 
 // ignore: public_member_api_docs
-class DateUtils {
+class DateUtilities {
   // ignore: public_member_api_docs
   static DateTime convertStringDate(String date,
       {String format = 'dd/MM/yyyy'}) {

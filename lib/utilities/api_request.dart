@@ -1,8 +1,10 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:mobilesurvey/model/master_configuration/configuration.dart';
 import 'package:mobilesurvey/model/mobile_dashboard/branch.dart';
 import 'package:mobilesurvey/model/mobile_dashboard/collection.dart';
 import 'package:mobilesurvey/model/mobile_dashboard/login_response.dart';
@@ -10,8 +12,10 @@ import 'package:mobilesurvey/model/mobile_dashboard/marketing.dart';
 import 'package:mobilesurvey/model/mobile_dashboard/report_chart.dart';
 import 'package:mobilesurvey/ui/interceptor.dart';
 import 'package:mobilesurvey/utilities/date_utils.dart';
+import 'package:mobilesurvey/model/mobile_survey/login_response.dart';
 import '../model/ao.dart';
-import '../model/configuration.dart';
+
+//import '../model/configuration.dart';
 import '../model/photo_form.dart';
 import '../model/quisioner.dart';
 import '../model/zipcode.dart';
@@ -24,12 +28,15 @@ import 'enum.dart';
 class APIRequest {
   static AppType appType;
   static String _url = "https://ver-itrack.mncfinance.net/";
-  static final String _surveyUrlDev = "https://10.1.80.83:45455/api/master/";
+  static final String _surveyUrlDev = "https://10.1.80.83:45456/api/";
   static final String _dashboardUrlProd =
       "https://api-collplay.mncfinance.net/";
 
   static String _collplay = "CollPlay/";
   static String _marketing = "Marketing/";
+
+  static String _master = "master/";
+  static String _user = "user/";
 
   static Dio config(AppType appType) {
     var _newDio = Dio();
@@ -44,7 +51,8 @@ class APIRequest {
         _newDio.options.baseUrl = _dashboardUrlProd;
         break;
       case AppType.approval:
-        _newDio.options.baseUrl = _surveyUrlDev;
+        //    _newDio.options.baseUrl = "http://10.1.80.220:8071/";
+        _newDio.options.baseUrl = "https://10.1.80.220:45457/";
         break;
     }
 
@@ -109,8 +117,11 @@ class APIRequest {
     var result = await _dio
         .post<dynamic>(url, data: param, options: options)
         .catchError((error) {
+      print("ini error :$error");
       return null;
     });
+
+    print("ini result $result");
 
     return result == null
         ? _getBearerToken(appType)
@@ -120,7 +131,7 @@ class APIRequest {
   static Future<List<QuisionerModel>> masterQuisioner() async {
     var options = await _getDioOptions(contentType: contentType.json);
 
-    var url = "Quisioner";
+    var url = "${_master}Quisioner";
 
     var result = await config(appType)
         .get<dynamic>(url, options: options)
@@ -142,7 +153,7 @@ class APIRequest {
   static Future<List<ZipCodeModel>> masterZipCode() async {
     var options = await _getDioOptions(contentType: contentType.json);
 
-    var url = "zipcode";
+    var url = "${_master}zipcode";
 
     var result = await config(appType)
         .get<dynamic>(url, options: options)
@@ -167,27 +178,27 @@ class APIRequest {
     return result.data != null ? res : null;
   }
 
-  static Future<ConfigurationModel> getConfiguration() async {
-    var options = await _getDioOptions(contentType: contentType.json);
-
-    var url = "configuration";
-
-    var result = await config(appType)
-        .get<dynamic>(url, options: options)
-        .catchError((error) {
-      print("$url Error");
-      return null;
-    });
-
-    var res = result != null ? ConfigurationModel.fromJson(result.data) : null;
-
-    return res;
-  }
+//  static Future<ConfigurationModel> getConfiguration() async {
+//    var options = await _getDioOptions(contentType: contentType.json);
+//
+//    var url = "${_master}configuration";
+//
+//    var result = await config(appType)
+//        .get<dynamic>(url, options: options)
+//        .catchError((error) {
+//      print("$url Error");
+//      return null;
+//    });
+//
+//    var res = result != null ? ConfigurationModel.fromJson(result.data) : null;
+//
+//    return res;
+//  }
 
   static Future<List<AoModel>> masterAo() async {
     var options = await _getDioOptions(contentType: contentType.json);
 
-    var url = "ao";
+    var url = "${_master}ao";
 
     var result = await config(appType)
         .get<dynamic>(url, options: options)
@@ -208,7 +219,7 @@ class APIRequest {
   static Future<List<PhotoForm>> getFotoForm(int id) async {
     var options = await _getDioOptions(contentType: contentType.json);
 
-    var url = 'getFotoForm';
+    var url = '${_master}getFotoForm';
     var params = <String, int>{}..putIfAbsent("id", () => id);
     var result = await config(appType)
         .get<dynamic>(url, options: options, queryParameters: params)
@@ -326,6 +337,27 @@ class APIRequest {
     return result.data;
   }
 
+  static Future<LoginSurveyResponse> loginSurvey(
+      String userId, String password, String token) async {
+    var param = <String, dynamic>{
+      'nik': userId,
+      'password': password,
+      'token': token
+    };
+
+    var url = "${_user}login";
+    var options = await _getDioOptions(contentType: contentType.json);
+
+    var result = await config(appType)
+        .post<dynamic>(url, data: param, options: options)
+        .catchError((error) {});
+
+    var finalresult =
+        result != null ? LoginSurveyResponse.fromJson(result.data) : null;
+
+    return finalresult;
+  }
+
   static Future<LoginResponse> login(String userId, String password) async {
     var param = <String, dynamic>{'userid': userId, 'password': password};
     var url = "${_collplay}LoginUserMobileCollplay";
@@ -367,7 +399,7 @@ class APIRequest {
   static Future<List<ReportChartDataObject>> getReportChartData(
       DateTime date, bool isEndMonth, String branch, bool isKPR) async {
     var param = <String, dynamic>{
-      'date': DateUtils.convertDateTimeToString(date, format: 'yyyy-MM-dd'),
+      'date': DateUtilities.convertDateTimeToString(date, format: 'yyyy-MM-dd'),
       'isEndMonth': isEndMonth,
       'branch': branch == "" ? null : branch,
       'isKPR': isKPR,
@@ -394,9 +426,9 @@ class APIRequest {
   static Future<CollectionModel> getDataCollection(
       DateTime date, DateTime lastDate, String branch, bool isKPR) async {
     var param = <String, dynamic>{
-      'date': DateUtils.convertDateTimeToString(date, format: 'yyyy-MM-dd'),
+      'date': DateUtilities.convertDateTimeToString(date, format: 'yyyy-MM-dd'),
       'lastDate':
-          DateUtils.convertDateTimeToString(lastDate, format: 'yyyy-MM-dd'),
+          DateUtilities.convertDateTimeToString(lastDate, format: 'yyyy-MM-dd'),
       'branch': branch == "" ? null : branch,
       'isKPR': isKPR
     };
@@ -417,10 +449,10 @@ class APIRequest {
   static Future<List<MarketingReportModel>> getMarketingData(
       DateTime date, String branch) async {
     var param = <String, dynamic>{
-      'tahun':
-          int.tryParse(DateUtils.convertDateTimeToString(date, format: "yyyy")),
-      'bulan':
-          int.tryParse(DateUtils.convertDateTimeToString(date, format: "MM")),
+      'tahun': int.tryParse(
+          DateUtilities.convertDateTimeToString(date, format: "yyyy")),
+      'bulan': int.tryParse(
+          DateUtilities.convertDateTimeToString(date, format: "MM")),
       'branch': branch == "" ? null : branch
     };
 
@@ -440,5 +472,187 @@ class APIRequest {
     var finalResult = result != null ? [res, res2] : null;
 
     return finalResult;
+  }
+
+  static Future<dynamic> testMultipart() async {
+    /// get => https://10.1.80.220:45455/API/formupload
+    /// get => https://10.1.80.220:45455/API/zipcode
+    /// https://localhost:44377/Api/FormUpload
+    /// https://localhost:44377/Api/ZipCode
+    /// https://localhost:44377/Api/Quisioner
+    /// https://localhost:44377/Api/CheckUpadate
+
+    var url = 'Api/Survey';
+    var options = await _getDioOptions(contentType: contentType.multipart);
+
+    var client = {}
+      ..putIfAbsent('GELAR_DEPAN', () => 'MR')
+      ..putIfAbsent('NAMA', () => 'Testing')
+      ..putIfAbsent('GELAR_BELAKANG', () => 'S.Kom')
+      ..putIfAbsent('NAMA_KTP', () => 'Testing juga')
+      ..putIfAbsent('NO_KTP', () => '1234567891234567')
+      ..putIfAbsent('KTP_EXPIRE_FROM', () => '2021-08-27')
+      ..putIfAbsent('KTP_EXPIRE_TO', () => '2021-09-10')
+      ..putIfAbsent('AO', () => 'TEsting')
+      ..putIfAbsent('TGLLAHIR', () => '2021-07-10')
+      ..putIfAbsent('TEMPATLAHIR', () => 'Bogor')
+      ..putIfAbsent('NAMAIBU', () => 'Ibu')
+      ..putIfAbsent('ALAMAT', () => 'MNC FInance')
+      ..putIfAbsent('RT', () => '004')
+      ..putIfAbsent('RW', () => '009')
+      ..putIfAbsent('KODEPOS', () => '178264')
+      ..putIfAbsent('KELURAHAN', () => 'Manggarai')
+      ..putIfAbsent('KECAMATAN', () => 'Kebon Sirih')
+      ..putIfAbsent('HPNO', () => '0851478264526')
+      ..putIfAbsent('TELPNO', () => '021-8903562')
+      ..putIfAbsent('FAXNO', () => '021351')
+      ..putIfAbsent('NOPOL', () => 'B 1235 FFA')
+      ..putIfAbsent('LAT', () => "106.368525")
+      ..putIfAbsent('LNG', () => '0.654252')
+      ..putIfAbsent('TASKID', () => '');
+
+    //  print(client.toString());
+    print(jsonEncode(client));
+    print(jsonEncode(client).runtimeType);
+
+//    var file = await MultipartFile.fromFile(
+//        '/data/user/0/finance.mnc.mobilesurvey/app_flutter/app_name/files/fotokonsumensedangttdkontrakmncf_1621223055860.jpg',
+//        filename: 'FOTO_KONSUMEN_SEDANG_TTD_KONTRAK_MNCF.jpg');
+//    var file1 = await MultipartFile.fromFile(
+//        '/data/user/0/finance.mnc.mobilesurvey/app_flutter/app_name/files/fotokonsumensedangttdkontrakmncf_1621223055860.jpg',
+//        filename: 'FOTO_KONSUMEN_SEDANG_TTD_KONTRAK_MNCF.jpg');
+    var file2 = await MultipartFile.fromFile(
+        '/data/user/0/finance.mnc.mobilesurvey/app_flutter/app_name/files/fotokonsumensedangttdkontrakmncf_1621498097417.jpg',
+        filename: 'test2.jpg');
+    var file3 = await MultipartFile.fromFile(
+        '/data/user/0/finance.mnc.mobilesurvey/app_flutter/app_name/files/fotokonsumensedangttdkontrakmncf_1621498326550.jpg',
+        filename: 'test2.jpg');
+    var file4 = await MultipartFile.fromFile(
+        '/data/user/0/finance.mnc.mobilesurvey/app_flutter/app_name/files/fotodalamrumah_1621498374603.jpg',
+        filename: 'test2.jpg');
+    var file5 = await MultipartFile.fromFile(
+        '/data/user/0/finance.mnc.mobilesurvey/app_flutter/app_name/files/fotorumahtampaksampingkanan_1621498452019.jpg',
+        filename: 'test2.jpg');
+    var file6 = await MultipartFile.fromFile(
+        '/data/user/0/finance.mnc.mobilesurvey/app_flutter/app_name/files/fotorumahtampaksampingkanan_1621498496317.jpg',
+        filename: 'test2.jpg');
+
+//    var param = FormData.fromMap({
+//      'BODYJSON' : '"${jsonEncode(client)}"',
+//      'IDQUISIONERDETAIL' : null,
+//      'JAWABAN' : null,
+//      'IDFORMDETAIL' : null,
+//      'FILENAME' : null,
+//      'PATH' : 'PATH',
+//      'FOTO_KONSUMEN_SEDANG_TTD_KONTRAK_MNCF' : file,
+//      'FOTO_PASANGAN_SEDANG_TTD_KONTRAK_MNCF' : file1,
+//      'FOTO_PENJAMIN_SEDANG_TTD_KONTRAK_MNCF' : null,
+//      'FOTO_RUMAH_TAMPAK_DEPAN' : file2
+//    });
+
+    var param = FormData.fromMap({
+      'BODYJSON': jsonEncode(client),
+      'IDQUISIONERDETAIL': null,
+      'JAWABAN': null,
+      'IDFORMDETAIL': [
+        '3b9e47e3-b0ee-49f5-b605-57cd54932265',
+        '3b9e47e3-b0ee-49f5-b605-57cd54932265',
+        '3b9e47e3-b0ee-49f5-b605-57cd54932265',
+        '3b9e47e3-b0ee-49f5-b605-57cd54932265',
+        '3b9e47e3-b0ee-49f5-b605-57cd54932265'
+      ],
+      'FILENAME': null,
+      'PATH': 'PATH',
+      'FOTO_KONSUMEN_SEDANG_TTD_KONTRAK_MNCF': [
+        file2,
+        file3,
+        file4,
+        file5,
+        file6,
+      ]
+    });
+
+    param.fields.forEach((element) {
+      print("ini element : $element");
+    });
+
+    param.files.forEach((element) {
+      print("ini element : $element");
+    });
+
+    var result = await config(AppType.approval).post(url,
+        data: param, options: options, onSendProgress: (send, total) {
+      print("send data :$send of $total");
+    }).onError((error, stackTrace) {
+      print('ini error :$error');
+    });
+
+    print(result.data);
+    print("hello ");
+  }
+
+  static Future<void> getQuisioner() async {
+    var url = 'api/quisioner';
+    var options = await _getDioOptions(contentType: contentType.json);
+
+    var result = await config(AppType.approval)
+        .get(url, options: options)
+        .onError((error, stackTrace) => null);
+
+    if (result.data != null) {
+      print(result.data);
+      return result.data;
+    } else {
+      return null;
+    }
+  }
+
+  static Future<void> getFormUpload() async {
+    var url = 'api/formupload';
+    var options = await _getDioOptions(contentType: contentType.json);
+
+    var result = await config(AppType.approval)
+        .get(url, options: options)
+        .onError((error, stackTrace) => null);
+
+    if (result.data != null) {
+      print(result.data);
+      return result.data;
+    } else {
+      return null;
+    }
+  }
+
+  static Future<void> getZipCode() async {
+    var url = 'api/zipcode';
+    var options = await _getDioOptions(contentType: contentType.json);
+
+    var result = await config(AppType.approval)
+        .get(url, options: options)
+        .onError((error, stackTrace) => null);
+
+    if (result.data != null) {
+      print(result.data);
+      return result.data;
+    } else {
+      return null;
+    }
+  }
+
+  static Future<ConfigurationModel> checkupdate() async {
+    var url = 'api/checkupdate';
+    var options = await _getDioOptions(contentType: contentType.json);
+
+    var result = await config(AppType.approval)
+        .get(url, options: options)
+        .onError((error, stackTrace) => null);
+
+    if (result != null) {
+      var finalResult =
+          result != null ? ConfigurationModel.fromJson(result.data) : null;
+      return finalResult;
+    } else {
+      return null;
+    }
   }
 }

@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mobilesurvey/model/menu.dart';
 import 'package:mobilesurvey/ui/interceptor.dart';
-import 'package:mobilesurvey/utilities/api_request.dart';
 import 'package:mobilesurvey/utilities/constant.dart';
 import 'package:mobilesurvey/utilities/shared_preferences_utils.dart';
 import 'package:mobx/mobx.dart';
@@ -37,9 +36,7 @@ abstract class _RoleLogic with Store {
   ];
 
   static void _goToInterceptorPage(BuildContext context, AppType appType) {
-    print("apa ini ? $appType");
     PreferenceUtils.setString(kAppType, appType.toString());
-    APIRequest.appType = appType;
     Navigator.push(context,
         MaterialPageRoute(builder: (_) => InterceptorPageUI(appType: appType)));
   }

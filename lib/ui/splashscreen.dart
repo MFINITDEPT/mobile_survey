@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:mobilesurvey/ui/interceptor.dart';
+import 'package:mobilesurvey/ui/mobile_dashboard/home.dart';
+import 'package:mobilesurvey/ui/mobile_survey/home_container.dart';
 import 'package:mobilesurvey/ui/role.dart';
 import 'package:mobilesurvey/utilities/constant.dart';
 import 'package:mobilesurvey/utilities/shared_preferences_utils.dart';
@@ -19,8 +22,7 @@ class _SplashScreenUIState extends State<SplashScreenUI> {
   void initState() {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       Future.delayed(Duration(seconds: 3)).then((value) {
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (_) => RoleUI()));
+        checkPreferences();
       });
     });
     super.initState();
@@ -31,5 +33,43 @@ class _SplashScreenUIState extends State<SplashScreenUI> {
     return Material(
       child: Image(image: widget.assetImage, fit: BoxFit.fill),
     );
+  }
+
+  void checkPreferences() {
+    var appType = PreferenceUtils.getString(kAppType);
+    print("masuk $appType");
+    if (appType != null) {
+      switch (appType) {
+        case 'AppType.dashboard':
+          if (PreferenceUtils.getString(kMobileDashboardUserId) != null) {
+            Navigator.pushReplacement(
+                context, MaterialPageRoute(builder: (_) => HomePageUI()));
+          } else {
+            Navigator.pushReplacement(
+                context, MaterialPageRoute(builder: (_) => RoleUI()));
+          }
+          break;
+        case 'AppType.survey':
+          if (PreferenceUtils.getString(kMobileSurveyUserId) != null) {
+            Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                    builder: (_) =>
+                        InterceptorPageUI(appType: AppType.survey)));
+          } else {
+            Navigator.pushReplacement(
+                context, MaterialPageRoute(builder: (_) => RoleUI()));
+          }
+          break;
+        default:
+          Navigator.pushReplacement(
+              context, MaterialPageRoute(builder: (_) => RoleUI()));
+          break;
+      }
+    } else {
+      print("null bro");
+      Navigator.pushReplacement(
+          context, MaterialPageRoute(builder: (_) => RoleUI()));
+    }
   }
 }

@@ -4,6 +4,7 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:hive/hive.dart';
 import 'package:mobilesurvey/logic/translation_app.dart';
@@ -48,6 +49,7 @@ void main() {
           ..registerAdapter(DocumentItemAdapter());
 
         MasterRepositories.hivePath = value.path;
+        FlutterImageCompress.showNativeLog = true;
         runApp(App());
       });
     }

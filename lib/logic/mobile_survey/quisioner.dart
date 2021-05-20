@@ -33,7 +33,8 @@ abstract class _QuisionerLogic with Store {
       newQuisioner.add(_quisioner);
     }
 
-    MasterRepositories.saveQuisioner = newQuisioner;
+    MasterRepositories.saveQuisioner =
+    List<QuisionerAnswerModel>.from(newQuisioner);
   });
 
   @observable

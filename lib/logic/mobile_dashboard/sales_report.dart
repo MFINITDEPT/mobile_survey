@@ -22,14 +22,11 @@ class SalesReport = _SalesReport with _$SalesReport;
 abstract class _SalesReport with Store {
   BranchModel _currentBranch;
 
-//  var _shortMonth = kDateFormat(format: "MMM");
-
   @observable
   SalesReportAtribut salesReportAtribut;
 
   @action
   Future<void> goToChooser(BuildContext context) async {
-    print(kBranches);
     var result = await Navigator.push(
         context,
         MaterialPageRoute(
@@ -45,7 +42,7 @@ abstract class _SalesReport with Store {
   void getData() async {
     if (kBranches.isEmpty) {
       var result =
-          await APIRequest.getBranch(PreferenceUtils.getString(kUserId));
+          await APIRequest.getBranch(PreferenceUtils.getString(kMobileDashboardUserId));
       result.removeWhere((model) => model.cCode == "000");
       if (result != null) kBranches = result;
     }
@@ -53,16 +50,16 @@ abstract class _SalesReport with Store {
     if (_currentBranch == null) _currentBranch = kBranches.first;
 
     var result = await APIRequest.getMarketingData(
-        DateUtils.now(), _currentBranch.cCode);
+        DateUtilities.now(), _currentBranch.cCode);
     if (result == null) return;
     var _marketingReportModel =
-        kgetMarketingUnit(result[0], result[1], DateUtils.now());
-    _setData(_marketingReportModel, DateUtils.now());
+        kgetMarketingUnit(result[0], result[1], DateUtilities.now());
+    _setData(_marketingReportModel, DateUtilities.now());
   }
 
   ChartDataAttribut createChartData(List<MarketingData> kpr,
       List<MarketingData> reg, List<MarketingData> exp) {
-    var _month = DateUtils.now().month;
+    var _month = DateUtilities.now().month;
 
     var _kprData = <MarketingUnit>[];
     var _regData = <MarketingUnit>[];
@@ -78,8 +75,8 @@ abstract class _SalesReport with Store {
     if (exp.isNotEmpty) _expData = _getChartData(exp);
 
     for (var i = 11; i >= 0; i--) {
-      var title = DateUtils.convertDateTimeToString(
-          DateUtils.getMonth((_month - i) % 12), format: "MMM");
+      var title = DateUtilities.convertDateTimeToString(
+          DateUtilities.getMonth((_month - i) % 12), format: "MMM");
 
       _kprChart.add(OrdinalSales(
           title, _kprData.isNotEmpty ? (_kprData[i].unit ?? 0) : 0));
@@ -181,8 +178,8 @@ abstract class _SalesReport with Store {
     _headerLeftContent = CellProperty("Product Facility");
 
     for (var i = 0; i < (month); i++) {
-      var title = DateUtils.convertDateTimeToString(
-          DateUtils.getMonth((month - i) % 12), format: "MMM");
+      var title = DateUtilities.convertDateTimeToString(
+          DateUtilities.getMonth((month - i) % 12), format: "MMM");
 
       _header.add(CellProperty(
           "Unt ${title} (${date.year})"));
@@ -191,8 +188,8 @@ abstract class _SalesReport with Store {
     }
 
     for (var i = 12; i > (month); i--) {
-      var title = DateUtils.convertDateTimeToString(
-          DateUtils.getMonth(i% 12), format: "MMM");
+      var title = DateUtilities.convertDateTimeToString(
+          DateUtilities.getMonth(i% 12), format: "MMM");
 
       _header.add(CellProperty(
           "Unt ${title} (${date.year - 1})"));

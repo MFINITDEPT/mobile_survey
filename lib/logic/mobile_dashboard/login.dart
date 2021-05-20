@@ -50,7 +50,6 @@ abstract class _Login with Store {
       }
 
       if (_response.flag == '1') {
-        PreferenceUtils.setString(kMobileDashboardFlag, _response.flag);
         PreferenceUtils.setString(kMobileDashboardUserId, username.text);
         Navigator.pushAndRemoveUntil(context,
             MaterialPageRoute(builder: (_) => HomePageUI()), (route) => false);

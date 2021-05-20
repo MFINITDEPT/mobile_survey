@@ -41,7 +41,6 @@ abstract class _HomeLogic with Store {
 
   static void signOut(BuildContext context, {Function fc}) {
     fc(() async {
-      PreferenceUtils.remove(kMobileDashboardFlag);
       PreferenceUtils.remove(kMobileDashboardUserId);
       PreferenceUtils.remove(kAppType);
 

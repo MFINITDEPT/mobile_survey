@@ -3,7 +3,9 @@ import 'package:mobilesurvey/boilerplate/new_state.dart';
 import 'package:mobilesurvey/component/adv_column.dart';
 import 'package:mobilesurvey/logic/mobile_survey/home.dart';
 import 'package:mobilesurvey/utilities/assets.dart';
+import 'package:mobilesurvey/utilities/constant.dart';
 import 'package:mobilesurvey/utilities/palette.dart';
+import 'package:mobilesurvey/utilities/shared_preferences_utils.dart';
 import 'package:mobilesurvey/utilities/translation.dart';
 
 // ignore: public_member_api_docs
@@ -13,7 +15,7 @@ class HomeUI extends StatefulWidget {
 }
 
 class _HomeUIState extends NewState<HomeUI> {
-   final HomeBase _logic = HomeBase();
+  final HomeBase _logic = HomeBase();
 
   @override
   Widget buildView(BuildContext context) {
@@ -25,7 +27,8 @@ class _HomeUIState extends NewState<HomeUI> {
             padding:
                 const EdgeInsets.symmetric(horizontal: 32.0, vertical: 24.0),
             child: Text(
-              "${translation.getText('welcome')}, TEST",
+              "${translation.getText('welcome')},"
+              " ${PreferenceUtils.getString(kMobileSurveyUsername) ?? ""}",
               style: TextStyle(
                   fontSize: 16.0,
                   fontWeight: FontWeight.bold,
