@@ -4,11 +4,9 @@ import 'package:mobilesurvey/utilities/api_request.dart';
 
 enum AppType { survey, collection, dashboard, approval }
 
-// ignore: public_member_api_docs
 class InterceptorPageUI extends StatefulWidget {
   final AppType appType;
 
-  // ignore: public_member_api_docs
   InterceptorPageUI({@required this.appType});
 
   @override
@@ -39,26 +37,30 @@ class _InterceptorPageUIState extends State<InterceptorPageUI> {
     APIRequest.appType = widget.appType;
     switch (widget.appType) {
       case AppType.survey:
-        _config = APIRequest.checkupdate();
-        _apiRequest.add(APIRequest.masterQuisioner);
-        _apiRequest.add(APIRequest.masterAo);
-        _apiRequest.add(APIRequest.masterZipCode);
-        _apiRequest.add(APIRequest.getFotoForm);
-        _apiRequest.add(APIRequest.getFotoForm);
+        _config = APIRequest.checkUpdate;
+        _apiRequest.add(APIRequest.getZipCode);
+        _apiRequest.add(APIRequest.getQuisioner);
+        _apiRequest.add(APIRequest.getFormUpload);
+
+//        _apiRequest.add(APIRequest.masterQuisioner);
+//        _apiRequest.add(APIRequest.masterAo);
+//        _apiRequest.add(APIRequest.masterZipCode);
+//        _apiRequest.add(APIRequest.getFotoForm);
+//        _apiRequest.add(APIRequest.getFotoForm);
         break;
       case AppType.collection:
-        _config = APIRequest.checkupdate();
-        _apiRequest.add(APIRequest.masterQuisioner);
-        _apiRequest.add(APIRequest.masterQuisioner);
-        _apiRequest.add(APIRequest.masterQuisioner);
+        _config = APIRequest.checkUpdate;
+//        _apiRequest.add(APIRequest.masterQuisioner);
+//        _apiRequest.add(APIRequest.masterQuisioner);
+//        _apiRequest.add(APIRequest.masterQuisioner);
         break;
       case AppType.dashboard:
         break;
       case AppType.approval:
-        _config = APIRequest.checkupdate();
-        _apiRequest.add(APIRequest.masterQuisioner);
-        _apiRequest.add(APIRequest.masterQuisioner);
-        _apiRequest.add(APIRequest.masterQuisioner);
+        _config = APIRequest.checkUpdate;
+//        _apiRequest.add(APIRequest.masterQuisioner);
+//        _apiRequest.add(APIRequest.masterQuisioner);
+//        _apiRequest.add(APIRequest.masterQuisioner);
         break;
     }
   }

@@ -37,7 +37,6 @@ class _SplashScreenUIState extends State<SplashScreenUI> {
 
   void checkPreferences() {
     var appType = PreferenceUtils.getString(kAppType);
-    print("masuk $appType");
     if (appType != null) {
       switch (appType) {
         case 'AppType.dashboard':
@@ -67,7 +66,6 @@ class _SplashScreenUIState extends State<SplashScreenUI> {
           break;
       }
     } else {
-      print("null bro");
       Navigator.pushReplacement(
           context, MaterialPageRoute(builder: (_) => RoleUI()));
     }

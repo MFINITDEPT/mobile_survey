@@ -1,36 +1,37 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:mobilesurvey/model/master_configuration/configuration.dart';
+import 'package:mobilesurvey/model/master_configuration/form_upload_item.dart';
+import 'package:mobilesurvey/model/master_configuration/form_upload_response.dart';
+import 'package:mobilesurvey/model/master_configuration/quisioner_item.dart';
+import 'package:mobilesurvey/model/master_configuration/quisioner_response.dart';
+import 'package:mobilesurvey/model/master_configuration/zipcode_item.dart';
+import 'package:mobilesurvey/model/master_configuration/zipcode_response.dart';
 import 'package:mobilesurvey/model/mobile_dashboard/branch.dart';
 import 'package:mobilesurvey/model/mobile_dashboard/collection.dart';
 import 'package:mobilesurvey/model/mobile_dashboard/login_response.dart';
 import 'package:mobilesurvey/model/mobile_dashboard/marketing.dart';
 import 'package:mobilesurvey/model/mobile_dashboard/report_chart.dart';
+import 'package:mobilesurvey/model/mobile_survey/login_response.dart';
 import 'package:mobilesurvey/ui/interceptor.dart';
 import 'package:mobilesurvey/utilities/date_utils.dart';
-import 'package:mobilesurvey/model/mobile_survey/login_response.dart';
-import '../model/ao.dart';
+import 'package:mobilesurvey/utilities/dummy.dart';
 
-//import '../model/configuration.dart';
-import '../model/photo_form.dart';
-import '../model/quisioner.dart';
-import '../model/zipcode.dart';
-import '../repositories/master.dart';
 import '../utilities/string_utils.dart';
-
 import 'enum.dart';
 
-// ignore: avoid_classes_with_only_static_members, public_member_api_docs
 class APIRequest {
   static AppType appType;
   static String _url = "https://ver-itrack.mncfinance.net/";
-  static final String _surveyUrlDev = "https://10.1.80.83:45456/api/";
+
+//  static final String _surveyUrlDev = "https://10.1.80.220:45459/";
+  static final String _surveyUrlDev = "http://10.1.80.220:8071/";
   static final String _dashboardUrlProd =
       "https://api-collplay.mncfinance.net/";
+
+  //  static final String _surveyUrlDev = "https://10.1.80.83:45456/api/";
 
   static String _collplay = "CollPlay/";
   static String _marketing = "Marketing/";
@@ -52,16 +53,15 @@ class APIRequest {
         break;
       case AppType.approval:
         //    _newDio.options.baseUrl = "http://10.1.80.220:8071/";
-        _newDio.options.baseUrl = "https://10.1.80.220:45457/";
+        _newDio.options.baseUrl = _surveyUrlDev;
         break;
     }
 
     print(_newDio.options.baseUrl);
 
     (_newDio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
-        (HttpClient client) {
-      client.badCertificateCallback =
-          (X509Certificate cert, String host, int port) => true;
+        (client) {
+      client.badCertificateCallback = (cert, host, port) => true;
     };
 
     return _newDio;
@@ -117,66 +117,63 @@ class APIRequest {
     var result = await _dio
         .post<dynamic>(url, data: param, options: options)
         .catchError((error) {
-      print("ini error :$error");
       return null;
     });
-
-    print("ini result $result");
 
     return result == null
         ? _getBearerToken(appType)
         : result?.data["access_token"];
   }
 
-  static Future<List<QuisionerModel>> masterQuisioner() async {
-    var options = await _getDioOptions(contentType: contentType.json);
+//  static Future<List<QuisionerModel>> masterQuisioner() async {
+//    var options = await _getDioOptions(contentType: contentType.json);
+//
+//    var url = "${_master}Quisioner";
+//
+//    var result = await config(appType)
+//        .get<dynamic>(url, options: options)
+//        .catchError((error) {
+//      print("$url Error");
+//      return null;
+//    });
+//
+//    var res = <QuisionerModel>[];
+//    if (result.data != null) {
+//      var list = List.from(result.data);
+//      // ignore: avoid_function_literals_in_foreach_calls
+//      list.forEach((element) => res.add(QuisionerModel.fromJson(element)));
+//    }
+//
+//    return res;
+//  }
 
-    var url = "${_master}Quisioner";
-
-    var result = await config(appType)
-        .get<dynamic>(url, options: options)
-        .catchError((error) {
-      print("$url Error");
-      return null;
-    });
-
-    var res = <QuisionerModel>[];
-    if (result.data != null) {
-      var list = List.from(result.data);
-      // ignore: avoid_function_literals_in_foreach_calls
-      list.forEach((element) => res.add(QuisionerModel.fromJson(element)));
-    }
-
-    return res;
-  }
-
-  static Future<List<ZipCodeModel>> masterZipCode() async {
-    var options = await _getDioOptions(contentType: contentType.json);
-
-    var url = "${_master}zipcode";
-
-    var result = await config(appType)
-        .get<dynamic>(url, options: options)
-        .catchError((error) {
-      Fluttertoast.showToast(
-          msg: error.toString(),
-          toastLength: Toast.LENGTH_SHORT,
-          gravity: ToastGravity.CENTER,
-          timeInSecForIosWeb: 1,
-          fontSize: 16.0);
-      print("$url Error");
-      return null;
-    });
-
-    var res = <ZipCodeModel>[];
-    if (result.data != null) {
-      var list = List.from(result.data);
-      // ignore: avoid_function_literals_in_foreach_calls
-      list.forEach((element) => res.add(ZipCodeModel.fromJson(element)));
-    }
-
-    return result.data != null ? res : null;
-  }
+//  static Future<List<ZipCodeModel>> masterZipCode() async {
+//    var options = await _getDioOptions(contentType: contentType.json);
+//
+//    var url = "${_master}zipcode";
+//
+//    var result = await config(appType)
+//        .get<dynamic>(url, options: options)
+//        .catchError((error) {
+//      Fluttertoast.showToast(
+//          msg: error.toString(),
+//          toastLength: Toast.LENGTH_SHORT,
+//          gravity: ToastGravity.CENTER,
+//          timeInSecForIosWeb: 1,
+//          fontSize: 16.0);
+//      print("$url Error");
+//      return null;
+//    });
+//
+//    var res = <ZipCodeModel>[];
+//    if (result.data != null) {
+//      var list = List.from(result.data);
+//      // ignore: avoid_function_literals_in_foreach_calls
+//      list.forEach((element) => res.add(ZipCodeModel.fromJson(element)));
+//    }
+//
+//    return result.data != null ? res : null;
+//  }
 
 //  static Future<ConfigurationModel> getConfiguration() async {
 //    var options = await _getDioOptions(contentType: contentType.json);
@@ -195,48 +192,48 @@ class APIRequest {
 //    return res;
 //  }
 
-  static Future<List<AoModel>> masterAo() async {
-    var options = await _getDioOptions(contentType: contentType.json);
+//  static Future<List<AoModel>> masterAo() async {
+//    var options = await _getDioOptions(contentType: contentType.json);
+//
+//    var url = "${_master}ao";
+//
+//    var result = await config(appType)
+//        .get<dynamic>(url, options: options)
+//        .catchError((error) {
+//      print("$url Error");
+//      return null;
+//    });
+//
+//    var res = <AoModel>[];
+//    if (result.data != null) {
+//      var list = List.from(result.data);
+//      // ignore: avoid_function_literals_in_foreach_calls
+//      list.forEach((element) => res.add(AoModel.fromJson(element)));
+//    }
+//    return res;
+//  }
 
-    var url = "${_master}ao";
-
-    var result = await config(appType)
-        .get<dynamic>(url, options: options)
-        .catchError((error) {
-      print("$url Error");
-      return null;
-    });
-
-    var res = <AoModel>[];
-    if (result.data != null) {
-      var list = List.from(result.data);
-      // ignore: avoid_function_literals_in_foreach_calls
-      list.forEach((element) => res.add(AoModel.fromJson(element)));
-    }
-    return res;
-  }
-
-  static Future<List<PhotoForm>> getFotoForm(int id) async {
-    var options = await _getDioOptions(contentType: contentType.json);
-
-    var url = '${_master}getFotoForm';
-    var params = <String, int>{}..putIfAbsent("id", () => id);
-    var result = await config(appType)
-        .get<dynamic>(url, options: options, queryParameters: params)
-        .catchError((error) {
-      print("$url Error");
-      return null;
-    });
-
-    var res = <PhotoForm>[];
-    if (result.data != null) {
-      var list = List.from(result.data);
-      // ignore: avoid_function_literals_in_foreach_calls
-      list.forEach((element) => res.add(PhotoForm.fromJson(element)));
-    }
-
-    return res;
-  }
+//  static Future<List<PhotoForm>> getFotoForm(int id) async {
+//    var options = await _getDioOptions(contentType: contentType.json);
+//
+//    var url = '${_master}getFotoForm';
+//    var params = <String, int>{}..putIfAbsent("id", () => id);
+//    var result = await config(appType)
+//        .get<dynamic>(url, options: options, queryParameters: params)
+//        .catchError((error) {
+//      print("$url Error");
+//      return null;
+//    });
+//
+//    var res = <PhotoForm>[];
+//    if (result.data != null) {
+//      var list = List.from(result.data);
+//      // ignore: avoid_function_literals_in_foreach_calls
+//      list.forEach((element) => res.add(PhotoForm.fromJson(element)));
+//    }
+//
+//    return res;
+//  }
 
   static Future<dynamic> checkDuplicateName(String name) async {
     var options = await _getDioOptions(contentType: contentType.json);
@@ -256,7 +253,7 @@ class APIRequest {
     return result.data;
   }
 
-  static Future<dynamic> insertIntoMsix(
+/*  static Future<dynamic> insertIntoMsix(
       {String prefixSalute,
       String name,
       String suffixSalute,
@@ -335,7 +332,7 @@ class APIRequest {
     });
 
     return result.data;
-  }
+  }*/
 
   static Future<LoginSurveyResponse> loginSurvey(
       String userId, String password, String token) async {
@@ -348,12 +345,16 @@ class APIRequest {
     var url = "${_user}login";
     var options = await _getDioOptions(contentType: contentType.json);
 
-    var result = await config(appType)
+/*    var result = await config(appType)
         .post<dynamic>(url, data: param, options: options)
-        .catchError((error) {});
+        .catchError((error) => null);*/
+
+    var result = <String, dynamic>{}
+      ..putIfAbsent('nik', () => '123456')
+      ..putIfAbsent('name', () => 'Yudis');
 
     var finalresult =
-        result != null ? LoginSurveyResponse.fromJson(result.data) : null;
+        result != null ? LoginSurveyResponse.fromJson(result) : null;
 
     return finalresult;
   }
@@ -440,10 +441,10 @@ class APIRequest {
         .post<dynamic>(url, data: param, options: options)
         .catchError((error) {});
 
-    var finalresult =
+    var finalResult =
         result != null ? CollectionModel.fromJson(result.data) : null;
 
-    return finalresult;
+    return finalResult;
   }
 
   static Future<List<MarketingReportModel>> getMarketingData(
@@ -580,76 +581,126 @@ class APIRequest {
       print("ini element : $element");
     });
 
-    var result = await config(AppType.approval).post(url,
+    var result = await config(AppType.survey).post(url,
         data: param, options: options, onSendProgress: (send, total) {
       print("send data :$send of $total");
     }).onError((error, stackTrace) {
       print('ini error :$error');
+      return null;
     });
 
     print(result.data);
     print("hello ");
   }
 
-  static Future<void> getQuisioner() async {
+  static Future<List<QuisionerItem>> getQuisioner() async {
     var url = 'api/quisioner';
     var options = await _getDioOptions(contentType: contentType.json);
 
-    var result = await config(AppType.approval)
+    var result = await config(AppType.survey)
         .get(url, options: options)
         .onError((error, stackTrace) => null);
 
+/*    var result =  Dummy.quisioner;
+    if (result != null) {
+      var finalResult =
+      result != null ? QuisionerResponse.fromJson(result) : null;
+      print(result);
+      return finalResult != null ? finalResult.data : null;
+    } else {
+      return null;
+    }*/
+
     if (result.data != null) {
+      var finalResult =
+          result != null ? QuisionerResponse.fromJson(result.data) : null;
       print(result.data);
-      return result.data;
+      return finalResult != null ? finalResult.data : null;
     } else {
       return null;
     }
   }
 
-  static Future<void> getFormUpload() async {
+  static Future<List<FormUploadItem>> getFormUpload() async {
     var url = 'api/formupload';
     var options = await _getDioOptions(contentType: contentType.json);
 
-    var result = await config(AppType.approval)
+    var result = await config(AppType.survey)
         .get(url, options: options)
         .onError((error, stackTrace) => null);
 
+/*    var result =  Dummy.formUpload;
+    if (result != null) {
+      var finalResult =
+      result != null ? FormUploadResponse.fromJson(result) : null;
+      print(result);
+      return finalResult != null ? finalResult.data : null;
+    } else {
+      return null;
+    }*/
+
     if (result.data != null) {
+      var finalResult =
+          result != null ? FormUploadResponse.fromJson(result.data) : null;
       print(result.data);
-      return result.data;
+      return finalResult != null ? finalResult.data : null;
     } else {
       return null;
     }
   }
 
-  static Future<void> getZipCode() async {
+  static Future<List<ZipCodeItem>> getZipCode() async {
     var url = 'api/zipcode';
     var options = await _getDioOptions(contentType: contentType.json);
 
-    var result = await config(AppType.approval)
+    var result = await config(AppType.survey)
         .get(url, options: options)
         .onError((error, stackTrace) => null);
 
+    /*  var result =  Dummy.zipcode;
+    if (result != null) {
+      var finalResult =
+      result != null ? ZipCodeResponse.fromJson(result) : null;
+      print(result);
+      return finalResult != null ? finalResult.data : null;
+    } else {
+      return null;
+    }*/
+
     if (result.data != null) {
+      var finalResult =
+          result != null ? ZipCodeResponse.fromJson(result.data) : null;
       print(result.data);
-      return result.data;
+      return finalResult != null ? finalResult.data : null;
+      ;
     } else {
       return null;
     }
   }
 
-  static Future<ConfigurationModel> checkupdate() async {
-    var url = 'api/checkupdate';
+  static Future<ConfigurationModel> checkUpdate() async {
+    var url = 'api/pembaruan';
     var options = await _getDioOptions(contentType: contentType.json);
 
-    var result = await config(AppType.approval)
+    var result = await config(AppType.survey)
         .get(url, options: options)
         .onError((error, stackTrace) => null);
+
+//    var result = Dummy.config;
+
+    /* if (result != null) {
+      var finalResult =
+      result != null ? ConfigurationModel.fromJson(result) : null;
+      print(result);
+      return finalResult;
+    } else {
+      return null;
+    }*/
 
     if (result != null) {
       var finalResult =
           result != null ? ConfigurationModel.fromJson(result.data) : null;
+      print(result.data);
       return finalResult;
     } else {
       return null;

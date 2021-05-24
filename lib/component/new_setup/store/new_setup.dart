@@ -3,7 +3,6 @@ import 'package:mobx/mobx.dart';
 
 part 'new_setup.g.dart';
 
-// ignore: public_member_api_docs
 class NewSetupBase = _NewSetupLogic with _$NewSetupBase;
 
 abstract class _NewSetupLogic with Store {

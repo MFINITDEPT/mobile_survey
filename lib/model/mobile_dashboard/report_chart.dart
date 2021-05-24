@@ -1,7 +1,5 @@
-// ignore: public_member_api_docs
 import 'flspot.dart';
 
-// ignore: public_member_api_docs
 class ReportChartDataObject {
   final int bulan;
   final double portofolioAmount;
@@ -25,7 +23,6 @@ class ReportChartDataObject {
   final double bucketUp270Amount;
   final double bucketUp270Unit;
 
-  // ignore: public_member_api_docs
   ReportChartDataObject({
     this.bulan,
     this.portofolioAmount,
@@ -50,7 +47,6 @@ class ReportChartDataObject {
     this.bucketUp270Unit,
   });
 
-  // ignore: public_member_api_docs
   factory ReportChartDataObject.fromJSON(Map<String, dynamic> json) {
     return ReportChartDataObject(
       bulan: (json['bulan']).toInt(),
@@ -79,7 +75,6 @@ class ReportChartDataObject {
   }
 }
 
-// ignore: public_member_api_docs
 class ReportChartAttribute {
   final List<FlSpotModel> current;
   final List<FlSpotModel> portofolio;
@@ -92,7 +87,6 @@ class ReportChartAttribute {
   final List<FlSpotModel> bucket181_270;
   final List<FlSpotModel> bucketUp270;
 
-  // ignore: public_member_api_docs
   ReportChartAttribute({
     this.current,
     this.portofolio,

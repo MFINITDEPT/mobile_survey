@@ -13,7 +13,6 @@ import 'package:mobilesurvey/utilities/palette.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:sliver_fill_remaining_box_adapter/sliver_fill_remaining_box_adapter.dart';
 
-// ignore: public_member_api_docs
 class SalesReportUI extends StatefulWidget {
   @override
   _SalesReportUIState createState() => _SalesReportUIState();

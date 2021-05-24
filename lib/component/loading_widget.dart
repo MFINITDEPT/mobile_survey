@@ -2,14 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import '../logic/loading.dart';
 
-// ignore: public_member_api_docs
 class LoadingWidget extends StatefulWidget {
   final Widget child;
   final Widget loadingWidget;
   final Loading loading;
   static Widget defaultLoading;
 
-  // ignore: public_member_api_docs
   const LoadingWidget({Key key, this.child, this.loadingWidget, this.loading})
       : super(key: key);
 

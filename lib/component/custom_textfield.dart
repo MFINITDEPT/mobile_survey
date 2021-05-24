@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import '../utilities/palette.dart';
 
-// ignore: public_member_api_docs
 class CustomTextField extends StatefulWidget {
   final double padding;
   final String title;
@@ -9,7 +8,6 @@ class CustomTextField extends StatefulWidget {
   final bool enabled;
   final bool obsecureText;
 
-  // ignore: public_member_api_docs
   CustomTextField(
       {Key key,
       this.padding,

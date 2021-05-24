@@ -6,8 +6,6 @@ import '../logic/loading.dart';
 import '../logic/translation_app.dart';
 import '../utilities/palette.dart';
 
-
-// ignore: public_member_api_docs
 abstract class NewState<T extends StatefulWidget> extends State<T> {
   final Loading _loading = Loading();
 
@@ -25,10 +23,8 @@ abstract class NewState<T extends StatefulWidget> extends State<T> {
     );
   }
 
-  // ignore: public_member_api_docs
   Widget buildView(BuildContext context);
 
-  // ignore: public_member_api_docs
   void process(Function f) {
     _loading.process(f);
   }

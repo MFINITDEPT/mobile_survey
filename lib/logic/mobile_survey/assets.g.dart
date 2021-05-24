@@ -36,7 +36,7 @@ mixin _$AssetsBase on _AssetsLogic, Store {
 
   @override
   Future<void> browseFile(
-      PhotoForm form, int index, Function fc, BuildContext context) {
+      FormUploadItem form, int index, Function fc, BuildContext context) {
     return _$browseFileAsyncAction
         .run(() => super.browseFile(form, index, fc, context));
   }

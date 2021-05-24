@@ -8,13 +8,11 @@ import '../logic/translation_app.dart';
 typedef Fetcher = Future<void> Function();
 typedef OnInit = Future<void> Function(BuildContext context);
 
-// ignore: public_member_api_docs
 enum Status { failed, success, processing, showDialog }
 
 typedef UiBuilder = Widget Function(
     BuildContext context, double processing, String description, Status type);
 
-// ignore: public_member_api_docs
 class Setup extends StatefulWidget {
   final List<NavigatorObserver> observer;
   final ThemeData theme;
@@ -24,8 +22,7 @@ class Setup extends StatefulWidget {
   final UiBuilder uiBuilder;
   final int totalApiRequest;
 
-  // ignore: public_member_api_docs
-  const Setup(
+   const Setup(
       {this.observer = const [],
       this.theme,
       this.localizationsDelegates,
@@ -128,12 +125,10 @@ class _SetupState extends State<Setup> with WidgetsBindingObserver {
   }
 }
 
-// ignore: public_member_api_docs
 class NHome extends StatefulWidget {
   final Widget child;
 
-  // ignore: public_member_api_docs
-  NHome(this.child);
+   NHome(this.child);
 
   @override
   _NHomeState createState() => _NHomeState();
@@ -148,7 +143,6 @@ class _NHomeState extends State<NHome> {
   }
 }
 
-// ignore: public_member_api_docs
 class SetupController extends ValueNotifier<SetupEditingValue> {
   double get progress => value.progress;
 
@@ -182,13 +176,11 @@ class SetupController extends ValueNotifier<SetupEditingValue> {
         isError: !isGetDataSuccess);
   }
 
-  // ignore: public_member_api_docs
   bool checkDataIsNotValid() {
     return _apiResult.contains(false);
   }
 
-  // ignore: public_member_api_docs
-  SetupController({double progress, String description, bool isError})
+ SetupController({double progress, String description, bool isError})
       : super(progress == null && description == null && isError == null
             ? SetupEditingValue.empty
             : SetupEditingValue(
@@ -196,11 +188,9 @@ class SetupController extends ValueNotifier<SetupEditingValue> {
                 description: description,
                 isError: isError));
 
-  // ignore: public_member_api_docs
   SetupController.fromValue(SetupEditingValue value)
       : super(value ?? SetupEditingValue.empty);
 
-  // ignore: public_member_api_docs
   void clear() {
     value = SetupEditingValue.empty;
   }
@@ -208,7 +198,6 @@ class SetupController extends ValueNotifier<SetupEditingValue> {
 
 @immutable
 class SetupEditingValue {
-  // ignore: public_member_api_docs
   const SetupEditingValue(
       {this.progress = 0.0,
       this.description = "",
@@ -220,7 +209,6 @@ class SetupEditingValue {
   final bool isError;
   final _SetupState setupState;
 
-  // ignore: public_member_api_docs
   static const SetupEditingValue empty =  SetupEditingValue();
 
   SetupEditingValue copyWith(
@@ -236,8 +224,7 @@ class SetupEditingValue {
         setupState: setupState);
   }
 
-  // ignore: public_member_api_docs
-  SetupEditingValue.fromValue(SetupEditingValue copy)
+   SetupEditingValue.fromValue(SetupEditingValue copy)
       : this.progress = copy.progress,
         this.description = copy.description,
         this.isError = copy.isError,

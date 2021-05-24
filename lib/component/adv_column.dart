@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-// ignore: public_member_api_docs
 class AdvColumn extends StatelessWidget {
   final Key key;
   final MainAxisAlignment mainAxisAlignment;
@@ -14,7 +13,6 @@ class AdvColumn extends StatelessWidget {
   final EdgeInsetsGeometry margin;
   final Widget divider;
 
-  // ignore: public_member_api_docs
   AdvColumn({
     this.key,
     this.mainAxisAlignment = MainAxisAlignment.start,
@@ -59,12 +57,10 @@ class AdvColumn extends StatelessWidget {
   }
 }
 
-// ignore: public_member_api_docs
 class ColumnDivider extends StatelessWidget {
   final double size;
   final Color color;
 
-  // ignore: public_member_api_docs
   ColumnDivider(double size, {Color color})
       : this.size = size ?? 0.0,
         this.color = color ?? Colors.transparent;

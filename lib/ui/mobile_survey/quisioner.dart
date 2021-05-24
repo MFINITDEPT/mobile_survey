@@ -6,14 +6,15 @@ import 'package:mobilesurvey/component/adv_dropdown.dart';
 import 'package:mobilesurvey/component/custom_textfield.dart';
 import 'package:mobilesurvey/logic/mobile_survey/quisioner.dart';
 import 'package:mobilesurvey/model/dropdown.dart';
-import 'package:mobilesurvey/model/quisioner.dart';
-import 'package:mobilesurvey/model/quisioner_answer.dart';
+import 'package:mobilesurvey/model/master_configuration/quisioner_item.dart';
 import 'package:mobilesurvey/utilities/palette.dart';
 import 'package:mobilesurvey/utilities/translation.dart';
 
+import '../../model/mobile_survey/quisioner_answer.dart';
+
 // ignore: public_member_api_docs
 class QuisionerUI extends StatefulWidget {
-  final List<QuisionerModel> model;
+  final List<QuisionerItem> model;
 
   // ignore: public_member_api_docs
   const QuisionerUI({Key key, this.model}) : super(key: key);

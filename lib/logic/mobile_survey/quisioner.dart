@@ -1,14 +1,13 @@
 import 'package:mobilesurvey/model/dropdown.dart';
-import 'package:mobilesurvey/model/quisioner_answer.dart';
 import 'package:mobilesurvey/repositories/master.dart';
 import 'package:mobilesurvey/utilities/constant.dart';
 import 'package:mobilesurvey/utilities/hive_utils.dart';
 import 'package:mobx/mobx.dart';
 
+import '../../model/mobile_survey/quisioner_answer.dart';
 
 part 'quisioner.g.dart';
 
-// ignore: public_member_api_docs
 class QuisionerBase = _QuisionerLogic with _$QuisionerBase;
 
 abstract class _QuisionerLogic with Store {
@@ -38,8 +37,7 @@ abstract class _QuisionerLogic with Store {
   });
 
   @observable
-  ObservableList<QuisionerAnswerModel> _quisioner =
-      ObservableList<QuisionerAnswerModel>.of(MasterRepositories.quisionerList);
+  ObservableList<QuisionerAnswerModel> _quisioner = ObservableList<QuisionerAnswerModel>.of(MasterRepositories.quisionerList);
 
   @computed
   List<QuisionerAnswerModel> get quisioner => _quisioner;

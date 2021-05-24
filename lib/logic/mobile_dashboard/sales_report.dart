@@ -16,7 +16,6 @@ import 'package:mobx/mobx.dart';
 
 part 'sales_report.g.dart';
 
-// ignore: public_member_api_docs
 class SalesReport = _SalesReport with _$SalesReport;
 
 abstract class _SalesReport with Store {

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:mobilesurvey/component/adv_column.dart';
 import 'package:mobilesurvey/utilities/assets.dart';
 
-// ignore: public_member_api_docs
 class MobileDashboardTextField extends StatefulWidget {
   final Color color;
   final TextEditingController ctrl;
@@ -10,7 +9,6 @@ class MobileDashboardTextField extends StatefulWidget {
   final TextInputType inputType;
   final bool isPassword;
 
-  // ignore: public_member_api_docs
   const MobileDashboardTextField(
       {Key key,
       this.color,
@@ -24,7 +22,6 @@ class MobileDashboardTextField extends StatefulWidget {
   _customButtonState createState() => _customButtonState();
 }
 
-// ignore: camel_case_types
 class _customButtonState extends State<MobileDashboardTextField> {
   bool _showPassword;
 

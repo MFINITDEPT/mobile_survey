@@ -4,7 +4,6 @@ import 'package:url_launcher/url_launcher.dart';
 
 part 'history.g.dart';
 
-// ignore: public_member_api_docs
 class HistoryBase = _HistoryLogic with _$HistoryBase;
 
 abstract class _HistoryLogic with Store {

@@ -1,12 +1,10 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import '../../boilerplate/new_state.dart';
 import '../../component/adv_column.dart';
 import '../../component/adv_row.dart';
 import '../../logic/mobile_survey/document.dart';
-import '../../model/photo_result.dart';
+import '../../model/mobile_survey/photo_result.dart';
 import '../../utilities/date_utils.dart';
 import '../../utilities/palette.dart';
 import '../../utilities/translation.dart';
@@ -26,8 +24,8 @@ class _DocumentUIState extends NewState<DocumentUI> {
     return Scaffold(body: Observer(builder: (_) {
       return ListView.builder(
           itemCount: _logic.results.length,
-          itemBuilder: (context, index) =>
-              _buildPhotoBox(_logic.results[index], context));
+          itemBuilder: (context, index) => Container()/*;
+              _buildPhotoBox(_logic.results[index], context)*/);
     }));
   }
 

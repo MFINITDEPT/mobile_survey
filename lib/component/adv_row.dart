@@ -14,7 +14,6 @@ class AdvRow extends StatelessWidget {
   final EdgeInsetsGeometry margin;
   final Widget divider;
 
-  // ignore: public_member_api_docs
   AdvRow({
     this.key,
     this.mainAxisAlignment = MainAxisAlignment.start,
@@ -60,12 +59,10 @@ class AdvRow extends StatelessWidget {
   }
 }
 
-// ignore: public_member_api_docs
 class RowDivider extends StatelessWidget {
   final double size;
   final Color color;
 
-  // ignore: public_member_api_docs
   RowDivider(double size, {Color color})
       : this.size = size ?? 0.0,
         this.color = color ?? Colors.transparent;

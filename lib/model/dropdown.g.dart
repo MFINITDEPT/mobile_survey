@@ -34,5 +34,5 @@ class SearchModelAdapter extends TypeAdapter<SearchModel> {
 
   @override
   // TODO: implement typeId
-  int get typeId => 1;
+  int get typeId => 4;
 }

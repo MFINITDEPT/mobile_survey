@@ -1,4 +1,3 @@
-// ignore: public_member_api_docs
 class CollectionModel {
   final String branchName;
   final double portofolioAmount;
@@ -137,7 +136,6 @@ class CollectionModel {
   final double npl90upBucketDiffCount;
   final double npl90upBucketDiffPerc;
 
-  // ignore: public_member_api_docs
   CollectionModel(
       {this.portofolioAmount,
         this.portofolioCount,
@@ -276,7 +274,6 @@ class CollectionModel {
         this.npl90upBucketDiffPerc,
         this.branchName});
 
-  // ignore: public_member_api_docs
   factory CollectionModel.fromJson(Map<String, dynamic> json) {
     var b1_30c = (json['Bucket1_30Count'] as num).toDouble();
     var b31_60c = (json['Bucket31_60Count'] as num).toDouble();

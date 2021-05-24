@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_holo_date_picker/date_picker.dart';
 import 'package:flutter_holo_date_picker/i18n/date_picker_i18n.dart';
 import 'package:mobx/mobx.dart';
-import '../../model/zipcode.dart';
+import '../../model/master_configuration/zipcode_item.dart';
 import '../../utilities/constant.dart';
 import '../../utilities/hive_utils.dart';
 import '../../utilities/string_utils.dart';
@@ -161,14 +161,14 @@ abstract class _ClientLogic with Store {
   }
 
   @action
-  void autoFill(ZipCodeModel item) {
+  void autoFill(ZipCodeItem item) {
     _zipCodeCtrl.text = item.kodePos;
     _districtCtrl.text = item.kelurahan;
     _villageCtrl.text = item.kecamatan;
   }
 
   @action
-  bool actionFilter(ZipCodeModel item, String query) {
+  bool actionFilter(ZipCodeItem item, String query) {
     _districtCtrl.text = '';
     _villageCtrl.text = '';
     return item.kodePos.startsWith(query);

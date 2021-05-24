@@ -10,7 +10,6 @@ part 'role.g.dart';
 
 class RoleBase = _RoleLogic with _$RoleBase;
 
-// ignore: avoid_classes_with_only_static_members
 abstract class _RoleLogic with Store {
   var menu = <MenuModel>[
     MenuModel(

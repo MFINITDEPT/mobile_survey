@@ -59,26 +59,22 @@ class Translation {
     }
   }
 
-  // ignore: public_member_api_docs, avoid_setters_without_getters
   set onLocalChangedCallback(VoidCallback callback) =>
       _onLocaleChangedCallback = callback;
 
-  // ignore: public_member_api_docs, type_annotate_public_apis
+  // ignore: type_annotate_public_apis
   get onLocalChanged => _onLocaleChangedCallback;
 
   // singleton factory
   static final Translation _translations = Translation._internal();
 
-  // ignore: public_member_api_docs
   factory Translation() => _translations;
 
   Translation._internal();
 }
 
-// ignore: public_member_api_docs
 Translation translation = Translation();
 
-// ignore: public_member_api_docs
 class FallbackLocalizationDelegate
     extends LocalizationsDelegate<MaterialLocalizations> {
   @override

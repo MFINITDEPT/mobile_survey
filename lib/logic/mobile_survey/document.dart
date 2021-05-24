@@ -4,9 +4,7 @@ import 'package:adv_image_picker/adv_image_picker.dart';
 import 'package:documents_picker/documents_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:mobilesurvey/model/document_item.dart';
-import 'package:mobilesurvey/model/photo_form.dart';
-import 'package:mobilesurvey/model/photo_result.dart';
+import 'package:mobilesurvey/model/master_configuration/form_upload_item.dart';
 import 'package:mobilesurvey/repositories/master.dart';
 import 'package:mobilesurvey/utilities/constant.dart';
 import 'package:mobilesurvey/utilities/file_utils.dart';
@@ -17,10 +15,14 @@ import 'package:mobx/mobx.dart';
 import 'package:open_file/open_file.dart';
 import 'package:pit_permission/pit_permission.dart';
 
+import '../../model/master_configuration/form_upload_item.dart';
+import '../../model/master_configuration/form_upload_item.dart';
+import '../../model/mobile_survey/document_item.dart';
+import '../../model/mobile_survey/photo_result.dart';
+
 
 part 'document.g.dart';
 
-// ignore: public_member_api_docs
 class DocumentBase = _DocumentLogic with _$DocumentBase;
 
 abstract class _DocumentLogic with Store {
@@ -30,14 +32,14 @@ abstract class _DocumentLogic with Store {
 
   @observable
   ObservableList<PhotoResult> _results =
-      ObservableList.of(MasterRepositories.docFormResult);
+      ObservableList.of(MasterRepositories.photoFormResult);
 
   @computed
   ObservableList<PhotoResult> get results => _results;
 
   @action
   Future<void> browseFile(
-      PhotoForm form, int index, Function fc, BuildContext context) async {
+      FormUploadItem form, int index, Function fc, BuildContext context) async {
     var tampungan = _getPhotoItemFromResult(form);
 
     if (tampungan == null) {
@@ -166,13 +168,13 @@ abstract class _DocumentLogic with Store {
     });
   }
 
-  List<DocumentItem> _getPhotoItemFromResult(PhotoForm form) {
+  List<DocumentItem> _getPhotoItemFromResult(FormUploadItem form) {
     return _results
         ?.firstWhere((element) => form == element.form, orElse: null)
         ?.result;
   }
 
-  DocumentItem document(PhotoForm form, int index) {
+  DocumentItem document(FormUploadItem form, int index) {
     if (_getPhotoItemFromResult(form) == null) return null;
     return _getPhotoItemFromResult(form)[index];
   }

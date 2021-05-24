@@ -1,15 +1,12 @@
-// ignore: public_member_api_docs
 class MarketingUnit {
   final int unit;
   final double amount;
   final double percent;
   final int year;
 
-  // ignore: public_member_api_docs
   MarketingUnit({this.unit, this.amount, this.percent, this.year});
 }
 
-// ignore: public_member_api_docs
 class MarketingDataObject {
   final String code;
   final String module;
@@ -52,7 +49,6 @@ class MarketingDataObject {
   final double pokokDec;
   final double persenDec;
 
-  // ignore: public_member_api_docs
   MarketingDataObject(
       {this.code,
         this.module,
@@ -95,7 +91,6 @@ class MarketingDataObject {
         this.pokokDec,
         this.persenDec});
 
-  // ignore: public_member_api_docs
   factory MarketingDataObject.fromJson(Map<String, dynamic> json) {
     return MarketingDataObject(
       code: json['CODE'] as String,
@@ -142,7 +137,6 @@ class MarketingDataObject {
   }
 }
 
-// ignore: public_member_api_docs
 class MarketingData {
   final String code;
   final String module;
@@ -150,7 +144,6 @@ class MarketingData {
   final String productFacility;
   List<MarketingUnit> data;
 
-  // ignore: public_member_api_docs
   MarketingData({
     this.code,
     this.module,
@@ -160,7 +153,6 @@ class MarketingData {
   });
 }
 
-// ignore: public_member_api_docs
 class MarketingReportModel {
   final List<MarketingDataObject> current;
   final List<MarketingDataObject> before;

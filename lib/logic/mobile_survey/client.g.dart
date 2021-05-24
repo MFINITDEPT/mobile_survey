@@ -28,7 +28,7 @@ mixin _$ClientBase on _ClientLogic, Store {
   final _$_ClientLogicActionController = ActionController(name: '_ClientLogic');
 
   @override
-  void autoFill(ZipCodeModel item) {
+  void autoFill(ZipCodeItem item) {
     final _$actionInfo = _$_ClientLogicActionController.startAction(
         name: '_ClientLogic.autoFill');
     try {
@@ -39,7 +39,7 @@ mixin _$ClientBase on _ClientLogic, Store {
   }
 
   @override
-  bool actionFilter(ZipCodeModel item, String query) {
+  bool actionFilter(ZipCodeItem item, String query) {
     final _$actionInfo = _$_ClientLogicActionController.startAction(
         name: '_ClientLogic.actionFilter');
     try {

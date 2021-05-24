@@ -1,35 +1,37 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'quisioner.dart';
+part of 'document_item.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class QuisionerModelAdapter extends TypeAdapter<QuisionerModel> {
+class DocumentItemAdapter extends TypeAdapter<DocumentItem> {
   @override
-  QuisionerModel read(BinaryReader reader) {
+  DocumentItem read(BinaryReader reader) {
     var numOfFields = reader.readByte();
     var fields = <int, dynamic>{
       for (var i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return QuisionerModel(
-      question: fields[0] as String,
-      choice: (fields[1] as List)?.cast<String>(),
+    return DocumentItem(
+      path: fields[0] as String,
+      dateTime: fields[1] as DateTime,
+      formId: fields[2] as String,
     );
   }
 
   @override
-  void write(BinaryWriter writer, QuisionerModel obj) {
+  void write(BinaryWriter writer, DocumentItem obj) {
     writer
-      ..writeByte(2)
+      ..writeByte(3)
       ..writeByte(0)
-      ..write(obj.question)
+      ..write(obj.path)
       ..writeByte(1)
-      ..write(obj.choice);
+      ..write(obj.dateTime)
+      ..writeByte(2)
+      ..write(obj.formId);
   }
 
   @override
-  // TODO: implement typeId
   int get typeId => 3;
 }

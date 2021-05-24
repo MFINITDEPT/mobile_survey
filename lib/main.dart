@@ -8,12 +8,7 @@ import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:hive/hive.dart';
 import 'package:mobilesurvey/logic/translation_app.dart';
-import 'package:mobilesurvey/model/ao.dart';
-import 'package:mobilesurvey/model/document_item.dart';
 import 'package:mobilesurvey/model/dropdown.dart';
-import 'package:mobilesurvey/model/photo_form.dart';
-import 'package:mobilesurvey/model/quisioner.dart';
-import 'package:mobilesurvey/model/zipcode.dart';
 import 'package:mobilesurvey/repositories/master.dart';
 import 'package:mobilesurvey/ui/splashscreen.dart';
 import 'package:mobilesurvey/utilities/constant.dart';
@@ -23,6 +18,9 @@ import 'package:pit_permission/pit_permission.dart';
 import 'package:provider/provider.dart';
 import 'package:ridjnaelcrypt/ridjnaelcrypt.dart';
 
+import 'model/master_configuration/form_upload_item.dart';
+import 'model/master_configuration/zipcode_item.dart';
+import 'model/mobile_survey/document_item.dart';
 import 'utilities/assets.dart';
 import 'utilities/shared_preferences_utils.dart';
 
@@ -41,12 +39,10 @@ void main() {
       getApplicationDocumentsDirectory().then((value) {
         Hive
           ..init(value.path)
-          ..registerAdapter(QuisionerModelAdapter())
-          ..registerAdapter(AoModelAdapter())
-          ..registerAdapter(ZipCodeModelAdapter())
-          ..registerAdapter(PhotoFormAdapter())
-          ..registerAdapter(SearchModelAdapter())
-          ..registerAdapter(DocumentItemAdapter());
+          ..registerAdapter(ZipCodeItemAdapter())
+          ..registerAdapter(FormUploadItemAdapter())
+          ..registerAdapter(DocumentItemAdapter())
+          ..registerAdapter(SearchModelAdapter());
 
         MasterRepositories.hivePath = value.path;
         FlutterImageCompress.showNativeLog = true;

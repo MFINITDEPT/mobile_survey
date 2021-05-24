@@ -1,5 +1,5 @@
-import 'package:hive/hive.dart';
 import '../utilities/parse_utils.dart';
+import 'package:hive/hive.dart';
 
 part 'dropdown.g.dart';
 

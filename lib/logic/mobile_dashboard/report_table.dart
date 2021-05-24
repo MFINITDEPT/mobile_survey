@@ -1,5 +1,5 @@
 import 'package:basic_components/components/adv_date_picker.dart';
-import 'package:date_utils/date_utils.dart';
+import 'package:date_utils/date_utils.dart' as utils;
 import 'package:flutter/material.dart';
 import 'package:mobilesurvey/component/chooser.dart';
 import 'package:mobilesurvey/component/custom_data_table.dart';
@@ -26,13 +26,13 @@ abstract class _ReportTable with Store {
   bool isKPR;
   BranchModel _currentBranch;
   ReportChartAttribute _reportChartData;
-  DateTime _oneDayBefore = DateTime(
-      DateUtilities.now().year, DateUtilities.now().month, DateUtilities.now().day - 1);
-  var _dateCtrl =
-      AdvDatePickerController(maxDate: DateUtilities.now(), date: DateUtilities.now());
+  DateTime _oneDayBefore = DateTime(DateUtilities.now().year,
+      DateUtilities.now().month, DateUtilities.now().day - 1);
+  var _dateCtrl = AdvDatePickerController(
+      maxDate: DateUtilities.now(), date: DateUtilities.now());
   AdvDatePickerController _lastMonthCtrl = AdvDatePickerController(
-      maxDate: DateTime(
-          DateUtilities.now().year, DateUtilities.now().month, DateUtilities.now().day - 1),
+      maxDate: DateTime(DateUtilities.now().year, DateUtilities.now().month,
+          DateUtilities.now().day - 1),
       date: DateUtilities.getNowAndOneMonthBefore(DateUtilities.now())[1]);
 
   var filterOptions = {
@@ -61,7 +61,8 @@ abstract class _ReportTable with Store {
   DateTime date = DateUtilities.now();
 
   @observable
-  DateTime lastDate = DateUtilities.getNowAndOneMonthBefore(DateUtilities.now())[1];
+  DateTime lastDate =
+      DateUtilities.getNowAndOneMonthBefore(DateUtilities.now())[1];
 
   @action
   Future<void> goToChooser(BuildContext context) async {
@@ -188,8 +189,11 @@ abstract class _ReportTable with Store {
 
     if (_currentBranch == null) _currentBranch = kBranches.first;
 
-    var result = await APIRequest.getReportChartData(DateUtilities.now(),
-        Utils.isLastDayOfMonth(DateUtilities.now()), _currentBranch.cCode, isKPR);
+    var result = await APIRequest.getReportChartData(
+        DateUtilities.now(),
+        utils.DateUtils.isLastDayOfMonth(DateUtilities.now()),
+        _currentBranch.cCode,
+        isKPR);
 
     if (result == null) return;
 
@@ -342,8 +346,8 @@ abstract class _ReportTable with Store {
           ]),
         ]),
         ColumnTable(children: [
-          CellProperty(
-              DateUtilities.convertDateTimeToString(date, format: 'dd-MMM-yyyy')),
+          CellProperty(DateUtilities.convertDateTimeToString(date,
+              format: 'dd-MMM-yyyy')),
           RowTable(children: [
             CellProperty("Unit"),
             CellProperty("OS Pokok"),

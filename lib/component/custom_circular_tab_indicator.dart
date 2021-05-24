@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 
-// ignore: public_member_api_docs
 class CircleTabIndicator extends Decoration {
   final BoxPainter _painter;
 
-  // ignore: public_member_api_docs
   CircleTabIndicator({@required Color color, @required double radius})
       : _painter = _CirclePainter(color, radius);
 

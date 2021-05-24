@@ -8,7 +8,7 @@ import 'package:mobilesurvey/component/adv_dropdown.dart';
 import 'package:mobilesurvey/component/adv_row.dart';
 import 'package:mobilesurvey/logic/mobile_survey/client.dart';
 import 'package:mobilesurvey/model/dropdown.dart';
-import 'package:mobilesurvey/model/zipcode.dart';
+import 'package:mobilesurvey/model/master_configuration/zipcode_item.dart';
 import 'package:mobilesurvey/repositories/master.dart';
 import 'package:mobilesurvey/utilities/palette.dart';
 import 'package:mobilesurvey/utilities/translation.dart';
@@ -143,7 +143,7 @@ class _ClientUIState extends NewState<ClientUI> {
   }
 
   Widget _autoComplete() {
-    return AutoCompleteTextField<ZipCodeModel>(
+    return AutoCompleteTextField<ZipCodeItem>(
         controller: _logic.zipcode,
         itemSubmitted: _logic.autoFill,
         key: null,

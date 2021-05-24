@@ -3,10 +3,9 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:hive/hive.dart';
 import 'package:mobilesurvey/model/dropdown.dart';
-import 'package:mobilesurvey/model/photo_form.dart';
-import 'package:mobilesurvey/model/document_item.dart';
+import 'package:mobilesurvey/model/master_configuration/form_upload_item.dart';
+import 'package:mobilesurvey/model/mobile_survey/document_item.dart';
 
-// ignore: public_member_api_docs
 class HiveUtils {
   static void _saveTextFieldControllerToHive(
       String id, TextEditingController controller, String controllerName,
@@ -57,7 +56,7 @@ class HiveUtils {
   }
 
   static Future<void> savePhotoItemToBox(
-      String id, DocumentItem item, PhotoForm form, int index,
+      String id, DocumentItem item, FormUploadItem form, int index,
       [String type = "foto"]) async {
     var boxName = "${type}_$id";
     if (Hive.isBoxOpen(boxName)) {
@@ -70,7 +69,7 @@ class HiveUtils {
   }
 
   static Future<void> deletePhotoItemFromBox(
-      String id, PhotoForm form, int index,
+      String id, FormUploadItem form, int index,
       [String type = "foto"]) async {
     var boxName = "${type}_$id";
     if (Hive.isBoxOpen(boxName)) {
@@ -82,7 +81,8 @@ class HiveUtils {
     }
   }
 
-  static DocumentItem readPhotoItemFromBox(String id, PhotoForm form, int index,
+  static DocumentItem readPhotoItemFromBox(
+      String id, FormUploadItem form, int index,
       [String type = "foto"]) {
     var boxName = "${type}_$id";
     if (Hive.isBoxOpen(boxName)) {

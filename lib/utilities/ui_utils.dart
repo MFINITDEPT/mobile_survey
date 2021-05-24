@@ -4,12 +4,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:mobilesurvey/component/adv_column.dart';
 import 'package:mobilesurvey/component/adv_row.dart';
-import 'package:mobilesurvey/model/document_item.dart';
 import 'package:mobilesurvey/utilities/assets.dart';
 import 'package:mobilesurvey/utilities/file_utils.dart';
 import 'package:mobilesurvey/utilities/palette.dart';
 import 'package:mobilesurvey/utilities/translation.dart';
 
+import '../model/mobile_survey/document_item.dart';
 import 'mime_utils.dart';
 
 class UIUtils {

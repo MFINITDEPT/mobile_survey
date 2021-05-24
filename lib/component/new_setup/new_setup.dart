@@ -2,11 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mobilesurvey/component/adv_column.dart';
 import 'package:mobilesurvey/component/new_setup/store/new_setup.dart';
-import 'package:mobilesurvey/model/ao.dart';
-import 'package:mobilesurvey/model/configuration.dart';
-import 'package:mobilesurvey/model/photo_form.dart';
-import 'package:mobilesurvey/model/quisioner.dart';
-import 'package:mobilesurvey/model/zipcode.dart';
+import 'package:mobilesurvey/model/master_configuration/configuration.dart';
+import 'package:mobilesurvey/model/master_configuration/form_upload_item.dart';
+import 'package:mobilesurvey/model/master_configuration/quisioner_item.dart';
+import 'package:mobilesurvey/model/master_configuration/zipcode_item.dart';
 import 'package:mobilesurvey/repositories/master.dart';
 import 'package:mobilesurvey/ui/interceptor.dart';
 import 'package:mobilesurvey/ui/mobile_dashboard/login.dart';
@@ -187,25 +186,21 @@ class _NewSetupState extends State<NewSetup> with WidgetsBindingObserver {
     if (widget.isHasConfiguration) {
       var config;
       var quesioner;
-      var ao;
       var zipcode;
-      var fotoForm;
-      var docForm;
+      var formUpload;
 
       if (_fetchData[0] is Future<ConfigurationModel> Function()) {
         config = _fetchData[0];
       }
 
       for (var i = 1; i < _fetchData.length; i++) {
-        if (_fetchData[i] is Future<List<QuisionerModel>> Function()) {
+        if (_fetchData[i] is Future<List<QuisionerItem>> Function()) {
           quesioner = _fetchData[i];
-        } else if (_fetchData[i] is Future<List<ZipCodeModel>> Function()) {
+        } else if (_fetchData[i] is Future<List<ZipCodeItem>> Function()) {
           zipcode = _fetchData[i];
-        } else if (_fetchData[i] is Future<List<AoModel>> Function()) {
-          ao = _fetchData[i];
-        } else if (_fetchData[i] is Future<List<PhotoForm>> Function(int id)) {
-          fotoForm = _fetchData[i];
-          docForm = _fetchData[i];
+        } else if (_fetchData[i] is Future<List<FormUploadItem>>
+            Function()) {
+          formUpload = _fetchData[i];
         }
       }
 
@@ -215,7 +210,7 @@ class _NewSetupState extends State<NewSetup> with WidgetsBindingObserver {
         } else {
           _controller.updateProgress("get_configuration_success",
               isGetDataSuccess: true);
-          if (value.lastUpdateZipCode !=
+          if (value.zipCodeUpdate !=
               PreferenceUtils.getString(kLastUpdateZipCode)) {
             zipcode.call().then((value) {
               if (value == null) {
@@ -232,7 +227,7 @@ class _NewSetupState extends State<NewSetup> with WidgetsBindingObserver {
                     isGetDataSuccess: value ?? false));
           }
 
-          if (value.lastUpdateQuestion !=
+          if (value.quisionerUpdate !=
               PreferenceUtils.getString(kLastUpdateQuestion)) {
             quesioner.call().then((value) {
               if (value == null) {
@@ -249,48 +244,18 @@ class _NewSetupState extends State<NewSetup> with WidgetsBindingObserver {
                     isGetDataSuccess: value ?? false));
           }
 
-          if (value.lastUpdateAo != PreferenceUtils.getString(kLastUpdateAO)) {
-            ao.call().then((value) {
-              if (value == null) {
-                _controller.updateProgress("get_ao_error");
-              } else {
-                _controller.updateProgress("get_ao_success",
-                    isGetDataSuccess: true);
-                MasterRepositories.saveAO(value);
-              }
-            });
-          } else {
-            MasterRepositories.readFromHive(master.ao).then((value) =>
-                _controller.updateProgress("get_ao_success",
-                    isGetDataSuccess: value ?? false));
-          }
-
-          if (value.lastUpdateForm !=
-              PreferenceUtils.getString(kLastUpdateForm)) {
-            fotoForm.call(0).then((value) {
+          if (value.formUpdate != PreferenceUtils.getString(kLastUpdateForm)) {
+            formUpload.call().then((value) {
               if (value == null) {
                 _controller.updateProgress("get_doc_failed");
               } else {
-                MasterRepositories.savePhotoForm(value, master.doc);
+                MasterRepositories.savePhotoForm(value);
                 _controller.updateProgress("get_doc_success",
-                    isGetDataSuccess: true);
-              }
-            });
-            docForm.call(1).then((value) {
-              if (value == null) {
-                _controller.updateProgress("get_pic_failed");
-              } else {
-                MasterRepositories.savePhotoForm(value, master.pic);
-                _controller.updateProgress("get_pic_success",
                     isGetDataSuccess: true);
               }
             });
           } else {
             MasterRepositories.readFromHive(master.pic).then((value) =>
-                _controller.updateProgress("get_pic_success",
-                    isGetDataSuccess: value ?? false));
-
-            MasterRepositories.readFromHive(master.doc).then((value) =>
                 _controller.updateProgress("get_pic_success",
                     isGetDataSuccess: value ?? false));
           }
@@ -299,6 +264,123 @@ class _NewSetupState extends State<NewSetup> with WidgetsBindingObserver {
       });
     }
   }
+
+//  void fetchDataMobileSurvey(List<dynamic> list) async {
+//    if (widget.isHasConfiguration) {
+//      var config;
+//      var quesioner;
+//      var ao;
+//      var zipcode;
+//      var fotoForm;
+//      var docForm;
+//
+//      if (_fetchData[0] is Future<ConfigurationModel> Function()) {
+//        config = _fetchData[0];
+//      }
+//
+//      for (var i = 1; i < _fetchData.length; i++) {
+//        if (_fetchData[i] is Future<List<QuisionerModel>> Function()) {
+//          quesioner = _fetchData[i];
+//        } else if (_fetchData[i] is Future<List<ZipCodeModel>> Function()) {
+//          zipcode = _fetchData[i];
+//        } else if (_fetchData[i] is Future<List<AoModel>> Function()) {
+//          ao = _fetchData[i];
+//        } else if (_fetchData[i] is Future<List<PhotoForm>> Function(int id)) {
+//          fotoForm = _fetchData[i];
+//          docForm = _fetchData[i];
+//        }
+//      }
+//
+//      config.call().then((value) {
+//        if (value == null) {
+//          _controller.updateProgress("get_configuration_error");
+//        } else {
+//          _controller.updateProgress("get_configuration_success",
+//              isGetDataSuccess: true);
+//          if (value.lastUpdateZipCode !=
+//              PreferenceUtils.getString(kLastUpdateZipCode)) {
+//            zipcode.call().then((value) {
+//              if (value == null) {
+//                _controller.updateProgress("get_zipcode_error");
+//              } else {
+//                _controller.updateProgress("get_zipcode_success",
+//                    isGetDataSuccess: true);
+//                MasterRepositories.saveZipCodes(value);
+//              }
+//            });
+//          } else {
+//            MasterRepositories.readFromHive(master.zipcode).then((value) =>
+//                _controller.updateProgress("get_local_success",
+//                    isGetDataSuccess: value ?? false));
+//          }
+//
+//          if (value.lastUpdateQuestion !=
+//              PreferenceUtils.getString(kLastUpdateQuestion)) {
+//            quesioner.call().then((value) {
+//              if (value == null) {
+//                _controller.updateProgress("get_question_error");
+//              } else {
+//                _controller.updateProgress("get_question_success",
+//                    isGetDataSuccess: true);
+//                MasterRepositories.saveQuestion(value);
+//              }
+//            });
+//          } else {
+//            MasterRepositories.readFromHive(master.question).then((value) =>
+//                _controller.updateProgress("get_local_success",
+//                    isGetDataSuccess: value ?? false));
+//          }
+//
+//          if (value.lastUpdateAo != PreferenceUtils.getString(kLastUpdateAO)) {
+//            ao.call().then((value) {
+//              if (value == null) {
+//                _controller.updateProgress("get_ao_error");
+//              } else {
+//                _controller.updateProgress("get_ao_success",
+//                    isGetDataSuccess: true);
+//                MasterRepositories.saveAO(value);
+//              }
+//            });
+//          } else {
+//            MasterRepositories.readFromHive(master.ao).then((value) =>
+//                _controller.updateProgress("get_ao_success",
+//                    isGetDataSuccess: value ?? false));
+//          }
+//
+//          if (value.lastUpdateForm !=
+//              PreferenceUtils.getString(kLastUpdateForm)) {
+//            fotoForm.call(0).then((value) {
+//              if (value == null) {
+//                _controller.updateProgress("get_doc_failed");
+//              } else {
+//                MasterRepositories.savePhotoForm(value, master.doc);
+//                _controller.updateProgress("get_doc_success",
+//                    isGetDataSuccess: true);
+//              }
+//            });
+//            docForm.call(1).then((value) {
+//              if (value == null) {
+//                _controller.updateProgress("get_pic_failed");
+//              } else {
+//                MasterRepositories.savePhotoForm(value, master.pic);
+//                _controller.updateProgress("get_pic_success",
+//                    isGetDataSuccess: true);
+//              }
+//            });
+//          } else {
+//            MasterRepositories.readFromHive(master.pic).then((value) =>
+//                _controller.updateProgress("get_pic_success",
+//                    isGetDataSuccess: value ?? false));
+//
+//            MasterRepositories.readFromHive(master.doc).then((value) =>
+//                _controller.updateProgress("get_pic_success",
+//                    isGetDataSuccess: value ?? false));
+//          }
+//          MasterRepositories.saveConfiguration(value);
+//        }
+//      });
+//    }
+//  }
 }
 
 // ignore: public_member_api_docs

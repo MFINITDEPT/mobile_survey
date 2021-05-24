@@ -6,11 +6,12 @@ import 'package:mobilesurvey/boilerplate/new_state.dart';
 import 'package:mobilesurvey/component/adv_column.dart';
 import 'package:mobilesurvey/component/adv_row.dart';
 import 'package:mobilesurvey/logic/mobile_survey/assets.dart';
-import 'package:mobilesurvey/model/photo_result.dart';
 import 'package:mobilesurvey/utilities/date_utils.dart';
 import 'package:mobilesurvey/utilities/palette.dart';
 import 'package:mobilesurvey/utilities/translation.dart';
 import 'package:mobilesurvey/utilities/ui_utils.dart';
+
+import '../../model/mobile_survey/photo_result.dart';
 
 class AssetsUI extends StatefulWidget {
   @override
