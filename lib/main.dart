@@ -19,6 +19,7 @@ import 'package:provider/provider.dart';
 import 'package:ridjnaelcrypt/ridjnaelcrypt.dart';
 
 import 'model/master_configuration/form_upload_item.dart';
+import 'model/master_configuration/quisioner_item.dart';
 import 'model/master_configuration/zipcode_item.dart';
 import 'model/mobile_survey/document_item.dart';
 import 'utilities/assets.dart';
@@ -41,6 +42,7 @@ void main() {
           ..init(value.path)
           ..registerAdapter(ZipCodeItemAdapter())
           ..registerAdapter(FormUploadItemAdapter())
+          ..registerAdapter(QuisionerItemAdapter())
           ..registerAdapter(DocumentItemAdapter())
           ..registerAdapter(SearchModelAdapter());
 

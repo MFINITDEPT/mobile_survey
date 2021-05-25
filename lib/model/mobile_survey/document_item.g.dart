@@ -16,20 +16,23 @@ class DocumentItemAdapter extends TypeAdapter<DocumentItem> {
     return DocumentItem(
       path: fields[0] as String,
       dateTime: fields[1] as DateTime,
-      formId: fields[2] as String,
+      idFormDetail: fields[2] as String,
+      formName: fields[3] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, DocumentItem obj) {
     writer
-      ..writeByte(3)
+      ..writeByte(4)
       ..writeByte(0)
       ..write(obj.path)
       ..writeByte(1)
       ..write(obj.dateTime)
       ..writeByte(2)
-      ..write(obj.formId);
+      ..write(obj.idFormDetail)
+      ..writeByte(3)
+      ..write(obj.formName);
   }
 
   @override

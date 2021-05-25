@@ -10,6 +10,5 @@ abstract class _NewSetupLogic with Store {
   Status status = Status.loading;
 
   @action
-  // ignore: avoid_setters_without_getters
   Status changeStatus(Status newStatus) => status = newStatus;
 }

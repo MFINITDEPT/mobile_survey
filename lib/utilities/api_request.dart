@@ -511,11 +511,6 @@ class APIRequest {
       ..putIfAbsent('LAT', () => "106.368525")
       ..putIfAbsent('LNG', () => '0.654252')
       ..putIfAbsent('TASKID', () => '');
-
-    //  print(client.toString());
-    print(jsonEncode(client));
-    print(jsonEncode(client).runtimeType);
-
 //    var file = await MultipartFile.fromFile(
 //        '/data/user/0/finance.mnc.mobilesurvey/app_flutter/app_name/files/fotokonsumensedangttdkontrakmncf_1621223055860.jpg',
 //        filename: 'FOTO_KONSUMEN_SEDANG_TTD_KONTRAK_MNCF.jpg');
@@ -585,6 +580,86 @@ class APIRequest {
         data: param, options: options, onSendProgress: (send, total) {
       print("send data :$send of $total");
     }).onError((error, stackTrace) {
+      print('ini error :$error');
+      return null;
+    });
+
+    print(result.data);
+    print("hello ");
+  }
+
+  static Future<dynamic> proccessSurvey() async {
+    var url = 'Api/Survey';
+    var options = await _getDioOptions(contentType: contentType.multipart);
+
+    var client = {}
+      ..putIfAbsent('GELAR_DEPAN', () => 'MR')
+      ..putIfAbsent('NAMA', () => 'Testing')
+      ..putIfAbsent('GELAR_BELAKANG', () => 'S.Kom')
+      ..putIfAbsent('NAMA_KTP', () => 'Testing juga')
+      ..putIfAbsent('NO_KTP', () => '1234567891234567')
+      ..putIfAbsent('KTP_EXPIRE_FROM', () => '2021-08-27')
+      ..putIfAbsent('KTP_EXPIRE_TO', () => '2021-09-10')
+      ..putIfAbsent('AO', () => 'TEsting')
+      ..putIfAbsent('TGLLAHIR', () => '2021-07-10')
+      ..putIfAbsent('TEMPATLAHIR', () => 'Bogor')
+      ..putIfAbsent('NAMAIBU', () => 'Ibu')
+      ..putIfAbsent('ALAMAT', () => 'MNC FInance')
+      ..putIfAbsent('RT', () => '004')
+      ..putIfAbsent('RW', () => '009')
+      ..putIfAbsent('KODEPOS', () => '178264')
+      ..putIfAbsent('KELURAHAN', () => 'Manggarai')
+      ..putIfAbsent('KECAMATAN', () => 'Kebon Sirih')
+      ..putIfAbsent('HPNO', () => '0851478264526')
+      ..putIfAbsent('TELPNO', () => '021-8903562')
+      ..putIfAbsent('FAXNO', () => '021351')
+      ..putIfAbsent('NOPOL', () => 'B 1235 FFA')
+      ..putIfAbsent('LAT', () => "106.368525")
+      ..putIfAbsent('LNG', () => '0.654252')
+      ..putIfAbsent('TASKID', () => '');
+
+    var file2 = await MultipartFile.fromFile(
+        '/data/user/0/finance.mnc.mobilesurvey/app_flutter/app_name/files/fotokonsumensedangttdkontrakmncf_1621498097417.jpg',
+        filename: 'test2.jpg');
+    var file3 = await MultipartFile.fromFile(
+        '/data/user/0/finance.mnc.mobilesurvey/app_flutter/app_name/files/fotokonsumensedangttdkontrakmncf_1621498326550.jpg',
+        filename: 'test2.jpg');
+    var file4 = await MultipartFile.fromFile(
+        '/data/user/0/finance.mnc.mobilesurvey/app_flutter/app_name/files/fotodalamrumah_1621498374603.jpg',
+        filename: 'test2.jpg');
+    var file5 = await MultipartFile.fromFile(
+        '/data/user/0/finance.mnc.mobilesurvey/app_flutter/app_name/files/fotorumahtampaksampingkanan_1621498452019.jpg',
+        filename: 'test2.jpg');
+    var file6 = await MultipartFile.fromFile(
+        '/data/user/0/finance.mnc.mobilesurvey/app_flutter/app_name/files/fotorumahtampaksampingkanan_1621498496317.jpg',
+        filename: 'test2.jpg');
+
+    var param = FormData.fromMap({
+      'BODYJSON': jsonEncode(client),
+      'IDQUISIONERDETAIL': null,
+      'JAWABAN': null,
+      'IDFORMDETAIL': [
+        '3b9e47e3-b0ee-49f5-b605-57cd54932265',
+        '3b9e47e3-b0ee-49f5-b605-57cd54932265',
+        '3b9e47e3-b0ee-49f5-b605-57cd54932265',
+        '3b9e47e3-b0ee-49f5-b605-57cd54932265',
+        '3b9e47e3-b0ee-49f5-b605-57cd54932265'
+      ],
+      'FILENAME': null,
+      'PATH': 'PATH',
+      'FOTO_KONSUMEN_SEDANG_TTD_KONTRAK_MNCF': [
+        file2,
+        file3,
+        file4,
+        file5,
+        file6,
+      ]
+    });
+
+    var result = await config(AppType.survey).post(url,
+        data: param, options: options, onSendProgress: (send, total) {
+          print("send data :$send of $total");
+        }).onError((error, stackTrace) {
       print('ini error :$error');
       return null;
     });

@@ -206,10 +206,10 @@ class MasterRepositories {
             saveZipCodes(box.values.toList());
           }
           return Future.value(true);
-        case master.doc:
-          var _boxExists = await Hive.boxExists(kHiveKeys_5);
+        case master.pic:
+          var _boxExists = await Hive.boxExists(kHiveKeys_4);
           if (_boxExists) {
-            var box = await Hive.openBox<FormUploadItem>(kHiveKeys_5,
+            var box = await Hive.openBox<FormUploadItem>(kHiveKeys_4,
                 encryptionCipher: _chiper);
             savePhotoForm(box.values.toList());
           }

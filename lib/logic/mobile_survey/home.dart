@@ -22,15 +22,27 @@ abstract class _HomeLogic with Store {
   void onSelectedItem(String customerNumber, BuildContext context) {
     kLastSavedClient = customerNumber;
     var _resultPhoto = [];
+    var _resultDoc = [];
     var _quisioner = [];
 
-    for (var element in MasterRepositories.photoForm) {
+    for (var element in MasterRepositories.photoForm
+        .where((element) => element.kode.toLowerCase().contains('pic'))) {
       var _item = PhotoResult();
       _item.form =
           MasterRepositories.photoForm.firstWhere((item) => element == item);
       _item.result = List<DocumentItem>(element.count);
 
       _resultPhoto.add(_item);
+    }
+
+    for (var element in MasterRepositories.photoForm
+        .where((element) => element.kode.toLowerCase().contains('dpk'))) {
+      var _item = PhotoResult();
+      _item.form =
+          MasterRepositories.photoForm.firstWhere((item) => element == item);
+      _item.result = List<DocumentItem>(element.count);
+
+      _resultDoc.add(_item);
     }
 
     for (var element in MasterRepositories.quisioners) {
@@ -71,6 +83,8 @@ abstract class _HomeLogic with Store {
 
     MasterRepositories.savePhotoFormResult(
         List<PhotoResult>.from(_resultPhoto), master.pic);
+    MasterRepositories.savePhotoFormResult(
+        List<PhotoResult>.from(_resultDoc), master.doc);
     MasterRepositories.saveQuisioner =
         List<QuisionerAnswerModel>.from(_quisioner);
 

@@ -9,7 +9,9 @@ class DocumentItem {
   @HiveField(1)
   DateTime dateTime;
   @HiveField(2)
-  String formId;
+  String idFormDetail;
+  @HiveField(3)
+  String formName;
 
-  DocumentItem({this.path, this.dateTime, this.formId});
+  DocumentItem({this.path, this.dateTime, this.idFormDetail, this.formName});
 }

@@ -24,8 +24,8 @@ class _DocumentUIState extends NewState<DocumentUI> {
     return Scaffold(body: Observer(builder: (_) {
       return ListView.builder(
           itemCount: _logic.results.length,
-          itemBuilder: (context, index) => Container()/*;
-              _buildPhotoBox(_logic.results[index], context)*/);
+          itemBuilder: (context, index) =>
+              _buildPhotoBox(_logic.results[index], context));
     }));
   }
 

@@ -16,23 +16,21 @@ import 'package:open_file/open_file.dart';
 import 'package:pit_permission/pit_permission.dart';
 
 import '../../model/master_configuration/form_upload_item.dart';
-import '../../model/master_configuration/form_upload_item.dart';
 import '../../model/mobile_survey/document_item.dart';
 import '../../model/mobile_survey/photo_result.dart';
-
 
 part 'document.g.dart';
 
 class DocumentBase = _DocumentLogic with _$DocumentBase;
 
 abstract class _DocumentLogic with Store {
-  final _dispose = autorun((_){
+  final _dispose = autorun((_) {
     MasterRepositories.getDocumentPhoto();
   });
 
   @observable
   ObservableList<PhotoResult> _results =
-      ObservableList.of(MasterRepositories.photoFormResult);
+      ObservableList.of(MasterRepositories.docFormResult);
 
   @computed
   ObservableList<PhotoResult> get results => _results;
@@ -83,7 +81,8 @@ abstract class _DocumentLogic with Store {
           var file = await AdvImagePicker.pickImagesToFile(context,
                   usingCamera: true,
                   useCustomView: false,
-                  usingGallery: false, maxSize: 1080) ??
+                  usingGallery: false,
+                  maxSize: 1080) ??
               <File>[];
           if (file.isNotEmpty) {
             var newFiles = await FileUtils.compressFile(file.first.absolute,

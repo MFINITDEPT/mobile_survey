@@ -28,8 +28,8 @@ abstract class _AssetsLogic with Store {
   });
 
   @observable
-  ObservableList<PhotoResult> _results = ObservableList.of([]);
-//      ObservableList.of(MasterRepositories.photoFormResult);
+  ObservableList<PhotoResult> _results =
+      ObservableList.of(MasterRepositories.photoFormResult);
 
   @computed
   ObservableList<PhotoResult> get results => _results;
@@ -53,12 +53,13 @@ abstract class _AssetsLogic with Store {
         var newFiles = await FileUtils.compressFile(files.first.absolute,
             form.kelengkapan.toLowerCase().replaceAll(" ", ""));
         fc(() {
-
           print("filepath :${newFiles.path}");
           print("filepath :${newFiles.lengthSync()}");
           tampungan[index] = DocumentItem();
           tampungan[index].path = newFiles.path;
           tampungan[index].dateTime = DateTime.now();
+          tampungan[index].idFormDetail = form.id;
+          tampungan[index].formName = form.formName;
 
           HiveUtils.savePhotoItemToBox(
               kLastSavedClient, tampungan[index], form, index);
