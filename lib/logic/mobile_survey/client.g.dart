@@ -9,6 +9,29 @@ part of 'client.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$ClientBase on _ClientLogic, Store {
+  Computed<bool> _$clientIsEmptyComputed;
+
+  @override
+  bool get clientIsEmpty =>
+      (_$clientIsEmptyComputed ??= Computed<bool>(() => super.clientIsEmpty,
+              name: '_ClientLogic.clientIsEmpty'))
+          .value;
+
+  final _$clientAtom = Atom(name: '_ClientLogic.client');
+
+  @override
+  ObservableList<ClientControllerModel> get client {
+    _$clientAtom.reportRead();
+    return super.client;
+  }
+
+  @override
+  set client(ObservableList<ClientControllerModel> value) {
+    _$clientAtom.reportWrite(value, super.client, () {
+      super.client = value;
+    });
+  }
+
   final _$datePickerAsyncAction = AsyncAction('_ClientLogic.datePicker');
 
   @override
@@ -26,6 +49,17 @@ mixin _$ClientBase on _ClientLogic, Store {
   }
 
   final _$_ClientLogicActionController = ActionController(name: '_ClientLogic');
+
+  @override
+  void setClient(ObservableList<dynamic> list) {
+    final _$actionInfo = _$_ClientLogicActionController.startAction(
+        name: '_ClientLogic.setClient');
+    try {
+      return super.setClient(list);
+    } finally {
+      _$_ClientLogicActionController.endAction(_$actionInfo);
+    }
+  }
 
   @override
   void autoFill(ZipCodeItem item) {
@@ -52,7 +86,8 @@ mixin _$ClientBase on _ClientLogic, Store {
   @override
   String toString() {
     return '''
-
+client: ${client},
+clientIsEmpty: ${clientIsEmpty}
     ''';
   }
 }

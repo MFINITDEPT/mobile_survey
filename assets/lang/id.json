@@ -140,5 +140,7 @@
   "signout": "Keluar",
   "empty_usernamepassword": "Username/NIK dan password kosong",
   "empty_password": "Password Kosong",
-  "empty_username" : "Username/NIK Kosong"
+  "empty_username": "Username/NIK Kosong",
+  "effective_from": "Efektif Dari",
+  "effective_to": "Hingga"
 }

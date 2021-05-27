@@ -140,5 +140,7 @@
   "signout": "Sign Out",
   "empty_usernamepassword": "Empty Username/NIK And Password",
   "empty_password": "Empty Password",
-  "empty_username": "Empty Username/NIK"
+  "empty_username": "Empty Username/NIK",
+  "effective_from" : "Effective From",
+  "effective_to" : "To"
 }

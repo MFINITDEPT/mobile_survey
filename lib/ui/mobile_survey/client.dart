@@ -2,11 +2,13 @@ import 'package:autocomplete_textfield/autocomplete_textfield.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mobilesurvey/boilerplate/new_state.dart';
 import 'package:mobilesurvey/component/adv_column.dart';
 import 'package:mobilesurvey/component/adv_dropdown.dart';
 import 'package:mobilesurvey/component/adv_row.dart';
 import 'package:mobilesurvey/logic/mobile_survey/client.dart';
+import 'package:mobilesurvey/model/client_controllers.dart';
 import 'package:mobilesurvey/model/dropdown.dart';
 import 'package:mobilesurvey/model/master_configuration/zipcode_item.dart';
 import 'package:mobilesurvey/repositories/master.dart';
@@ -14,11 +16,12 @@ import 'package:mobilesurvey/utilities/palette.dart';
 import 'package:mobilesurvey/utilities/translation.dart';
 
 import 'package:mobilesurvey/utilities/enum.dart';
+import 'package:mobx/mobx.dart';
 
-// ignore: public_member_api_docs
 class ClientUI extends StatefulWidget {
-  ///Client UI
-  const ClientUI({Key key}) : super(key: key);
+  final ObservableList<ClientControllerModel> list;
+
+  const ClientUI({Key key, this.list}) : super(key: key);
 
   @override
   _ClientUIState createState() => _ClientUIState();
@@ -28,44 +31,104 @@ class _ClientUIState extends NewState<ClientUI> {
   final ClientBase _logic = ClientBase();
 
   @override
+  void initState() {
+    _logic.setupReaction(widget.list);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _logic.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget buildView(BuildContext context) {
-    return ListView(
-      children: [
-        _buildTextField('name', _logic.name),
-        _buildTextField('identity_no', _logic.identityNo, type: inputType.nik),
-        AdvRow(
-          children: [
-            Expanded(
-                child: _buildTextField('effective_of', _logic.effectiveOf,
-                    disable: true, type: inputType.year, context: context)),
-            Expanded(
-                child: _buildTextField('to', _logic.to,
-                    disable: true, type: inputType.year, context: context)),
-          ],
-        ),
-        _buildTextField('identity_city', _logic.identityCity),
-       /* Observer(builder: (_) => _buildDropDown(_logic.ao)),*/
-        _buildTextField('birth_location', _logic.birthLocation),
-        _buildTextField('birth_date', _logic.birthDate,
-            type: inputType.date, disable: true, context: context),
-        _buildTextField('address', _logic.address),
-        _buildTextField('mother_name', _logic.motherName),
-        _buildTextField('rt', _logic.rt, type: inputType.numeric),
-        _buildTextField('rw', _logic.rw, type: inputType.numeric),
-        _buildTextField('zip_code', _logic.zipcode, type: inputType.zipcode),
-        _buildTextField('village', _logic.village,
-            type: inputType.zipcode, disable: true),
-        _buildTextField('district', _logic.district,
-            type: inputType.zipcode, disable: true),
-        _buildTextField('handphone_no', _logic.handphoneNo,
-            type: inputType.phone),
-        _buildTextField('phone_no', _logic.phoneNo, type: inputType.phone),
-        _buildTextField('fax', _logic.fax),
-      ],
+    return Observer(
+      builder: (_) {
+        if (_logic.clientIsEmpty) {
+          return CircularProgressIndicator.adaptive();
+        } else {
+          return ListView(
+            children: [
+              _buildTextField(_logic.client
+                  .firstWhere((element) => element.controllerName == 'name')),
+              _buildTextField(
+                  _logic.client.firstWhere(
+                      (element) => element.controllerName == 'identity_no'),
+                  type: inputType.nik),
+              AdvRow(
+                children: [
+                  Expanded(
+                      child: _buildTextField(
+                          _logic.client.firstWhere((element) =>
+                              element.controllerName == 'effective_from'),
+                          disable: true,
+                          type: inputType.year,
+                          context: context)),
+                  Expanded(
+                      child: _buildTextField(
+                          _logic.client.firstWhere((element) =>
+                              element.controllerName == 'effective_to'),
+                          disable: true,
+                          type: inputType.year,
+                          context: context)),
+                ],
+              ),
+              _buildTextField(_logic.client.firstWhere(
+                  (element) => element.controllerName == 'identity_city')),
+              _buildTextField(_logic.client.firstWhere(
+                  (element) => element.controllerName == 'birth_location')),
+              _buildTextField(
+                  _logic.client.firstWhere(
+                      (element) => element.controllerName == 'birth_date'),
+                  type: inputType.date,
+                  disable: true,
+                  context: context),
+              _buildTextField(_logic.client.firstWhere(
+                  (element) => element.controllerName == 'address')),
+              _buildTextField(_logic.client.firstWhere(
+                  (element) => element.controllerName == 'mother_name')),
+              _buildTextField(
+                  _logic.client
+                      .firstWhere((element) => element.controllerName == 'rt'),
+                  type: inputType.numeric),
+              _buildTextField(
+                  _logic.client
+                      .firstWhere((element) => element.controllerName == 'rw'),
+                  type: inputType.numeric),
+              _buildTextField(
+                  _logic.client.firstWhere(
+                      (element) => element.controllerName == 'zipcode'),
+                  type: inputType.zipcode),
+              _buildTextField(
+                  _logic.client.firstWhere(
+                      (element) => element.controllerName == 'village'),
+                  type: inputType.zipcode,
+                  disable: true),
+              _buildTextField(
+                  _logic.client.firstWhere(
+                      (element) => element.controllerName == 'district'),
+                  type: inputType.zipcode,
+                  disable: true),
+              _buildTextField(
+                  _logic.client.firstWhere(
+                      (element) => element.controllerName == 'handphone_no'),
+                  type: inputType.phone),
+              _buildTextField(
+                  _logic.client.firstWhere(
+                      (element) => element.controllerName == 'phone_no'),
+                  type: inputType.phone),
+              _buildTextField(_logic.client
+                  .firstWhere((element) => element.controllerName == 'fax')),
+            ],
+          );
+        }
+      },
     );
   }
 
-  Widget _buildTextField(String title, TextEditingController controller,
+  Widget _buildTextField(ClientControllerModel model,
       {inputType type = inputType.none,
       bool disable = false,
       BuildContext context}) {
@@ -101,7 +164,7 @@ class _ClientUIState extends NewState<ClientUI> {
                 style: TextStyle(fontSize: 14.0),
                 decoration: InputDecoration(
                     enabled: false,
-                    hintText: translation.getText(title),
+                    hintText: translation.getText(model.controllerName),
                     hintStyle: TextStyle(color: Palette.navy),
                     disabledBorder: UnderlineInputBorder(
                         borderSide: BorderSide(color: Palette.gold))))),
@@ -110,13 +173,13 @@ class _ClientUIState extends NewState<ClientUI> {
             child: InkWell(
               onTap: type == inputType.date || type == inputType.year
                   ? () => type == inputType.year
-                      ? _logic.yearPicker(context, controller)
+                      ? _logic.yearPicker(context, model.controller)
                       : _logic.datePicker(context)
                   : null,
               child: type == inputType.zipcode && !disable
                   ? _autoComplete()
                   : TextField(
-                      controller: controller,
+                      controller: model.controller,
                       style: TextStyle(color: Palette.black, fontSize: 12.0),
                       maxLength: length,
                       enabled: !(disable),
@@ -144,7 +207,9 @@ class _ClientUIState extends NewState<ClientUI> {
 
   Widget _autoComplete() {
     return AutoCompleteTextField<ZipCodeItem>(
-        controller: _logic.zipcode,
+        controller: _logic.client
+            .firstWhere((element) => element.controllerName == 'zipcode')
+            .controller,
         itemSubmitted: _logic.autoFill,
         key: null,
         suggestions: MasterRepositories.zipcodes,

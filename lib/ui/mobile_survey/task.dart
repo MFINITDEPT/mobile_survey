@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:mobilesurvey/boilerplate/new_state.dart';
 import 'package:mobilesurvey/component/custom_circular_tab_indicator.dart';
 import 'package:mobilesurvey/logic/mobile_survey/task.dart';
@@ -12,11 +13,9 @@ import 'document.dart';
 import 'process.dart';
 import 'quisioner.dart';
 
-// ignore: public_member_api_docs
 class TaskUI extends StatefulWidget {
   final String id;
 
-  // ignore: public_member_api_docs
   const TaskUI({Key key, this.id}) : super(key: key);
 
   @override
@@ -27,6 +26,12 @@ class _TaskUIState extends NewState<TaskUI> {
   final TaskBase _logic = TaskBase();
 
   @override
+  void initState() {
+    _logic.setupReaction();
+    super.initState();
+  }
+
+  @override
   Widget buildView(BuildContext context) {
     return _buildTabSegment();
   }
@@ -34,7 +39,7 @@ class _TaskUIState extends NewState<TaskUI> {
   Widget _buildTabSegment() {
     return DefaultTabController(
       length: 5,
-      initialIndex:  0,
+      initialIndex: 0,
       child: Scaffold(
         appBar: AppBar(
           title: Text(translation.getText('task'),
@@ -84,7 +89,13 @@ class _TaskUIState extends NewState<TaskUI> {
         ),
         body: TabBarView(
           children: [
-            ClientUI(),
+            Observer(builder: (_) {
+              if (_logic.clientIsEmpty) {
+                return Container();
+              } else {
+                return ClientUI(list: _logic.client);
+              }
+            }),
             QuisionerUI(),
             AssetsUI(),
             DocumentUI(),
