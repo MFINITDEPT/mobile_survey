@@ -45,6 +45,17 @@ mixin _$DocumentBase on _DocumentLogic, Store {
       ActionController(name: '_DocumentLogic');
 
   @override
+  void setDocumentResult(ObservableList<dynamic> list) {
+    final _$actionInfo = _$_DocumentLogicActionController.startAction(
+        name: '_DocumentLogic.setDocumentResult');
+    try {
+      return super.setDocumentResult(list);
+    } finally {
+      _$_DocumentLogicActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   void removePhoto(PhotoResult photo, int index, Function fc) {
     final _$actionInfo = _$_DocumentLogicActionController.startAction(
         name: '_DocumentLogic.removePhoto');

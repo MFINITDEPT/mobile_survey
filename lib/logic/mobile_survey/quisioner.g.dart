@@ -16,6 +16,13 @@ mixin _$QuisionerBase on _QuisionerLogic, Store {
           Computed<List<QuisionerAnswerModel>>(() => super.quisioner,
               name: '_QuisionerLogic.quisioner'))
       .value;
+  Computed<bool> _$quisionerIsEmptyComputed;
+
+  @override
+  bool get quisionerIsEmpty => (_$quisionerIsEmptyComputed ??= Computed<bool>(
+          () => super.quisionerIsEmpty,
+          name: '_QuisionerLogic.quisionerIsEmpty'))
+      .value;
 
   final _$_quisionerAtom = Atom(name: '_QuisionerLogic._quisioner');
 
@@ -36,6 +43,17 @@ mixin _$QuisionerBase on _QuisionerLogic, Store {
       ActionController(name: '_QuisionerLogic');
 
   @override
+  void setQuisioner(ObservableList<dynamic> list) {
+    final _$actionInfo = _$_QuisionerLogicActionController.startAction(
+        name: '_QuisionerLogic.setQuisioner');
+    try {
+      return super.setQuisioner(list);
+    } finally {
+      _$_QuisionerLogicActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   void onSelectedValue(Function func, String s, SearchModel model) {
     final _$actionInfo = _$_QuisionerLogicActionController.startAction(
         name: '_QuisionerLogic.onSelectedValue');
@@ -47,20 +65,10 @@ mixin _$QuisionerBase on _QuisionerLogic, Store {
   }
 
   @override
-  void testSubmit() {
-    final _$actionInfo = _$_QuisionerLogicActionController.startAction(
-        name: '_QuisionerLogic.testSubmit');
-    try {
-      return super.testSubmit();
-    } finally {
-      _$_QuisionerLogicActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
   String toString() {
     return '''
-quisioner: ${quisioner}
+quisioner: ${quisioner},
+quisionerIsEmpty: ${quisionerIsEmpty}
     ''';
   }
 }

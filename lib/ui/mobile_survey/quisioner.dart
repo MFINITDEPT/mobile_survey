@@ -9,14 +9,13 @@ import 'package:mobilesurvey/model/dropdown.dart';
 import 'package:mobilesurvey/model/master_configuration/quisioner_item.dart';
 import 'package:mobilesurvey/utilities/palette.dart';
 import 'package:mobilesurvey/utilities/translation.dart';
+import 'package:mobx/mobx.dart';
 
 import '../../model/mobile_survey/quisioner_answer.dart';
 
-// ignore: public_member_api_docs
 class QuisionerUI extends StatefulWidget {
-  final List<QuisionerItem> model;
+  final ObservableList<QuisionerAnswerModel> model;
 
-  // ignore: public_member_api_docs
   const QuisionerUI({Key key, this.model}) : super(key: key);
 
   @override
@@ -27,10 +26,22 @@ class _QuisionerUIState extends NewState<QuisionerUI> {
   final QuisionerBase _logic = QuisionerBase();
 
   @override
+  void initState() {
+    _logic.setupReaction(widget.model);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _logic.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget buildView(BuildContext context) {
     return Scaffold(
       body: Observer(builder: (_) {
-        if (_logic.quisioner.isNotEmpty) {
+        if (!_logic.quisionerIsEmpty) {
           return Column(
             children: [
               Expanded(

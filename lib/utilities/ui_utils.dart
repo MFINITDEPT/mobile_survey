@@ -128,4 +128,24 @@ class UIUtils {
               : Container(height: 40, width: 40, color: Palette.navy)),
     );
   }
+
+  static Future<bool> locationDialog(BuildContext context) async {
+    var result = await showDialog(
+      barrierDismissible: true,
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(translation.getText('alert')),
+          content: Text(translation.getText('gps_caution'),
+              style: TextStyle(fontSize: 14)),
+          actions: <Widget>[
+            FlatButton(
+                child: Text(translation.getText('ok')),
+                onPressed: () => Navigator.of(context).pop(true)),
+          ],
+        );
+      },
+    );
+    return result ?? false;
+  }
 }

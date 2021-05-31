@@ -84,7 +84,7 @@ class StringUtils {
   }
 
   // ignore: public_member_api_docs
-  static String formatDate(DateTime date, {String format = 'dd/MM/yyyy'}) {
+  static String formatDate(DateTime date, {String format = 'yyyy-MM-dd'}) {
     try {
       var _df = DateFormat(format);
       return _df.format(date);

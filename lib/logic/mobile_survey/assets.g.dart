@@ -44,6 +44,17 @@ mixin _$AssetsBase on _AssetsLogic, Store {
   final _$_AssetsLogicActionController = ActionController(name: '_AssetsLogic');
 
   @override
+  void setAssetResult(ObservableList<dynamic> list) {
+    final _$actionInfo = _$_AssetsLogicActionController.startAction(
+        name: '_AssetsLogic.setAssetResult');
+    try {
+      return super.setAssetResult(list);
+    } finally {
+      _$_AssetsLogicActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   void removePhoto(PhotoResult photo, int index, Function fc) {
     final _$actionInfo = _$_AssetsLogicActionController.startAction(
         name: '_AssetsLogic.removePhoto');

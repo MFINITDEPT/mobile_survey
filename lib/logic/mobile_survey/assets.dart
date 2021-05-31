@@ -23,16 +23,26 @@ part 'assets.g.dart';
 class AssetsBase = _AssetsLogic with _$AssetsBase;
 
 abstract class _AssetsLogic with Store {
-  final _dispose = autorun((_) {
-    MasterRepositories.getAssetsPhoto();
-  });
-
   @observable
   ObservableList<PhotoResult> _results =
       ObservableList.of(MasterRepositories.photoFormResult);
 
   @computed
   ObservableList<PhotoResult> get results => _results;
+
+  List<ReactionDisposer> _disposer = [];
+
+  void setupReaction(ObservableList list) {
+    _disposer.add(autorun((_) {
+      setAssetResult(list);
+    }));
+  }
+
+  void dispose() => _disposer = [];
+
+  @action
+  void setAssetResult(ObservableList list) =>
+      _results = ObservableList.of([...list]);
 
   @action
   Future<void> browseFile(
@@ -90,12 +100,14 @@ abstract class _AssetsLogic with Store {
               <File>[];
           if (file.isNotEmpty) {
             var newFiles = await FileUtils.compressFile(file.first.absolute,
-                form.kelengkapan.toLowerCase().replaceAll(" ", ""));
+                form.formName.toLowerCase().replaceAll(" ", ""));
             if (newFiles.lengthSync() < kMaxSizeUpload) {
               fc(() {
                 tampungan[index] = DocumentItem();
                 tampungan[index].path = newFiles.path;
                 tampungan[index].dateTime = DateTime.now();
+                tampungan[index].idFormDetail = form.id;
+                tampungan[index].formName = form.formName;
 
                 HiveUtils.savePhotoItemToBox(
                     kLastSavedClient, tampungan[index], form, index);
@@ -112,12 +124,14 @@ abstract class _AssetsLogic with Store {
           for (var item in docPaths) {
             var file = File(item);
             var newFiles = await FileUtils.compressFile(file.absolute,
-                form.kelengkapan.toLowerCase().replaceAll(" ", ""));
+                form.formName.toLowerCase().replaceAll(" ", ""));
             if (newFiles.lengthSync() < kMaxSizeUpload) {
               fc(() {
                 var result = DocumentItem();
                 result.path = file.path;
                 result.dateTime = DateTime.now();
+                result.idFormDetail = form.id;
+                result.formName = form.formName;
 
                 var newIndex = tampungan.indexOf(null);
                 tampungan[newIndex] = result;
@@ -142,6 +156,8 @@ abstract class _AssetsLogic with Store {
                 var result = DocumentItem();
                 result.path = file.path;
                 result.dateTime = DateTime.now();
+                result.idFormDetail = form.id;
+                result.formName = form.formName;
 
                 var newIndex = tampungan.indexOf(null);
                 tampungan[newIndex] = result;

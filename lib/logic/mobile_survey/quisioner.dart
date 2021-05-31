@@ -11,36 +11,29 @@ part 'quisioner.g.dart';
 class QuisionerBase = _QuisionerLogic with _$QuisionerBase;
 
 abstract class _QuisionerLogic with Store {
-  final _dispose = autorun((_) {
-    var newQuisioner = [];
-    for (var element in MasterRepositories.quisionerList) {
-      var _quisioner = QuisionerAnswerModel();
-      _quisioner.question = element.question;
-      var newChoice;
-      if (element.choice != null) {
-        newChoice = HiveUtils.readChoiceFromHive(
-            kLastSavedClient, element.choice,
-            type: "quisioner");
-      }
-
-      _quisioner.choice = newChoice ?? element.choice;
-      _quisioner.controller = element.controller;
-      if (element.controller != null) {
-        HiveUtils.readControllerFromHive(kLastSavedClient, element.controller,
-            element.question, "quisioner");
-      }
-      newQuisioner.add(_quisioner);
-    }
-
-    MasterRepositories.saveQuisioner =
-    List<QuisionerAnswerModel>.from(newQuisioner);
-  });
-
   @observable
-  ObservableList<QuisionerAnswerModel> _quisioner = ObservableList<QuisionerAnswerModel>.of(MasterRepositories.quisionerList);
+  ObservableList<QuisionerAnswerModel> _quisioner =
+      ObservableList<QuisionerAnswerModel>.of([]);
 
   @computed
   List<QuisionerAnswerModel> get quisioner => _quisioner;
+
+  @computed
+  bool get quisionerIsEmpty => _quisioner.isEmpty;
+
+  @action
+  void setQuisioner(ObservableList list) =>
+      _quisioner = ObservableList.of([...list]);
+
+  List<ReactionDisposer> _disposer = [];
+
+  void setupReaction(ObservableList list) {
+    _disposer.add(autorun((_) {
+      setQuisioner(list);
+    }));
+  }
+
+  void dispose() => _disposer = [];
 
   @action
   void onSelectedValue(Function func, String s, SearchModel model) {
@@ -49,11 +42,4 @@ abstract class _QuisionerLogic with Store {
       HiveUtils.saveChoiceToHive(kLastSavedClient, model);
     });
   }
-
-  @action
-  void testSubmit() => _quisioner.forEach((element) {
-        print("${_quisioner.indexOf(element)} : "
-            "${element.question} : ${element.choice?.value}: "
-            "${element.controller?.text}");
-      });
 }

@@ -24,16 +24,26 @@ part 'document.g.dart';
 class DocumentBase = _DocumentLogic with _$DocumentBase;
 
 abstract class _DocumentLogic with Store {
-  final _dispose = autorun((_) {
-    MasterRepositories.getDocumentPhoto();
-  });
-
   @observable
   ObservableList<PhotoResult> _results =
       ObservableList.of(MasterRepositories.docFormResult);
 
   @computed
   ObservableList<PhotoResult> get results => _results;
+
+  List<ReactionDisposer> _disposer = [];
+
+  void setupReaction(ObservableList list) {
+    _disposer.add(autorun((_) {
+      setDocumentResult(list);
+    }));
+  }
+
+  void dispose() => _disposer = [];
+
+  @action
+  void setDocumentResult(ObservableList list) =>
+      _results = ObservableList.of([...list]);
 
   @action
   Future<void> browseFile(
@@ -51,10 +61,14 @@ abstract class _DocumentLogic with Store {
               usingGallery: false, useCustomView: false) ??
           <File>[];
       if (files.isNotEmpty) {
+        var newFiles = await FileUtils.compressFile(files.first.absolute,
+            form.formName.toLowerCase().replaceAll(" ", ""));
         fc(() {
           tampungan[index] = DocumentItem();
-          tampungan[index].path = files.first.path;
+          tampungan[index].path = newFiles.path;
           tampungan[index].dateTime = DateTime.now();
+          tampungan[index].idFormDetail = form.id;
+          tampungan[index].formName = form.formName;
 
           HiveUtils.savePhotoItemToBox(
               kLastSavedClient, tampungan[index], form, index, 'dokumen');
@@ -92,6 +106,8 @@ abstract class _DocumentLogic with Store {
                 tampungan[index] = DocumentItem();
                 tampungan[index].path = newFiles.path;
                 tampungan[index].dateTime = DateTime.now();
+                tampungan[index].idFormDetail = form.id;
+                tampungan[index].formName = form.formName;
 
                 HiveUtils.savePhotoItemToBox(
                     kLastSavedClient, tampungan[index], form, index, 'dokumen');
@@ -114,6 +130,9 @@ abstract class _DocumentLogic with Store {
                 var result = DocumentItem();
                 result.path = file.path;
                 result.dateTime = DateTime.now();
+                result.idFormDetail = form.id;
+                result.formName = form.formName;
+
 
                 var newIndex = tampungan.indexOf(null);
                 tampungan[newIndex] = result;
@@ -138,6 +157,8 @@ abstract class _DocumentLogic with Store {
                 var result = DocumentItem();
                 result.path = file.path;
                 result.dateTime = DateTime.now();
+                result.idFormDetail = form.id;
+                result.formName = form.formName;
 
                 var newIndex = tampungan.indexOf(null);
                 tampungan[newIndex] = result;

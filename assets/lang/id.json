@@ -142,5 +142,6 @@
   "empty_password": "Password Kosong",
   "empty_username": "Username/NIK Kosong",
   "effective_from": "Efektif Dari",
-  "effective_to": "Hingga"
+  "effective_to": "Hingga",
+  "gps_caution": "Harus menyalakan gps dan permission untuk akses lokasi"
 }

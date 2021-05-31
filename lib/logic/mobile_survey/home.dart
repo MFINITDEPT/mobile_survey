@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:mobilesurvey/model/master_configuration/split_question.dart';
 import 'package:mobilesurvey/ui/mobile_survey/task.dart';
 import 'package:mobx/mobx.dart';
@@ -20,6 +21,7 @@ class HomeBase = _HomeLogic with _$HomeBase;
 abstract class _HomeLogic with Store {
   @action
   void onSelectedItem(String customerNumber, BuildContext context) {
+    EasyLoading.show(dismissOnTap: false);
     kLastSavedClient = customerNumber;
     var _resultPhoto = [];
     var _resultDoc = [];
@@ -48,6 +50,7 @@ abstract class _HomeLogic with Store {
     for (var element in MasterRepositories.quisioners) {
       var _questionModel = QuisionerAnswerModel();
       var split_question = SplitQuisionerModel.fromModel(element);
+      _questionModel.id = element.id;
       _questionModel.question = split_question.pertanyaan;
       if (split_question.pilihan.isNotEmpty) {
         _questionModel.choice = SearchModel(
@@ -87,6 +90,8 @@ abstract class _HomeLogic with Store {
         List<PhotoResult>.from(_resultDoc), master.doc);
     MasterRepositories.saveQuisioner =
         List<QuisionerAnswerModel>.from(_quisioner);
+
+    if (EasyLoading.isShow) EasyLoading.dismiss();
 
     Navigator.push(context,
         MaterialPageRoute(builder: (context) => TaskUI(id: kLastSavedClient)));

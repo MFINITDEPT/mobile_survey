@@ -1,7 +1,10 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:dio/adapter.dart';
 import 'package:dio/dio.dart';
+import 'package:location/location.dart';
+import 'package:mobilesurvey/model/client_controllers.dart';
 import 'package:mobilesurvey/model/master_configuration/configuration.dart';
 import 'package:mobilesurvey/model/master_configuration/form_upload_item.dart';
 import 'package:mobilesurvey/model/master_configuration/form_upload_response.dart';
@@ -14,10 +17,16 @@ import 'package:mobilesurvey/model/mobile_dashboard/collection.dart';
 import 'package:mobilesurvey/model/mobile_dashboard/login_response.dart';
 import 'package:mobilesurvey/model/mobile_dashboard/marketing.dart';
 import 'package:mobilesurvey/model/mobile_dashboard/report_chart.dart';
+import 'package:mobilesurvey/model/mobile_survey/document_item.dart';
 import 'package:mobilesurvey/model/mobile_survey/login_response.dart';
+import 'package:mobilesurvey/model/mobile_survey/photo_result.dart';
+import 'package:mobilesurvey/model/mobile_survey/quisioner_answer.dart';
+import 'package:mobilesurvey/model/response.dart';
+import 'package:mobilesurvey/repositories/master.dart';
 import 'package:mobilesurvey/ui/interceptor.dart';
 import 'package:mobilesurvey/utilities/date_utils.dart';
 import 'package:mobilesurvey/utilities/dummy.dart';
+import 'package:mobx/mobx.dart';
 
 import '../utilities/string_utils.dart';
 import 'enum.dart';
@@ -26,7 +35,8 @@ class APIRequest {
   static AppType appType;
   static String _url = "https://ver-itrack.mncfinance.net/";
 
-//  static final String _surveyUrlDev = "https://10.1.80.220:45459/";
+//  static final String _surveyUrlDev = "https://10.1.80.220:45456/";
+
   static final String _surveyUrlDev = "http://10.1.80.220:8071/";
   static final String _dashboardUrlProd =
       "https://api-collplay.mncfinance.net/";
@@ -71,7 +81,7 @@ class APIRequest {
     return Options(
         headers: await _createHeaderWithToken(),
         contentType: StringUtils.getContentType(contentType),
-        validateStatus: (statusCode) => statusCode == 200);
+        validateStatus: (statusCode) => statusCode == 200 || statusCode == 500);
   }
 
   static Future<Map<String, String>> _createHeaderWithToken() async {
@@ -588,84 +598,198 @@ class APIRequest {
     print("hello ");
   }
 
-  static Future<dynamic> proccessSurvey() async {
+  static Future<dynamic> proccessSurvey(
+      {List<ClientControllerModel> clients,
+      List<PhotoResult> assets,
+      List<PhotoResult> document,
+      List<QuisionerAnswerModel> quisioner,
+      LocationData location}) async {
     var url = 'Api/Survey';
     var options = await _getDioOptions(contentType: contentType.multipart);
 
     var client = {}
       ..putIfAbsent('GELAR_DEPAN', () => 'MR')
-      ..putIfAbsent('NAMA', () => 'Testing')
+      ..putIfAbsent(
+          'NAMA',
+          () => clients
+              .firstWhere((element) => element.controllerName == 'name')
+              .controller
+              .text)
       ..putIfAbsent('GELAR_BELAKANG', () => 'S.Kom')
-      ..putIfAbsent('NAMA_KTP', () => 'Testing juga')
-      ..putIfAbsent('NO_KTP', () => '1234567891234567')
+      ..putIfAbsent(
+          'NAMA_KTP',
+          () => clients
+              .firstWhere((element) => element.controllerName == 'name')
+              .controller
+              .text)
+      ..putIfAbsent(
+          'NO_KTP',
+          () => clients
+              .firstWhere((element) => element.controllerName == 'identity_no')
+              .controller
+              .text)
       ..putIfAbsent('KTP_EXPIRE_FROM', () => '2021-08-27')
       ..putIfAbsent('KTP_EXPIRE_TO', () => '2021-09-10')
-      ..putIfAbsent('AO', () => 'TEsting')
+      ..putIfAbsent('AO', () => "Test Dulu")
       ..putIfAbsent('TGLLAHIR', () => '2021-07-10')
-      ..putIfAbsent('TEMPATLAHIR', () => 'Bogor')
-      ..putIfAbsent('NAMAIBU', () => 'Ibu')
-      ..putIfAbsent('ALAMAT', () => 'MNC FInance')
-      ..putIfAbsent('RT', () => '004')
-      ..putIfAbsent('RW', () => '009')
-      ..putIfAbsent('KODEPOS', () => '178264')
-      ..putIfAbsent('KELURAHAN', () => 'Manggarai')
-      ..putIfAbsent('KECAMATAN', () => 'Kebon Sirih')
-      ..putIfAbsent('HPNO', () => '0851478264526')
-      ..putIfAbsent('TELPNO', () => '021-8903562')
-      ..putIfAbsent('FAXNO', () => '021351')
+      ..putIfAbsent(
+          'TEMPATLAHIR',
+          () => clients
+              .firstWhere((element) => element.controllerName == 'birth_date')
+              .controller
+              .text)
+      ..putIfAbsent(
+          'NAMAIBU',
+          () => clients
+              .firstWhere((element) => element.controllerName == 'mother_name')
+              .controller
+              .text)
+      ..putIfAbsent(
+          'ALAMAT',
+          () => clients
+              .firstWhere((element) => element.controllerName == 'address')
+              .controller
+              .text)
+      ..putIfAbsent(
+          'RT',
+          () => clients
+              .firstWhere((element) => element.controllerName == 'rt')
+              .controller
+              .text)
+      ..putIfAbsent(
+          'RW',
+          () => clients
+              .firstWhere((element) => element.controllerName == 'rw')
+              .controller
+              .text)
+      ..putIfAbsent(
+          'KODEPOS',
+          () => clients
+              .firstWhere((element) => element.controllerName == 'zipcode')
+              .controller
+              .text)
+      ..putIfAbsent(
+          'KELURAHAN',
+          () => clients
+              .firstWhere((element) => element.controllerName == 'village')
+              .controller
+              .text)
+      ..putIfAbsent(
+          'KECAMATAN',
+          () => clients
+              .firstWhere((element) => element.controllerName == 'district')
+              .controller
+              .text)
+      ..putIfAbsent(
+          'HPNO',
+          () => clients
+              .firstWhere((element) => element.controllerName == 'handphone_no')
+              .controller
+              .text)
+      ..putIfAbsent(
+          'TELPNO',
+          () => clients
+              .firstWhere((element) => element.controllerName == 'phone_no')
+              .controller
+              .text)
+      ..putIfAbsent(
+          'FAXNO',
+          () => clients
+              .firstWhere((element) => element.controllerName == 'fax')
+              .controller
+              .text)
       ..putIfAbsent('NOPOL', () => 'B 1235 FFA')
-      ..putIfAbsent('LAT', () => "106.368525")
-      ..putIfAbsent('LNG', () => '0.654252')
-      ..putIfAbsent('TASKID', () => '');
+      ..putIfAbsent('LAT', () => location.latitude.toString())
+      ..putIfAbsent('LNG', () => location.longitude.toString())
+      ..putIfAbsent(
+          'IDQUESTION', () => MasterRepositories.quisioners[0].idQuisioner)
+      ..putIfAbsent('TASKID', () => '049cfde3-0835-40d4-b77d-a6ef761f8043');
 
-    var file2 = await MultipartFile.fromFile(
-        '/data/user/0/finance.mnc.mobilesurvey/app_flutter/app_name/files/fotokonsumensedangttdkontrakmncf_1621498097417.jpg',
-        filename: 'test2.jpg');
-    var file3 = await MultipartFile.fromFile(
-        '/data/user/0/finance.mnc.mobilesurvey/app_flutter/app_name/files/fotokonsumensedangttdkontrakmncf_1621498326550.jpg',
-        filename: 'test2.jpg');
-    var file4 = await MultipartFile.fromFile(
-        '/data/user/0/finance.mnc.mobilesurvey/app_flutter/app_name/files/fotodalamrumah_1621498374603.jpg',
-        filename: 'test2.jpg');
-    var file5 = await MultipartFile.fromFile(
-        '/data/user/0/finance.mnc.mobilesurvey/app_flutter/app_name/files/fotorumahtampaksampingkanan_1621498452019.jpg',
-        filename: 'test2.jpg');
-    var file6 = await MultipartFile.fromFile(
-        '/data/user/0/finance.mnc.mobilesurvey/app_flutter/app_name/files/fotorumahtampaksampingkanan_1621498496317.jpg',
-        filename: 'test2.jpg');
+    List<String> idFormDetails = [];
+    List<String> idQuisionerDetail = [];
+    List<String> listJawaban = [];
 
-    var param = FormData.fromMap({
+    var params = {
       'BODYJSON': jsonEncode(client),
-      'IDQUISIONERDETAIL': null,
-      'JAWABAN': null,
-      'IDFORMDETAIL': [
-        '3b9e47e3-b0ee-49f5-b605-57cd54932265',
-        '3b9e47e3-b0ee-49f5-b605-57cd54932265',
-        '3b9e47e3-b0ee-49f5-b605-57cd54932265',
-        '3b9e47e3-b0ee-49f5-b605-57cd54932265',
-        '3b9e47e3-b0ee-49f5-b605-57cd54932265'
-      ],
-      'FILENAME': null,
-      'PATH': 'PATH',
-      'FOTO_KONSUMEN_SEDANG_TTD_KONTRAK_MNCF': [
-        file2,
-        file3,
-        file4,
-        file5,
-        file6,
-      ]
-    });
+      'IDFORMDETAIL': idFormDetails
+    };
+
+    for (var item in quisioner) {
+      var jawaban = '';
+      if (item?.choice != null) {
+        jawaban = "${item.choice.value} ";
+      }
+
+      if (item?.controller?.text != null && item.controller.text != '') {
+        jawaban += "(${item.controller.text})";
+      }
+      idQuisionerDetail.add(item.id);
+      listJawaban.add(jawaban == '' ? "Tidak Terisi" : jawaban);
+    }
+/*
+
+    for (var item in idQuisionerDetail) {
+      print("ini item :$item");
+    }
+
+    for (var item in listJawaban) {
+      print("ini jwaban :$item");
+    }
+*/
+
+    params.putIfAbsent('IDQUISIONERDETAIL', () => idQuisionerDetail);
+    params.putIfAbsent('JAWABAN', () => listJawaban);
+
+    for (var item in assets) {
+      idFormDetails.add(item.form.id);
+      List<MultipartFile> files = [];
+      var formName = '';
+      for (var file in item.result) {
+        files.add(MultipartFile.fromFileSync(file.path));
+        formName = file.formName;
+      }
+      params.putIfAbsent(formName, () => files);
+    }
+
+    for (var item in document) {
+      idFormDetails.add(item.form.id);
+      List<MultipartFile> files = [];
+      var formName = '';
+      for (var file in item.result) {
+        files.add(MultipartFile.fromFileSync(file.path));
+        formName = file.formName;
+      }
+      params.putIfAbsent(formName, () => files);
+    }
+
+    var param = FormData.fromMap(params);
+
+    var time = Timer.periodic(Duration(seconds: 1), (timer) {});
 
     var result = await config(AppType.survey).post(url,
         data: param, options: options, onSendProgress: (send, total) {
-          print("send data :$send of $total");
-        }).onError((error, stackTrace) {
+      print("send data :$send of $total");
+    }).onError((error, stackTrace) {
       print('ini error :$error');
       return null;
     });
 
-    print(result.data);
-    print("hello ");
+/*    for (var item in param.fields) {
+      print("ini key :${item.key}");
+      print("ini value :${item.value}");
+    }*/
+
+    if (result.data != null) {
+      var finalResult =
+          result != null ? APIResponse.fromJson(result.data) : null;
+      if (finalResult != null) {
+        finalResult.copyWith(processTimeInSecond: time.tick);
+        time.cancel();
+      }
+      return finalResult;
+    } else {
+      return null;
+    }
   }
 
   static Future<List<QuisionerItem>> getQuisioner() async {
@@ -689,7 +813,6 @@ class APIRequest {
     if (result.data != null) {
       var finalResult =
           result != null ? QuisionerResponse.fromJson(result.data) : null;
-      print(result.data);
       return finalResult != null ? finalResult.data : null;
     } else {
       return null;
@@ -717,7 +840,6 @@ class APIRequest {
     if (result.data != null) {
       var finalResult =
           result != null ? FormUploadResponse.fromJson(result.data) : null;
-      print(result.data);
       return finalResult != null ? finalResult.data : null;
     } else {
       return null;
@@ -745,7 +867,6 @@ class APIRequest {
     if (result.data != null) {
       var finalResult =
           result != null ? ZipCodeResponse.fromJson(result.data) : null;
-      print(result.data);
       return finalResult != null ? finalResult.data : null;
       ;
     } else {
@@ -775,7 +896,6 @@ class APIRequest {
     if (result != null) {
       var finalResult =
           result != null ? ConfigurationModel.fromJson(result.data) : null;
-      print(result.data);
       return finalResult;
     } else {
       return null;

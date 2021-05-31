@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:mobx/mobx.dart';
 import '../../boilerplate/new_state.dart';
 import '../../component/adv_column.dart';
 import '../../component/adv_row.dart';
@@ -10,14 +11,29 @@ import '../../utilities/palette.dart';
 import '../../utilities/translation.dart';
 import '../../utilities/ui_utils.dart';
 
-// ignore: public_member_api_docs
 class DocumentUI extends StatefulWidget {
+  final ObservableList<PhotoResult> documents;
+
+  const DocumentUI({Key key, this.documents}) : super(key: key);
+
   @override
   _DocumentUIState createState() => _DocumentUIState();
 }
 
 class _DocumentUIState extends NewState<DocumentUI> {
   final DocumentBase _logic = DocumentBase();
+
+  @override
+  void initState() {
+    _logic.setupReaction(widget.documents);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _logic.dispose();
+    super.dispose();
+  }
 
   @override
   Widget buildView(BuildContext context) {

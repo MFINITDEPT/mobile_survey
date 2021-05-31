@@ -269,6 +269,16 @@ class MasterRepositories {
     savePhotoFormResult(newDocResult, master.doc);
   }
 
+  static void setFotoResult(List<PhotoResult> list) {
+    clearSavedPhotoFormResult(master.pic);
+    savePhotoFormResult(list, master.pic);
+  }
+
+  static void setDocResult(List<PhotoResult> list) {
+    clearSavedPhotoFormResult(master.doc);
+    savePhotoFormResult(list, master.doc);
+  }
+
   static HiveAesCipher _key() {
     var _keys = utf8.encode(kHiveKey);
     var _md5 = crypt.md5.convert(_keys);

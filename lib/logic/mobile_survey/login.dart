@@ -10,7 +10,6 @@ import 'package:mobx/mobx.dart';
 
 part 'login.g.dart';
 
-/// A LoginBase logic.
 class LoginBase = _LoginLogic with _$LoginBase;
 
 abstract class _LoginLogic with Store {

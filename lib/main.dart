@@ -1,9 +1,11 @@
 import 'dart:async';
 
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:hive/hive.dart';
@@ -34,6 +36,7 @@ void main() {
       .then((_) async {
     await translation.init('id');
     await PreferenceUtils.init();
+    await Firebase.initializeApp();
     var result =
         await PitPermission.requestSinglePermission(PermissionName.storage);
     if (result) {
@@ -145,6 +148,7 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
     return ChangeNotifierProvider<TranslationApp>(
       create: (_) => TranslationApp(),
       child: MaterialApp(
+        builder: EasyLoading.init() ,
         debugShowCheckedModeBanner: false,
         localizationsDelegates: [FallbackLocalizationDelegate()],
         supportedLocales: [

@@ -10,16 +10,33 @@ import 'package:mobilesurvey/utilities/date_utils.dart';
 import 'package:mobilesurvey/utilities/palette.dart';
 import 'package:mobilesurvey/utilities/translation.dart';
 import 'package:mobilesurvey/utilities/ui_utils.dart';
+import 'package:mobx/mobx.dart';
 
 import '../../model/mobile_survey/photo_result.dart';
 
 class AssetsUI extends StatefulWidget {
+  final ObservableList<PhotoResult> assets;
+
+  const AssetsUI({Key key, this.assets}) : super(key: key);
+
   @override
   _AssetsUIState createState() => _AssetsUIState();
 }
 
 class _AssetsUIState extends NewState<AssetsUI> {
   final AssetsBase _logic = AssetsBase();
+
+  @override
+  void initState() {
+    _logic.setupReaction(widget.assets);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _logic.dispose();
+    super.dispose();
+  }
 
   @override
   Widget buildView(BuildContext context) {
