@@ -38,15 +38,9 @@ class _InterceptorPageUIState extends State<InterceptorPageUI> {
     switch (widget.appType) {
       case AppType.survey:
         _config = APIRequest.checkUpdate;
-        _apiRequest.add(APIRequest.getZipCode);
+//        _apiRequest.add(APIRequest.getZipCode);
         _apiRequest.add(APIRequest.getQuisioner);
         _apiRequest.add(APIRequest.getFormUpload);
-
-//        _apiRequest.add(APIRequest.masterQuisioner);
-//        _apiRequest.add(APIRequest.masterAo);
-//        _apiRequest.add(APIRequest.masterZipCode);
-//        _apiRequest.add(APIRequest.getFotoForm);
-//        _apiRequest.add(APIRequest.getFotoForm);
         break;
       case AppType.collection:
         _config = APIRequest.checkUpdate;

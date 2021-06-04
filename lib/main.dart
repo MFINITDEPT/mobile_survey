@@ -11,6 +11,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:hive/hive.dart';
 import 'package:mobilesurvey/logic/translation_app.dart';
 import 'package:mobilesurvey/model/dropdown.dart';
+import 'package:mobilesurvey/repositories/firebase.dart';
 import 'package:mobilesurvey/repositories/master.dart';
 import 'package:mobilesurvey/ui/splashscreen.dart';
 import 'package:mobilesurvey/utilities/constant.dart';
@@ -26,6 +27,14 @@ import 'model/master_configuration/zipcode_item.dart';
 import 'model/mobile_survey/document_item.dart';
 import 'utilities/assets.dart';
 import 'utilities/shared_preferences_utils.dart';
+import 'package:mobilesurvey/utilities/notification_helper.dart';
+
+
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp();
+  print('Handling a background message ${message.messageId}');
+  NotificationHelper.showNotification(message);
+}
 
 final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
     FlutterLocalNotificationsPlugin();
@@ -37,6 +46,8 @@ void main() {
     await translation.init('id');
     await PreferenceUtils.init();
     await Firebase.initializeApp();
+    await NotificationHelper.setNotification();
+    FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
     var result =
         await PitPermission.requestSinglePermission(PermissionName.storage);
     if (result) {
@@ -57,65 +68,12 @@ void main() {
   });
 }
 
-Future<dynamic> myBackgroundMessageHandler(Map<String, dynamic> message) async {
-  if (message.containsKey('data')) {
-    final dynamic data = message['data'];
-    print("print data : $data");
-    showNotification(data);
-    return;
-  }
-
-  if (message.containsKey('notification')) {
-    final dynamic notification = message['notification'];
-    print("notif : $notification");
-    showNotification(notification);
-    return;
-  }
-}
-
-Future<void> showNotification(data) async {
-  var flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-  // initialise the plugin. app_icon needs to be a added
-  // as a drawable resource to the Android head project
-  var initializationSettingsAndroid = AndroidInitializationSettings('app_icon');
-  var initializationSettingsIOS = IOSInitializationSettings(
-      onDidReceiveLocalNotification: _onDidReceiveLocalNotification);
-  var initializationSettings = InitializationSettings(
-      android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
-  flutterLocalNotificationsPlugin.initialize(initializationSettings,
-      onSelectNotification: _onSelectNotification);
-  var androidPlatformChannelSpecifics = AndroidNotificationDetails(
-      'your channel id', 'your channel name', 'your channel description',
-      importance: Importance.high, priority: Priority.high, ticker: 'ticker');
-  var iOSPlatformChannelSpecifics = IOSNotificationDetails();
-  var platformChannelSpecifics = NotificationDetails(
-      android: androidPlatformChannelSpecifics,
-      iOS: iOSPlatformChannelSpecifics);
-  await flutterLocalNotificationsPlugin.show(
-      0, data['title'], data['body'], platformChannelSpecifics,
-      payload: 'item x');
-}
-
-Future<void> _onDidReceiveLocalNotification(
-    int id, String title, String body, String payload) {
-  print("title : $title, payload :$payload");
-  return Future.value();
-}
-
-Future<void> _onSelectNotification(String payload) {
-  print("ini payload :$payload");
-  return Future.value();
-}
-
-/// Top Class Application.
 class App extends StatefulWidget {
   @override
   _AppState createState() => _AppState();
 }
 
 class _AppState extends State<App> with SingleTickerProviderStateMixin {
-  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging();
-
   @override
   void initState() {
     Ridjnael.setIv = kRijndaelIV;
@@ -126,19 +84,7 @@ class _AppState extends State<App> with SingleTickerProviderStateMixin {
       precacheImage(AssetImage(Assets.splashscreen), context);
     });
 
-    _firebaseMessaging.configure(
-        onMessage: myBackgroundMessageHandler,
-        onBackgroundMessage: myBackgroundMessageHandler,
-        onLaunch: myBackgroundMessageHandler,
-        onResume: myBackgroundMessageHandler);
-
-    _firebaseMessaging.requestNotificationPermissions(
-        const IosNotificationSettings(
-            sound: true, badge: true, alert: true, provisional: true));
-
-    _firebaseMessaging.onIosSettingsRegistered.listen((settings) {
-      print("Settings registered: $settings");
-    });
+    FirebaseRepository().firebaseConfigure();
 
     super.initState();
   }

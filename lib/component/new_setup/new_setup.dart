@@ -186,7 +186,7 @@ class _NewSetupState extends State<NewSetup> with WidgetsBindingObserver {
     if (widget.isHasConfiguration) {
       var config;
       var quesioner;
-      var zipcode;
+     // var zipcode;
       var formUpload;
 
       if (_fetchData[0] is Future<ConfigurationModel> Function()) {
@@ -196,8 +196,8 @@ class _NewSetupState extends State<NewSetup> with WidgetsBindingObserver {
       for (var i = 1; i < _fetchData.length; i++) {
         if (_fetchData[i] is Future<List<QuisionerItem>> Function()) {
           quesioner = _fetchData[i];
-        } else if (_fetchData[i] is Future<List<ZipCodeItem>> Function()) {
-          zipcode = _fetchData[i];
+       /* } else if (_fetchData[i] is Future<List<ZipCodeItem>> Function()) {
+          zipcode = _fetchData[i];*/
         } else if (_fetchData[i] is Future<List<FormUploadItem>>
             Function()) {
           formUpload = _fetchData[i];
@@ -210,15 +210,15 @@ class _NewSetupState extends State<NewSetup> with WidgetsBindingObserver {
         } else {
           _controller.updateProgress("get_configuration_success",
               isGetDataSuccess: true);
-          if (value.zipCodeUpdate !=
+        /*  if (value.zipCodeUpdate !=
               PreferenceUtils.getString(kLastUpdateZipCode)) {
             zipcode.call().then((value) {
               if (value == null) {
                 _controller.updateProgress("get_zipcode_error");
               } else {
+                MasterRepositories.saveZipCodes(value);
                 _controller.updateProgress("get_zipcode_success",
                     isGetDataSuccess: true);
-                MasterRepositories.saveZipCodes(value);
               }
             });
           } else {
@@ -226,16 +226,16 @@ class _NewSetupState extends State<NewSetup> with WidgetsBindingObserver {
                 _controller.updateProgress("get_local_success",
                     isGetDataSuccess: value ?? false));
           }
-
+*/
           if (value.quisionerUpdate !=
               PreferenceUtils.getString(kLastUpdateQuestion)) {
             quesioner.call().then((value) {
               if (value == null) {
                 _controller.updateProgress("get_question_error");
               } else {
+                MasterRepositories.saveQuestion(value);
                 _controller.updateProgress("get_question_success",
                     isGetDataSuccess: true);
-                MasterRepositories.saveQuestion(value);
               }
             });
           } else {

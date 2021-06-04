@@ -49,11 +49,10 @@ android {
     }
 }
 dependencies {
-    implementation 'com.google.android.gms:play-services-vision:20.0.0'
-    implementation 'com.google.firebase:firebase-messaging:20.0.0'
-
-    implementation 'com.google.firebase:firebase-ml-vision:24.0.3'
-
+    implementation platform('com.google.firebase:firebase-bom:27.0.0')
+    implementation 'com.google.firebase:firebase-auth'
+    implementation 'androidx.browser:browser:1.2.0'
+    implementation 'com.google.firebase:firebase-analytics'
 }
 
 flutter {

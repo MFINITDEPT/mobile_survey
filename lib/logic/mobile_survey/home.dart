@@ -21,7 +21,7 @@ class HomeBase = _HomeLogic with _$HomeBase;
 abstract class _HomeLogic with Store {
   @action
   void onSelectedItem(String customerNumber, BuildContext context) {
-    EasyLoading.show(dismissOnTap: false);
+    EasyLoading.show(dismissOnTap: false, status: "waiting for get data");
     kLastSavedClient = customerNumber;
     var _resultPhoto = [];
     var _resultDoc = [];
@@ -91,10 +91,21 @@ abstract class _HomeLogic with Store {
     MasterRepositories.saveQuisioner =
         List<QuisionerAnswerModel>.from(_quisioner);
 
-    if (EasyLoading.isShow) EasyLoading.dismiss();
-
-    Navigator.push(context,
-        MaterialPageRoute(builder: (context) => TaskUI(id: kLastSavedClient)));
+   /* if (MasterRepositories.zipcodes == null) {
+      Future.delayed(Duration(seconds: 60)).then((value) {
+        if (EasyLoading.isShow) EasyLoading.dismiss();
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => TaskUI(id: kLastSavedClient)));
+      });
+    } else {*/
+      if (EasyLoading.isShow) EasyLoading.dismiss();
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => TaskUI(id: kLastSavedClient)));
+//    }
   }
 
   @action

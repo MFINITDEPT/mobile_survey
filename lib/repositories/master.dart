@@ -116,7 +116,6 @@ class MasterRepositories {
     }
   }
 
-  // ignore: public_member_api_docs
   static void savePhotoFormResult(List<PhotoResult> value, master type) {
     switch (type) {
       case master.doc:
@@ -136,9 +135,10 @@ class MasterRepositories {
   }
 
   static void saveZipCodes(List<ZipCodeItem> value) async {
-    await _saveToHive(value, master.zipcode);
     _zipcodes = value;
     _zipcodes.sort((a, b) => a.kota.compareTo(b.kota));
+    await _saveToHive(value, master.zipcode);
+
   }
 
   static void saveQuestion(List<QuisionerItem> value) async {
@@ -195,6 +195,7 @@ class MasterRepositories {
           if (_boxExists) {
             var box = await Hive.openBox<QuisionerItem>(kHiveKeys_2,
                 encryptionCipher: _chiper);
+
             saveQuestion(box.values.toList());
           }
           return Future.value(true);

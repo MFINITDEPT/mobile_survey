@@ -867,8 +867,8 @@ class APIRequest {
     if (result.data != null) {
       var finalResult =
           result != null ? ZipCodeResponse.fromJson(result.data) : null;
+      print("final result ${finalResult.data.length}");
       return finalResult != null ? finalResult.data : null;
-      ;
     } else {
       return null;
     }

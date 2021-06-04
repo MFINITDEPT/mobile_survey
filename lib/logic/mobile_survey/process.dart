@@ -93,15 +93,11 @@ abstract class _ProcessLogic with Store {
     EasyLoading.show(dismissOnTap: false);
     List assets = [];
     List document = [];
-    for (var item in client) {
-      print("ini ${item.controllerName} :${item.controller?.text}:");
-    }
 
     for (var item in assetResults) {
       for (var item2 in item.result) {
         if (item2 != null) {
           assets.add(item);
-          print("ini asset :${item.form.formName}: ${item2?.path}");
         }
       }
     }
@@ -110,15 +106,8 @@ abstract class _ProcessLogic with Store {
       for (var item2 in item.result) {
         if (item2 != null) {
           document.add(item);
-          print("ini document :${item.form.formName}: ${item2?.path}");
         }
       }
-    }
-
-    for (QuisionerAnswerModel item in quisioner) {
-      print("ini quisioner:${item.id}:${item.question}:"
-          "${item?.choice?.value}:"
-          "${item?.controller?.text}");
     }
 
     APIResponse success = await APIRequest.proccessSurvey(
@@ -131,9 +120,6 @@ abstract class _ProcessLogic with Store {
     if (EasyLoading.isShow) EasyLoading.dismiss();
 
     if (success.status == '200') {
-      print(success.processTimeInSecond);
-      EasyLoading.showToast(
-          '${success.message} in ${success.processTimeInSecond}');
       Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (_) => HomeContainerUI()),

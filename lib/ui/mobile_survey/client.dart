@@ -100,17 +100,17 @@ class _ClientUIState extends NewState<ClientUI> {
               _buildTextField(
                   _logic.client.firstWhere(
                       (element) => element.controllerName == 'zipcode'),
-                  type: inputType.zipcode),
+                  type: inputType.zipcode1),
               _buildTextField(
                   _logic.client.firstWhere(
                       (element) => element.controllerName == 'village'),
-                  type: inputType.zipcode,
-                  disable: true),
+                  type: inputType.zipcodeText,
+                 /* disable: true*/),
               _buildTextField(
                   _logic.client.firstWhere(
                       (element) => element.controllerName == 'district'),
-                  type: inputType.zipcode,
-                  disable: true),
+                  type: inputType.zipcodeText,
+                  /*disable: true*/),
               _buildTextField(
                   _logic.client.firstWhere(
                       (element) => element.controllerName == 'handphone_no'),
@@ -151,6 +151,13 @@ class _ClientUIState extends NewState<ClientUI> {
         keyboardType = TextInputType.number;
         length = 4;
         break;
+      case inputType.zipcode1:
+        keyboardType = TextInputType.number;
+        length = 6;
+        break;
+      case inputType.zipcodeText:
+        keyboardType = TextInputType.text;
+        break;
       default:
         keyboardType = TextInputType.text;
         break;
@@ -176,30 +183,31 @@ class _ClientUIState extends NewState<ClientUI> {
                       ? _logic.yearPicker(context, model.controller)
                       : _logic.datePicker(context)
                   : null,
-              child: type == inputType.zipcode && !disable
+              child:
+                   type == inputType.zipcode && !disable
                   ? _autoComplete()
-                  : TextField(
-                      controller: model.controller,
-                      style: TextStyle(color: Palette.black, fontSize: 12.0),
-                      maxLength: length,
-                      enabled: !(disable),
-                      keyboardType: keyboardType,
-                      buildCounter: (context,
-                              {currentLength, maxLength, isFocused}) =>
-                          null,
-                      inputFormatters: [
-                        if (keyboardType == TextInputType.number ||
-                            keyboardType == TextInputType.phone)
-                          FilteringTextInputFormatter.digitsOnly
-                      ],
-                      decoration: InputDecoration(
-                          focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Palette.gold)),
-                          disabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Palette.gold)),
-                          enabledBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(color: Palette.gold))),
-                    ),
+                  :
+                  TextField(
+                controller: model.controller,
+                style: TextStyle(color: Palette.black, fontSize: 12.0),
+                maxLength: length,
+                enabled: !(disable),
+                keyboardType: keyboardType,
+                buildCounter:
+                    (context, {currentLength, maxLength, isFocused}) => null,
+                inputFormatters: [
+                  if (keyboardType == TextInputType.number ||
+                      keyboardType == TextInputType.phone)
+                    FilteringTextInputFormatter.digitsOnly
+                ],
+                decoration: InputDecoration(
+                    focusedBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Palette.gold)),
+                    disabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Palette.gold)),
+                    enabledBorder: UnderlineInputBorder(
+                        borderSide: BorderSide(color: Palette.gold))),
+              ),
             )),
       ],
     );

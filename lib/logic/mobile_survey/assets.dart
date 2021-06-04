@@ -61,7 +61,7 @@ abstract class _AssetsLogic with Store {
           <File>[];
       if (files.isNotEmpty) {
         var newFiles = await FileUtils.compressFile(files.first.absolute,
-            form.kelengkapan.toLowerCase().replaceAll(" ", ""));
+            form.formName.toLowerCase().replaceAll(" ", ""));
         fc(() {
           print("filepath :${newFiles.path}");
           print("filepath :${newFiles.lengthSync()}");

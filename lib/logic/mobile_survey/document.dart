@@ -100,7 +100,7 @@ abstract class _DocumentLogic with Store {
               <File>[];
           if (file.isNotEmpty) {
             var newFiles = await FileUtils.compressFile(file.first.absolute,
-                form.kelengkapan.toLowerCase().replaceAll(" ", ""));
+                form.formName.toLowerCase().replaceAll(" ", ""));
             if (newFiles.lengthSync() < kMaxSizeUpload) {
               fc(() {
                 tampungan[index] = DocumentItem();

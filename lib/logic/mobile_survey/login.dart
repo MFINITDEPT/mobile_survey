@@ -1,6 +1,7 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:mobilesurvey/model/mobile_dashboard/error_response.dart';
+import 'package:mobilesurvey/repositories/firebase.dart';
 import 'package:mobilesurvey/ui/mobile_survey/home_container.dart';
 import 'package:mobilesurvey/utilities/api_request.dart';
 import 'package:mobilesurvey/utilities/constant.dart';
@@ -42,7 +43,7 @@ abstract class _LoginLogic with Store {
         (password.text == null || password.text.isEmpty)) return;
 
     fn(() async {
-      var token = await FirebaseMessaging().getToken();
+      var token = await FirebaseRepository().getToken();
       var _response =
           await APIRequest.loginSurvey(username.text, password.text, token);
       if (_response == null) {
